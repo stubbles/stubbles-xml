@@ -1,1 +1,1 @@
-Stubbles core classes
+Stubbles xml related classes
