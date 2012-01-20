@@ -1,0 +1,333 @@
+<?php
+/**
+ * This file is part of stubbles.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @package  net\stubbles\xml
+ */
+namespace net\stubbles\xml\rss;
+use net\stubbles\lang\types\Date;
+/**
+ * Test for net\stubbles\xml\rss\RssFeedItem.
+ *
+ * @group  xml
+ * @group  xml_rss
+ */
+class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * instance to test
+     *
+     * @type  RssFeedItem
+     */
+    protected $rssFeedItem;
+
+    /**
+     * set up test environment
+     */
+    public function setUp()
+    {
+        $this->rssFeedItem = RssFeedItem::create('test',
+                                                 'http://stubbles.net/',
+                                                 'description'
+                             );
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenTitleByDefault()
+    {
+        $this->assertEquals('test', $this->rssFeedItem->getTitle());
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenLinkByDefault()
+    {
+        $this->assertEquals('http://stubbles.net/', $this->rssFeedItem->getLink());
+    }
+
+    /**
+     * @test
+     */
+    public function hasGivenDescriptionByDefault()
+    {
+        $this->assertEquals('description', $this->rssFeedItem->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoAuthorByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->hasAuthor());
+    }
+
+    /**
+     * @test
+     */
+    public function initialAuthorIsNull()
+    {
+        $this->assertNull($this->rssFeedItem->getAuthor());
+    }
+
+    /**
+     * @test
+     */
+    public function setAuthorWithoutMailAddressUsesExampleMailAddress()
+    {
+        $this->assertEquals('nospam@example.com (mikey)',
+                            $this->rssFeedItem->byAuthor('mikey')
+                                              ->getAuthor()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function canSetAuthorWithMailAddress()
+    {
+        $this->assertEquals('test@example.net (mikey)',
+                            $this->rssFeedItem->byAuthor('test@example.net (mikey)')
+                                              ->getAuthor()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoCategoriesByDefault()
+    {
+        $this->assertEquals(array(), $this->rssFeedItem->getCategories());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetCategories()
+    {
+        $this->assertEquals(array(array('category' => 'cat1',
+                                        'domain'   => ''
+                                  ),
+                                  array('category' => 'cat2',
+                                        'domain'   => 'domain'
+                                  )
+                            ),
+                            $this->rssFeedItem->inCategory('cat1')
+                                              ->inCategory('cat2', 'domain')
+                                              ->getCategories()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoCommentsUrlByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->hasComments());
+    }
+
+    /**
+     * @test
+     */
+    public function initialCommentUrlIsNull()
+    {
+        $this->assertNull($this->rssFeedItem->getComments());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetCommentsUrl()
+    {
+        $this->assertEquals('http://stubbles.net/comments/',
+                            $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
+                                              ->getComments()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoEnclosuresByDefault()
+    {
+        $this->assertEquals(array(), $this->rssFeedItem->getEnclosures());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetEnclosures()
+    {
+        $this->assertEquals(array(array('url'    => 'http://stubbles.net/enclosure.mp3',
+                                        'length' => 50,
+                                        'type' => 'audio/mpeg'
+                                  )
+                            ),
+                            $this->rssFeedItem->deliveringEnclosure('http://stubbles.net/enclosure.mp3',
+                                                                    50,
+                                                                    'audio/mpeg'
+                                                )
+                                              ->getEnclosures()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoGuidByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->hasGuid());
+    }
+
+    /**
+     * @test
+     */
+    public function initialGuidIsNull()
+    {
+        $this->assertNull($this->rssFeedItem->getGuid());
+    }
+
+    /**
+     * @test
+     */
+    public function guidIsNotPermalinkByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->isGuidPermaLink());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetGuid()
+    {
+        $this->assertEquals('dummy',
+                            $this->rssFeedItem->withGuid('dummy')
+                                              ->getGuid()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function settingGuidEnablesGuidAsPermalink()
+    {
+        $this->assertTrue($this->rssFeedItem->withGuid('dummy')
+                                            ->isGuidPermaLink()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function settingGuidAndDisablingPermalink()
+    {
+        $this->assertFalse($this->rssFeedItem->withGuid('dummy')
+                                             ->andGuidIsNotPermaLink()
+                                             ->isGuidPermaLink()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoPublishingDateByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->hasPubDate());
+    }
+
+    /**
+     * @test
+     */
+    public function initialPublishingDateIsNull()
+    {
+        $this->assertNull($this->rssFeedItem->getPubDate());
+    }
+
+    /**
+     * @test
+     */
+    public function publishingDateCanBePassedAsDateInstance()
+    {
+        $this->assertEquals('Sat 24 May 2008 00:00:00 +0200',
+                            $this->rssFeedItem->publishedOn(new Date('2008-05-24'))
+                                              ->getPubDate()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function alternativePublishingDate()
+    {
+        $this->assertEquals('Sat 24 May 2008 00:00:00 +0200',
+                            $this->rssFeedItem->publishedOn('2008-05-24')
+                                              ->getPubDate()
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     */
+    public function settingInvalidPublishingDateThrowsIllegalArgumentException()
+    {
+        $this->rssFeedItem->publishedOn('foo');
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoSourcesByDefault()
+    {
+        $this->assertEquals(array(), $this->rssFeedItem->getSources());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetSources()
+    {
+        $this->assertEquals(array(array('name' => 'stubbles',
+                                        'url'  => 'http://stubbles.net/source/'
+                                  )
+                            ),
+                            $this->rssFeedItem->inspiredBySource('stubbles',
+                                                                 'http://stubbles.net/source/'
+                                                )
+                                              ->getSources()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasNoContentByDefault()
+    {
+        $this->assertFalse($this->rssFeedItem->hasContent());
+    }
+
+    /**
+     * @test
+     */
+    public function initialContentIsEmpty()
+    {
+        $this->assertEquals('', $this->rssFeedItem->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function canSetContent()
+    {
+        $this->assertEquals('<foo>bar</foo><baz/>',
+                            $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
+                                              ->getContent()
+        );
+    }
+}
+?>
