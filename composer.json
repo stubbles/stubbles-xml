@@ -1,0 +1,30 @@
+{
+    "name": "stubbles/xml",
+    "type": "library",
+    "homepage": "http://stubbles.net/",
+    "version": "2.0.0",
+    "license": "BSD",
+    "require": {
+        "php": ">=5.3.0",
+        "mikey179/vfsStream": "1.0.0-dev",
+        "stubbles/core": "2.0.0-dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "net\\stubbles\\xml": "src/main/php",
+            "org\\stubbles\\xml": "src/main/php"
+        }
+    },
+    "repositories": {
+        "vfsstream": {
+            "vcs": {
+                "url": "https://github.com/mikey179/vfsStream"
+            }
+        },
+        "stubbles": {
+            "vcs": {
+                "url": "https://github.com/stubbles/stubbles-core"
+            }
+        }
+    }
+}
