@@ -3,7 +3,7 @@
   <title>stubbles XML API Doc</title>
   <parser>
     <target>docs/api</target>
-    <default-package-name>net\stubbles</default-package-name>
+    <default-package-name>net\stubbles\xml</default-package-name>
   </parser>
   <transformer>
     <target>docs/api</target>
