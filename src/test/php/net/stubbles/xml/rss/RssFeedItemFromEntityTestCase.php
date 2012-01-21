@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\xml\rss;
 use net\stubbles\lang\BaseObject;
+use net\stubbles\lang\types\Date;
 /**
  * Helper class for the test.
  *
@@ -457,7 +458,10 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('overrideGuid', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
-        $this->assertEquals('Tue 16 Sep 2008 22:50:21 +0200', $rssFeedItem->getPubDate());
+        $date = new Date(1221598221);
+        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
+                            $rssFeedItem->getPubDate()
+        );
         $this->assertEquals(array(array('name' => 'overrideSourceName', 'url' => 'overrideSourceUrl')),
                             $rssFeedItem->getSources()
         );
@@ -491,7 +495,10 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('extendedGuid', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
-        $this->assertEquals('Tue 16 Sep 2008 22:50:21 +0200', $rssFeedItem->getPubDate());
+        $date = new Date(1221598221);
+        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
+                            $rssFeedItem->getPubDate()
+        );
         $this->assertEquals(array(array('name' => 'extendedSourceName', 'url' => 'extendedSourceUrl')),
                             $rssFeedItem->getSources()
         );
@@ -525,7 +532,10 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals('id', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
-        $this->assertEquals('Tue 16 Sep 2008 22:50:21 +0200', $rssFeedItem->getPubDate());
+        $date = new Date(1221598221);
+        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
+                            $rssFeedItem->getPubDate()
+        );
         $this->assertEquals(array(array('name' => 'originName', 'url' => 'originUrl')),
                             $rssFeedItem->getSources()
         );

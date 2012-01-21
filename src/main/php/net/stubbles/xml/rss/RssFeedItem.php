@@ -80,7 +80,7 @@ class RssFeedItem extends BaseObject
     /**
      * indicates when the item was published
      *
-     * @type  string
+     * @type  Date
      */
     protected $pubDate     = null;
     /**
@@ -452,20 +452,14 @@ class RssFeedItem extends BaseObject
      *
      * @param   string|int|Date  $pubDate  publishing date of rss feed item
      * @return  RssFeedItem
-     * @throws  IllegalArgumentException
      */
     public function publishedOn($pubDate)
     {
-        if ($pubDate instanceof Date) {
-            $pubDate = $pubDate->getTimestamp();
-        } elseif (!is_int($pubDate)) {
-            $pubDate = strtotime($pubDate);
-            if (false === $pubDate) {
-                throw new IllegalArgumentException('Argument must be a unix timestamp, a valid string representation of a time or an instance of net\\stubbles\\lang\\types\\Date.');
-            }
+        if (!($pubDate instanceof Date)) {
+            $pubDate = new Date($pubDate);
         }
 
-        $this->pubDate = date('D d M Y H:i:s O', $pubDate);
+        $this->pubDate = $pubDate;
         return $this;
     }
 
@@ -486,7 +480,11 @@ class RssFeedItem extends BaseObject
      */
     public function getPubDate()
     {
-        return $this->pubDate;
+        if ($this->hasPubDate()) {
+            return $this->pubDate->format('D d M Y H:i:s O');
+        }
+
+        return null;
     }
 
     /**

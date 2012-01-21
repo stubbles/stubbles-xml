@@ -77,7 +77,7 @@ class RssFeed extends BaseObject
     /**
      * last time the content of the channel changed
      *
-     * @type  string
+     * @type  Date
      */
     protected $lastBuildDate  = null;
     /**
@@ -381,20 +381,14 @@ class RssFeed extends BaseObject
      *
      * @param   string|int   $lastBuildDate  last time the content of the channel changed
      * @return  RssFeed
-     * @throws  IllegalArgumentException
      */
     public function setLastBuildDate($lastBuildDate)
     {
-        if ($lastBuildDate instanceof Date) {
-            $lastBuildDate = $lastBuildDate->getTimestamp();
-        } elseif (!is_int($lastBuildDate)) {
-            $lastBuildDate = strtotime($lastBuildDate);
-            if (false === $lastBuildDate) {
-                throw new IllegalArgumentException('Argument must be a unix timestamp, a valid string representation of a time or an instance of net\\stubbles\\lang\\types\\Date.');
-            }
+        if (!($lastBuildDate instanceof Date)) {
+            $lastBuildDate = new Date($lastBuildDate);
         }
 
-        $this->lastBuildDate = date('D d M Y H:i:s O', $lastBuildDate);
+        $this->lastBuildDate = $lastBuildDate;
         return $this;
     }
 
@@ -415,7 +409,11 @@ class RssFeed extends BaseObject
      */
     public function getLastBuildDate()
     {
-        return $this->lastBuildDate;
+        if ($this->hasLastBuildDate()) {
+            return $this->lastBuildDate->format('D d M Y H:i:s O');
+        }
+
+        return null;
     }
 
     /**
