@@ -43,11 +43,30 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     */
+    public function returnsListOfCallbacks()
+    {
+        $this->assertEquals(array('test' => $this->callback),
+                            $this->xslCallbacks->getCallbacks()
+        );
+    }
+
+    /**
+     * @test
      * @expectedException  net\stubbles\xml\xsl\XslCallbackException
      */
     public function callbackDoesNotExistThrowsCallbackException()
     {
         $this->xslCallbacks->invoke('foo', 'hello');
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     */
+    public function callbackNonExistingMethodThrowsCallbackException()
+    {
+        $this->xslCallbacks->invoke('test', 'doesNotExist');
     }
 
     /**

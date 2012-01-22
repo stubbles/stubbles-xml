@@ -178,6 +178,33 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function serializeStringWithoutTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<string>This is a string.</string>'),
+                            $this->serializer->serializeString('This is a string.',
+                                                               new DomXmlStreamWriter()
+                                               )
+                                             ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeStringWithGivenTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<root>This is a string.</root>'),
+                            $this->serializer->serializeString('This is a string.',
+                                                               new DomXmlStreamWriter(),
+                                                               'root'
+                                               )
+                                             ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function serializeIntegerWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<integer>45</integer>'),
@@ -198,6 +225,33 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function serializeIntegerWithoutTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<integer>45</integer>'),
+                            $this->serializer->serializeInt(45,
+                                                            new DomXmlStreamWriter()
+                                               )
+                                             ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeIntegerWithGivenTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<root>45</root>'),
+                            $this->serializer->serializeInt(45,
+                                                            new DomXmlStreamWriter(),
+                                                            'root'
+                                               )
+                                             ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function serializeFloatWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<double>2.352</double>'),
@@ -212,6 +266,33 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->getXmlWithPrefix('<root>2.352</root>'),
                             $this->serialize(2.352, 'root')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeFloatWithoutTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<double>2.352</double>'),
+                            $this->serializer->serializeFloat(2.352,
+                                                              new DomXmlStreamWriter()
+                                               )
+                                             ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeFloatWithGivenTagNameDirectly()
+    {
+        $this->assertEquals($this->getXmlWithPrefix('<root>2.352</root>'),
+                            $this->serializer->serializeFloat(2.352,
+                                                              new DomXmlStreamWriter(),
+                                                              'root'
+                                               )
+                                             ->asXml()
         );
     }
 
@@ -456,7 +537,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function serializeStandardObject()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<class method="returned" isFoo="true" isBar="false"/>'),
+        $this->assertEquals($this->getXmlWithPrefix('<class method="returned" isFoo="true" isBar="false"><getBaz>baz</getBaz></class>'),
                             $this->serialize(new ExampleObjectClassWithMethods())
         );
     }

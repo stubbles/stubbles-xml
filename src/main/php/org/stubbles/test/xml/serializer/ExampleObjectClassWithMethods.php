@@ -72,5 +72,24 @@ class ExampleObjectClassWithMethods
     {
         return false;
     }
+
+    /**
+     * @return  string
+     */
+    public function getBaz()
+    {
+        return 'baz';
+    }
+
+    /**
+     * a method with arguments
+     *
+     * @param   string  $arg
+     * @return  string
+     */
+    public function withArguments($arg)
+    {
+        return 'not serialized: ' . $arg;
+    }
 }
 ?>
