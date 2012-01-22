@@ -15,15 +15,9 @@ use net\stubbles\lang\exception\MethodNotSupportedException;
 class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWriter
 {
     /**
-     * List of supported features
-     *
-     * @type  array
-     */
-    protected $features = array(XmlStreamWriter::FEATURE_AS_DOM);
-    /**
      * Writer
      *
-     * @type  XMLWriter
+     * @type  \XMLWriter
      */
     protected $writer;
 
@@ -44,7 +38,9 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     }
 
     /**
-     * Clear all data, that has been written
+     * Clears all previously written elements so that the document starts fresh.
+     *
+     * @return  XmlStreamWriter
      */
     public function clear()
     {
@@ -53,6 +49,17 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         $this->writer->openMemory();
         $this->writer->startDocument($this->xmlVersion, $this->encoding);
         $this->writer->setIndent(false);
+        return $this;
+    }
+
+    /**
+     * returns a list of features the implementation supports
+     *
+     * @return  int[]
+     */
+    protected function getFeatures()
+    {
+        return array(XmlStreamWriter::FEATURE_AS_DOM);
     }
 
     /**
@@ -68,63 +75,75 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Write a text node
      *
-     * @param  string  $data
+     * @param   string  $data
+     * @return  XmlStreamWriter
      */
     public function writeText($data)
     {
         $this->writer->text($data);
+        return $this;
     }
 
     /**
      * Write a cdata section
      *
-     * @param  string  $cdata
+     * @param   string  $cdata
+     * @return  XmlStreamWriter
      */
     public function writeCData($cdata)
     {
         $this->writer->writeCdata($cdata);
+        return $this;
     }
 
     /**
      * Write a comment
      *
-     * @param  string  $comment
+     * @param   string  $comment
+     * @return  XmlStreamWriter
      */
     public function writeComment($comment)
     {
         $this->writer->writeComment($comment);
+        return $this;
     }
 
     /**
      * Write a processing instruction
      *
-     * @param  string  $target
-     * @param  string  $data
+     * @param   string  $target
+     * @param   string  $data
+     * @return  XmlStreamWriter
      */
     public function writeProcessingInstruction($target, $data = '')
     {
         $this->writer->writePi($target, $data);
+        return $this;
     }
 
     /**
      * Write an xml fragment
      *
-     * @param  string  $fragment
+     * @param   string  $fragment
+     * @return  XmlStreamWriter
      */
     public function writeXmlFragment($fragment)
     {
         $this->writer->writeRaw($fragment);
+        return $this;
     }
 
     /**
      * Write an attribute
      *
-     * @param  string  $attributeName
-     * @param  string  $attributeValue
+     * @param   string  $attributeName
+     * @param   string  $attributeValue
+     * @return  XmlStreamWriter
      */
     public function writeAttribute($attributeName, $attributeValue)
     {
         $this->writer->writeAttribute($attributeName, $attributeValue);
+        return $this;
     }
 
     /**
@@ -138,9 +157,10 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Write a full element
      *
-     * @param  string  $elementName
-     * @param  array   $attributes
-     * @param  string  $cdata
+     * @param   string  $elementName
+     * @param   array   $attributes
+     * @param   string  $cdata
+     * @return  XmlStreamWriter
      */
     public function writeElement($elementName, array $attributes = array(), $cdata = null)
     {
@@ -154,6 +174,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         }
 
         $this->writeEndElement();
+        return $this;
     }
 
     /**
