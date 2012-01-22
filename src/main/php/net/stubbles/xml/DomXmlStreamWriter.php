@@ -97,23 +97,16 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $data
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeText($data)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $this->addToDom($this->doc->createTextNode($this->encode($data)));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing text: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing text.', $e);
-        }
-
-        return $this;
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                return $doc->createTextNode($payload);
+                                            },
+                                            $this->encode($data),
+                                            'text'
+        );
     }
 
     /**
@@ -121,23 +114,16 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $cdata
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeCData($cdata)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $this->addToDom($this->doc->createCDATASection($this->encode($cdata)));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing cdata section: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing cdata section.', $e);
-        }
-
-        return $this;
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                return $doc->createCDATASection($payload);
+                                            },
+                                            $this->encode($cdata),
+                                            'cdata'
+        );
     }
 
     /**
@@ -145,23 +131,16 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $comment
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeComment($comment)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $this->addToDom($this->doc->createComment($this->encode($comment)));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing comment: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing comment.', $e);
-        }
-
-        return $this;
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                return $doc->createComment($payload);
+                                            },
+                                            $this->encode($comment),
+                                            'comment'
+        );
     }
 
     /**
@@ -170,23 +149,18 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $target
      * @param   string  $data
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeProcessingInstruction($target, $data = '')
     {
-        try {
-            libxml_use_internal_errors(true);
-            $this->addToDom($this->doc->createProcessingInstruction($target, $data));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing processing instruction: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing processing instruction.', $e);
-        }
-
-        return $this;
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                return $doc->createProcessingInstruction($payload['target'], $payload['data']);
+                                            },
+                                            array('target' => $target,
+                                                  'data'   => $data
+                                            ),
+                                            'processing instruction'
+        );
     }
 
     /**
@@ -198,21 +172,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function writeXmlFragment($fragment)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $fragmentNode = $this->doc->createDocumentFragment();
-            $fragmentNode->appendXML($fragment);
-            $this->addToDom($fragmentNode);
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing document fragment: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing document fragment.', $e);
-        }
-
-        return $this;
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                $fragmentNode = $doc->createDocumentFragment();
+                                                $fragmentNode->appendXML($payload);
+                                                return $fragmentNode;
+                                            },
+                                            $fragment,
+                                            'document fragment'
+        );
     }
 
     /**
@@ -305,35 +273,13 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function importStreamWriter(XmlStreamWriter $writer)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $this->addToDom($this->doc->importNode($writer->asDom()->documentElement, true));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error during import: ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error during import.', $e);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add a node to the internal DOM tree
-     *
-     * @param   \DOMNode  $node  adds given node to dom
-     * @throws  XmlException
-     */
-    protected function addToDom(\DOMNode $node)
-    {
-        if (count($this->elementStack) < 1) {
-            throw new XmlException('No tag is currently open, you need to call writeStartElement() first.');
-        }
-
-        $current = end($this->elementStack);
-        @$current->appendChild($node);
+        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
+                                            {
+                                                return $doc->importNode($payload, true);
+                                            },
+                                            $writer->asDom()->documentElement,
+                                            'imported nodes'
+        );
     }
 
     /**
@@ -354,6 +300,37 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     public function asXml()
     {
         return rtrim($this->doc->saveXML());
+    }
+
+    /**
+     * handles creation of a new element
+     *
+     * @param   \Closure  $createElement  function to create element
+     * @param   string    $payload        payload to pass for element creation
+     * @param   string    $type           type of element
+     * @return  DomXmlStreamWriter
+     * @throws  XmlException
+     */
+    protected function handleElementCreation(\Closure $createElement, $payload, $type)
+    {
+        if (count($this->elementStack) < 1) {
+            throw new XmlException('No tag is currently open, you need to call writeStartElement() first.');
+        }
+
+        try {
+            libxml_use_internal_errors(true);
+            $current = end($this->elementStack);
+            @$current->appendChild($createElement($this->doc, $payload));
+            $errors = libxml_get_errors();
+            if (!empty($errors)) {
+                libxml_clear_errors();
+                throw new XmlException('Error writing ' . $type . ': ' . $this->convertLibXmlErrorsToString($errors));
+            }
+        } catch (\DOMException $e) {
+            throw new XmlException('Error writing ' . $type, $e);
+        }
+
+        return $this;
     }
 
     /**
