@@ -211,7 +211,7 @@ class RssFeed extends BaseObject
      * @param   string  $title        title of the item
      * @param   string  $link         URL of the item
      * @param   string  $description  item synopsis
-     * @return  RssFeed
+     * @return  RssFeedItem
      */
     public function addItem($title, $link, $description)
     {
