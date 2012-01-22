@@ -67,29 +67,24 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * really writes an opening tag
      *
      * @param   string  $elementName
-     * @throws  XmlException
      */
     protected function doWriteStartElement($elementName)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $element = $this->doc->createElement($elementName);
-            if (count($this->elementStack) == 0) {
-                $this->doc->appendChild($element);
-            } else {
-                $parent = end($this->elementStack);
-                $parent->appendChild($element);
-            }
+        $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
+                                 {
+                                     $element = $doc->createElement($payload);
+                                     if (count($elementStack) === 0) {
+                                         $doc->appendChild($element);
+                                     } else {
+                                         $parent = end($elementStack);
+                                         $parent->appendChild($element);
+                                     }
 
-            array_push($this->elementStack, $element);
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing start element: "' . $elementName . '": ' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing start element "' . $elementName . '".', $e);
-        }
+                                     array_push($elementStack, $element);
+                                 },
+                                 $elementName,
+                                 'start element: "' . $elementName . '"'
+        );
     }
 
     /**
@@ -168,7 +163,6 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $fragment
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeXmlFragment($fragment)
     {
@@ -189,24 +183,19 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $attributeName
      * @param   string  $attributeValue
      * @return  XmlStreamWriter
-     * @throws  XmlException
      */
     public function writeAttribute($attributeName, $attributeValue)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $currentElement = end($this->elementStack);
-            $currentElement->setAttribute($attributeName, $this->encode($attributeValue));
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing attribute:  "' . $attributeName . ':' . $attributeValue . '":' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing attribute "' . $attributeName . ':' . $attributeValue . '".', $e);
-        }
-
-        return $this;
+        return $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
+                                        {
+                                            $currentElement = end($elementStack);
+                                            $currentElement->setAttribute($payload['name'], $payload['value']);
+                                        },
+                                        array('name'  => $attributeName,
+                                                'value' => $this->encode($attributeValue)
+                                        ),
+                                        'attributet: "' . $attributeName . ':' . $attributeValue . '"'
+        );
     }
 
     /**
@@ -234,34 +223,35 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function writeElement($elementName, array $attributes = array(), $cdata = null)
     {
-        try {
-            libxml_use_internal_errors(true);
-            $element = $this->doc->createElement($elementName);
-            foreach ($attributes as $attName => $attValue) {
-                $element->setAttribute($attName, $this->encode($attValue));
-            }
-
-            if (null !== $cdata) {
-                $element->appendChild($this->doc->createTextNode($cdata));
-            }
-
-            if (count($this->elementStack) == 0) {
-                $this->doc->appendChild($element);
-            } else {
-                $parent = end($this->elementStack);
-                $parent->appendChild($element);
-            }
-
-            $errors = libxml_get_errors();
-            if (!empty($errors)) {
-                libxml_clear_errors();
-                throw new XmlException('Error writing element: "' . $elementName . '":' . $this->convertLibXmlErrorsToString($errors));
-            }
-        } catch (\DOMException $e) {
-            throw new XmlException('Error writing element"' . $elementName . '".', $e);
+        $atts = array();
+        foreach ($attributes as $name => $value) {
+            $atts[$name] = $this->encode($value);
         }
 
-        return $this;
+        return $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
+                                        {
+                                            $element = $doc->createElement($payload['elementName']);
+                                            foreach ($payload['attributes'] as $attName => $attValue) {
+                                                $element->setAttribute($attName, $attValue);
+                                            }
+
+                                            if (null !== $payload['cdata']) {
+                                                $element->appendChild($doc->createTextNode($payload['cdata']));
+                                            }
+
+                                            if (count($elementStack) === 0) {
+                                                $doc->appendChild($element);
+                                            } else {
+                                                $parent = end($elementStack);
+                                                $parent->appendChild($element);
+                                            }
+                                        },
+                                        array('elementName' => $elementName,
+                                                'attributes'  => $atts,
+                                                'cdata'       => $this->encode($cdata)
+                                        ),
+                                        'element: "' . $elementName . '"'
+        );
     }
 
     /**
@@ -303,10 +293,36 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     }
 
     /**
+     * wraps handling on element stack
+     *
+     * @param   \Closure  $stackHandling  function to work with element stack
+     * @param   mixed     $payload        payload to pass to stack handling
+     * @param   string    $type           type of stack handling
+     * @return  DomXmlStreamWriter
+     * @throws  XmlException
+     */
+    protected function wrapStackHandling(\Closure $stackHandling, $payload, $type)
+    {
+        try {
+            libxml_use_internal_errors(true);
+            $stackHandling($this->doc, $this->elementStack, $payload);
+            $errors = libxml_get_errors();
+            if (!empty($errors)) {
+                libxml_clear_errors();
+                throw new XmlException('Error writing "' . $type . '": ' . $this->convertLibXmlErrorsToString($errors));
+            }
+        } catch (\DOMException $e) {
+            throw new XmlException('Error writing "' . $type, $e);
+        }
+
+        return $this;
+    }
+
+    /**
      * handles creation of a new element
      *
      * @param   \Closure  $createElement  function to create element
-     * @param   string    $payload        payload to pass for element creation
+     * @param   mixed     $payload        payload to pass for element creation
      * @param   string    $type           type of element
      * @return  DomXmlStreamWriter
      * @throws  XmlException
