@@ -215,5 +215,21 @@ class LibXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
         $writer->writeEndElement();
         $this->assertTrue($writer->isFinished());
     }
+
+    /**
+     * @test
+     */
+    public function exportAsDom()
+    {
+        $writer = new LibXmlStreamWriter();
+        $writer->writeElement('root', array('foo' => 'bar'));
+        $dom = $writer->asDom();
+        $this->assertInstanceOf('\\DOMDocument', $dom);
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>
+<root foo="bar"/>
+',
+                            $dom->saveXML()
+        );
+    }
 }
 ?>
