@@ -84,7 +84,8 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
         $this->mockXmlStreamWriter->expects($this->exactly(4))->method('writeElement');
         $this->mockXmlSerializer->expects($this->never())->method('serializeObject');
         $this->assertSame($this->mockXmlStreamWriter,
-                          $this->rssFeedSerializer->serialize(new RssFeed('title', 'link', 'description'),
+                          $this->rssFeedSerializer->setGenerator('Another generator')
+                                                  ->serialize(new RssFeed('title', 'link', 'description'),
                                                               $this->mockXmlSerializer,
                                                               $this->mockXmlStreamWriter,
                                                               null

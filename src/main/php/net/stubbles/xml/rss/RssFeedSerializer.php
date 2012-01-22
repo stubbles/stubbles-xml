@@ -41,11 +41,13 @@ class RssFeedSerializer extends BaseObject implements ObjectXmlSerializer
     /**
      * set the generator of the feed
      *
-     * @param  string  $generator  name of the generator to use
+     * @param   string  $generator  name of the generator to use
+     * @return  RssFeedSerializer
      */
     public function setGenerator($generator)
     {
         $this->generator = $generator;
+        return $this;
     }
 
     /**
