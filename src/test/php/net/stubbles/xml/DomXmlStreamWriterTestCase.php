@@ -127,6 +127,30 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function canWriteNestedCompleteElements()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<root><foo/><bar baz="blub">content</bar></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeStartElement('foo')
+                                         ->writeEndElement()
+                                         ->writeElement('bar', array('baz' => 'blub'), 'content')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     * @expectedException  net\stubbles\xml\XmlException
+     */
+    public function writeEndElementBeforeStartElementThrowsXmlException()
+    {
+        $this->writer->writeEndElement();
+    }
+
+    /**
+     * @test
+     */
     public function writeElement()
     {
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="value">content</foo>',
