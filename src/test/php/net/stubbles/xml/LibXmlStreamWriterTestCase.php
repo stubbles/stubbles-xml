@@ -17,203 +17,305 @@ namespace net\stubbles\xml;
 class LibXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the creation of an empty document
+     * instance to test
      *
+     * @type  LibXmlStreamWriter
+     */
+    protected $writer;
+
+    /**
+     * set up test environment
+     */
+    public function setUp()
+    {
+        $this->writer = new LibXmlStreamWriter();
+    }
+
+    /**
      * @test
      */
-    public function emptyDocument()
+    public function emptyDocumentContainsXmlHeader()
     {
-        $writer = new LibXmlStreamWriter();
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', $writer->asXml());
-        $this->assertEquals('1.0', $writer->getVersion());
-        $this->assertEquals('UTF-8', $writer->getEncoding());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>',
+                            $this->writer->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function canCreateDocumentWithOtherXmlVersion()
+    {
+        $writer = new LibXmlStreamWriter('1.1');
+        $this->assertEquals('<?xml version="1.1" encoding="UTF-8"?>',
+                            $writer->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function canCreateDocumentWithIso()
+    {
+        $writer = new LibXmlStreamWriter('1.0', 'ISO-8859-1');
+        $this->assertEquals('<?xml version="1.0" encoding="ISO-8859-1"?>',
+                            $writer->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function canCreateDocumentWithOtherVersionAndIso()
+    {
+        $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
+        $this->assertEquals('<?xml version="1.1" encoding="ISO-8859-1"?>',
+                            $writer->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function hasVersion1_0ByDefault()
+    {
+        $this->assertEquals('1.0', $this->writer->getVersion());
+    }
+
+    /**
+     * @test
+     */
+    public function hasUtf8EncodingByDefault()
+    {
+        $this->assertEquals('UTF-8', $this->writer->getEncoding());
+    }
+
+    /**
+     * @test
+     */
+    public function reportsOtherVersion()
+    {
         $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
         $this->assertEquals('1.1', $writer->getVersion());
+    }
+
+    /**
+     * @test
+     */
+    public function reportsOtherEncoding()
+    {
+        $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
         $this->assertEquals('ISO-8859-1', $writer->getEncoding());
     }
 
     /**
-     * Test creating a document with several tags
-     *
      * @test
      */
-    public function tags()
+    public function canWriteNestedElements()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeStartElement('foo');
-        $writer->writeEndElement();
-        $writer->writeStartElement('bar');
-        $writer->writeEndElement();
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n<root><foo/><bar/></root>" , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n<root><foo/><bar/></root>" ,
+                            $this->writer->writeStartElement('root')
+                                         ->writeStartElement('foo')
+                                         ->writeEndElement()
+                                         ->writeStartElement('bar')
+                                         ->writeEndElement()
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with several tags
-     *
      * @test
      */
-    public function fullElement()
+    public function writeElement()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeElement('foo', array('att' => 'value'), 'content');
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="value">content</foo>', $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="value">content</foo>',
+                            $this->writer->writeElement('foo', array('att' => 'value'), 'content')
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with attributes
-     *
      * @test
      */
-    public function attributes()
+    public function writeElementWithGermanUmlautsUtf8()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeStartElement('foo');
-        $writer->writeAttribute('bar', '42');
-        $writer->writeEndElement();
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><foo bar="42"/></root>' , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="hääää">content</foo>',
+                            $this->writer->writeElement('foo', array('att' => 'hääää'), 'content')
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with a text node
-     *
      * @test
      */
-    public function text()
+    public function writeAttributesAddsAtributesToCurrentElement()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeText('This is text.');
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root>This is text.</root>' , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><foo bar="42"/></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeStartElement('foo')
+                                         ->writeAttribute('bar', '42')
+                                         ->writeEndElement()
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with character data
-     *
      * @test
      */
-    public function cData()
+    public function writeAttributesWithGermanUmlautsUtf8()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeCData('This is text.');
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><![CDATA[This is text.]]></root>', $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><foo bar="hääää"/></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeStartElement('foo')
+                                         ->writeAttribute('bar', 'hääää')
+                                         ->writeEndElement()
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with a comment
-     *
      * @test
      */
-    public function comment()
+    public function writeTextAddsTextIntoCurrentElement()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeComment('This is a comment.');
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><!--This is a comment.--></root>' , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root>This is text.</root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeText('This is text.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document with a processing instruction
-     *
      * @test
      */
-    public function processingInstruction()
+    public function writeTextWithGermanUmlautsInUtf8()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeProcessingInstruction('php', 'phpinfo();');
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><?php phpinfo();?></root>' , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root>This is text containing äöü.</root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeText('This is text containing äöü.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test creating a document an XML fragment
-     *
      * @test
      */
-    public function xmlFragment()
+    public function writeCDataAddsCdata()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-        $writer->writeXmlFragment('<foo bar="true"/>');
-        $writer->writeEndElement();
-
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><foo bar="true"/></root>' , $writer->asXml());
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><![CDATA[This is text.]]></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeCData('This is text.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
     }
 
     /**
-     * Test importing a stream writer
-     *
+     * @test
+     */
+    public function writeCDataWithGermanUmlautsInUtf8()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><![CDATA[This is text containing äöü.]]></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeCData('This is text containing äöü.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function writeCommentAddsComment()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><!--This is a comment.--></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeComment('This is a comment.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function commentWithGermanUmlautsInUtf8()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><!--This is a comment containing äöü.--></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeComment('This is a comment containing äöü.')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function processingInstructionCanBeAdded()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><?php phpinfo();?></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeProcessingInstruction('php', 'phpinfo();')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function xmlFragmentCanBeAdded()
+    {
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root><foo bar="true"/></root>',
+                            $this->writer->writeStartElement('root')
+                                         ->writeXmlFragment('<foo bar="true"/>')
+                                         ->writeEndElement()
+                                         ->asXml()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function doesNotSupportXmlWriterFeature()
+    {
+        $this->assertFalse($this->writer->hasFeature(XmlStreamWriter::FEATURE_IMPORT_WRITER));
+    }
+
+
+    /**
      * @test
      * @expectedException  net\stubbles\lang\exception\MethodNotSupportedException
      */
     public function importStreamWriter()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeStartElement('root');
-
-        $writer2 = new LibXmlStreamWriter();
-        $writer2->writeStartElement('foo');
-        $writer2->writeStartElement('bar');
-        $writer2->writeEndElement();
-        $writer2->writeEndElement();
-
-        $writer->importStreamWriter($writer2);
-    }
-
-
-    /**
-     * Test the clear() method
-     *
-     * @test
-     */
-    public function clear()
-    {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeElement('foo');
-        $writer->clear();
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', $writer->asXml());
+        $this->writer->importStreamWriter(new LibXmlStreamWriter());
     }
 
     /**
-     * Test the hasFeature() method
-     *
      * @test
      */
-    public function features()
+    public function clearRemovesAllPreviouslyAddedElements()
     {
-        $writer = new LibXmlStreamWriter();
-        $this->assertTrue($writer->hasFeature(XmlStreamWriter::FEATURE_AS_DOM));
-        $this->assertFalse($writer->hasFeature(XmlStreamWriter::FEATURE_IMPORT_WRITER));
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>',
+                            $this->writer->writeElement('foo')
+                                         ->clear()
+                                         ->asXml()
+        );
     }
 
     /**
-     * checks if the finished status is reported properly
-     *
      * @test
      */
-    public function isFinished()
+    public function hasDomExportFeature()
     {
-        $writer = new LibXmlStreamWriter();
-        $this->assertTrue($writer->isFinished());
-        $writer->writeStartElement('root');
-        $this->assertFalse($writer->isFinished());
-        $writer->writeEndElement();
-        $this->assertTrue($writer->isFinished());
+        $this->assertTrue($this->writer->hasFeature(XmlStreamWriter::FEATURE_AS_DOM));
     }
 
     /**
@@ -221,14 +323,38 @@ class LibXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function exportAsDom()
     {
-        $writer = new LibXmlStreamWriter();
-        $writer->writeElement('root', array('foo' => 'bar'));
-        $dom = $writer->asDom();
+        $dom = $this->writer->writeElement('root', array('foo' => 'bar'))
+                            ->asDom();
         $this->assertInstanceOf('\\DOMDocument', $dom);
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>
-<root foo="bar"/>
-',
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root foo="bar"/>' . "\n",
                             $dom->saveXML()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function isFinishedAfterStart()
+    {
+        $this->assertTrue($this->writer->isFinished());
+    }
+
+    /**
+     * @test
+     */
+    public function isNotFinishedAfterElementStarted()
+    {
+        $this->assertFalse($this->writer->writeStartElement('root')->isFinished());
+    }
+
+    /**
+     * @test
+     */
+    public function isNotFinishedAfterLastElementClosed()
+    {
+        $this->assertTrue($this->writer->writeStartElement('root')
+                                       ->writeEndElement()
+                                       ->isFinished()
         );
     }
 }

@@ -14,14 +14,6 @@ namespace net\stubbles\xml;
 class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWriter
 {
     /**
-     * List of supported features
-     *
-     * @type  array
-     */
-    protected $features = array(XmlStreamWriter::FEATURE_AS_DOM,
-                                XmlStreamWriter::FEATURE_IMPORT_WRITER
-                          );
-    /**
      * DOM Document
      *
      * @type  \DOMDocument
@@ -48,12 +40,27 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     }
 
     /**
-     * Clear all data, that has been written
+     * Clears all previously written elements so that the document starts fresh.
+     *
+     * @return  XmlStreamWriter
      */
     public function clear()
     {
         $this->doc          = new \DOMDocument($this->xmlVersion, $this->encoding);
         $this->elementStack = array();
+        return $this;
+    }
+
+    /**
+     * returns a list of features the implementation supports
+     *
+     * @return  int[]
+     */
+    protected function getFeatures()
+    {
+        return array(XmlStreamWriter::FEATURE_AS_DOM,
+                     XmlStreamWriter::FEATURE_IMPORT_WRITER
+        );
     }
 
     /**
@@ -73,6 +80,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
                 $parent = end($this->elementStack);
                 $parent->appendChild($element);
             }
+
             array_push($this->elementStack, $element);
             $errors = libxml_get_errors();
             if (!empty($errors)) {
@@ -88,6 +96,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a text node
      *
      * @param   string  $data
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeText($data)
@@ -103,12 +112,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing text.', $e);
         }
+
+        return $this;
     }
 
     /**
      * Write a cdata section
      *
      * @param   string  $cdata
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeCData($cdata)
@@ -124,12 +136,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing cdata section.', $e);
         }
+
+        return $this;
     }
 
     /**
      * Write a comment
      *
      * @param   string  $comment
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeComment($comment)
@@ -145,6 +160,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing comment.', $e);
         }
+
+        return $this;
     }
 
     /**
@@ -152,6 +169,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $target
      * @param   string  $data
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeProcessingInstruction($target, $data = '')
@@ -167,12 +185,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing processing instruction.', $e);
         }
+
+        return $this;
     }
 
     /**
      * Write an xml fragment
      *
      * @param   string  $fragment
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeXmlFragment($fragment)
@@ -190,6 +211,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing document fragment.', $e);
         }
+
+        return $this;
     }
 
     /**
@@ -197,6 +220,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $attributeName
      * @param   string  $attributeValue
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeAttribute($attributeName, $attributeValue)
@@ -213,6 +237,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing attribute "' . $attributeName . ':' . $attributeValue . '".', $e);
         }
+
+        return $this;
     }
 
     /**
@@ -235,6 +261,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $elementName
      * @param   array   $attributes
      * @param   string  $cdata
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function writeElement($elementName, array $attributes = array(), $cdata = null)
@@ -265,12 +292,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error writing element"' . $elementName . '".', $e);
         }
+
+        return $this;
     }
 
     /**
      * Import another stream
      *
      * @param   XmlStreamWriter  $writer
+     * @return  XmlStreamWriter
      * @throws  XmlException
      */
     public function importStreamWriter(XmlStreamWriter $writer)
@@ -286,6 +316,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         } catch (\DOMException $e) {
             throw new XmlException('Error during import.', $e);
         }
+
+        return $this;
     }
 
     /**
@@ -299,8 +331,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         if (count($this->elementStack) < 1) {
             throw new XmlException('No tag is currently open, you need to call writeStartElement() first.');
         }
+
         $current = end($this->elementStack);
-        $current->appendChild($node);
+        @$current->appendChild($node);
     }
 
     /**

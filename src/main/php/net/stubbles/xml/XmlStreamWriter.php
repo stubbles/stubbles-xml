@@ -52,79 +52,92 @@ interface XmlStreamWriter extends Object
     public function hasFeature($feature);
 
     /**
-     * Clear all data, that has been written
+     * Clears all previously written elements so that the document starts fresh.
+     *
+     * @return  XmlStreamWriter
      */
     public function clear();
 
     /**
      * Write an opening tag
      *
-     * @param  string  $elementName
+     * @param   string  $elementName
+     * @return  XmlStreamWriter
      */
     public function writeStartElement($elementName);
 
     /**
      * Write a text node
      *
-     * @param  string  $data
+     * @param   string  $data
+     * @return  XmlStreamWriter
      */
     public function writeText($data);
 
     /**
      * Write a cdata section
      *
-     * @param  string  $cdata
+     * @param   string  $cdata
+     * @return  XmlStreamWriter
      */
     public function writeCData($cdata);
 
     /**
      * Write a comment
      *
-     * @param  string  $comment
+     * @param   string  $comment
+     * @return  XmlStreamWriter
      */
     public function writeComment($comment);
 
     /**
      * Write a processing instruction
      *
-     * @param  string  $target
-     * @param  string  $data
+     * @param   string  $target
+     * @param   string  $data
+     * @return  XmlStreamWriter
      */
     public function writeProcessingInstruction($target, $data = '');
 
     /**
      * Write an xml fragment
      *
-     * @param  string  $fragment
+     * @param   string  $fragment
+     * @return  XmlStreamWriter
      */
     public function writeXmlFragment($fragment);
 
     /**
      * Write an attribute
      *
-     * @param  string  $attributeName
-     * @param  string  $attributeValue
+     * @param   string  $attributeName
+     * @param   string  $attributeValue
+     * @return  XmlStreamWriter
      */
     public function writeAttribute($attributeName, $attributeValue);
 
     /**
      * Write an end element
+     *
+     * @return  XmlStreamWriter
      */
     public function writeEndElement();
 
     /**
      * Write a full element
      *
-     * @param  string  $elementName
-     * @param  array   $attributes
-     * @param  string  $cdata
+     * @param   string  $elementName
+     * @param   array   $attributes
+     * @param   string  $cdata
+     * @return  XmlStreamWriter
      */
     public function writeElement($elementName, array $attributes = array(), $cdata = null);
 
     /**
      * Import another stream
      *
-     * @param  XmlStreamWriter  $writer
+     * @param   XmlStreamWriter  $writer
+     * @return  XmlStreamWriter
      */
     public function importStreamWriter(XmlStreamWriter $writer);
 

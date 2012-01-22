@@ -27,17 +27,11 @@ abstract class AbstractXmlStreamWriter extends BaseObject
      */
     protected $encoding;
     /**
-     * List of supported features
-     *
-     * @type  array
-     */
-    protected $features = array();
-    /**
      * depth, i.e. amount of opened tags
      *
      * @type  int
      */
-    protected $depth   = 0;
+    private $depth        = 0;
 
     /**
      * returns the xml version used by the writer
@@ -67,18 +61,27 @@ abstract class AbstractXmlStreamWriter extends BaseObject
      */
     public function hasFeature($feature)
     {
-        return in_array($feature, $this->features);
+        return in_array($feature, $this->getFeatures());
     }
+
+    /**
+     * returns a list of features the implementation supports
+     *
+     * @return  int[]
+     */
+    protected abstract function getFeatures();
 
     /**
      * Write an opening tag
      *
-     * @param  string  $elementName
+     * @param   string  $elementName
+     * @return  XmlStreamWriter
      */
     public function writeStartElement($elementName)
     {
         $this->doWriteStartElement($elementName);
         $this->depth++;
+        return $this;
     }
 
     /**
@@ -90,11 +93,14 @@ abstract class AbstractXmlStreamWriter extends BaseObject
 
     /**
      * Write an end element
+     *
+     * @return  XmlStreamWriter
      */
     public function writeEndElement()
     {
         $this->doWriteEndElement();
         $this->depth--;
+        return $this;
     }
 
     /**
