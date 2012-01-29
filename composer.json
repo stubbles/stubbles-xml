@@ -14,17 +14,5 @@
             "net\\stubbles\\xml": "src/main/php",
             "org\\stubbles\\test\\xml": "src/main/php"
         }
-    },
-    "repositories": {
-        "vfsstream": {
-            "vcs": {
-                "url": "https://github.com/mikey179/vfsStream"
-            }
-        },
-        "stubbles": {
-            "vcs": {
-                "url": "https://github.com/stubbles/stubbles-core"
-            }
-        }
     }
 }
