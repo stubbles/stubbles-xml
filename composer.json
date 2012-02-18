@@ -14,5 +14,9 @@
             "net\\stubbles\\xml": "src/main/php",
             "org\\stubbles\\test\\xml": "src/main/php"
         }
+    },
+    "scripts": {
+        "post-install-cmd": "org\\stubbles\\scripts\\ComposerScripts::postInstall",
+        "post-update-cmd": "org\\stubbles\\scripts\\ComposerScripts::postUpdate"
     }
 }
