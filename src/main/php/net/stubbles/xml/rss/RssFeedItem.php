@@ -303,12 +303,21 @@ class RssFeedItem extends BaseObject
     /**
      * sets categories where the item is included into
      *
-     * @param   array  $categories
+     * Does not consider the domain of the category.
+     *
+     * @param   string[]  $categories
      * @return  RssFeedItem
      */
     public function inCategories(array $categories)
     {
-        $this->categories = $categories;
+        foreach ($categories as $category) {
+            if (is_array($category)) {
+                $this->inCategory($category['category'], $category['domain']);
+            } else {
+                $this->inCategory($category);
+            }
+        }
+
         return $this;
     }
 

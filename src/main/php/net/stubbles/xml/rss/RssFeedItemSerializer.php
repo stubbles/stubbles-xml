@@ -44,7 +44,7 @@ class RssFeedItemSerializer extends BaseObject implements ObjectXmlSerializer
 
         foreach ($object->getCategories() as $category) {
             $attributes = array();
-            if (strlen($category['domain']) > 0) {
+            if (isset($category['domain']) && strlen($category['domain']) > 0) {
                 $attributes['domain'] = $category['domain'];
             }
 

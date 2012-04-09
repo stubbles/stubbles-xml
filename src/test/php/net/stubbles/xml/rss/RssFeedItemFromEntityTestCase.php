@@ -94,8 +94,9 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      */
     public function getCategories()
     {
-        return array('category' => 'extendedCategories',
-                     'domain'   => 'extendedDomain'
+        return array(array('category' => 'extendedCategories',
+                           'domain'   => 'extendedDomain'
+                     )
                );
     }
 
@@ -239,8 +240,9 @@ class RssItemWithDifferentMethods
      */
     public function getTags()
     {
-        return array('category' => 'tag1',
-                     'domain'   => 'other'
+        return array(array('category' => 'tag1',
+                           'domain'   => 'other'
+                     )
                );
     }
 
@@ -420,11 +422,12 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
                                                                 'link'                  => 'overrideLink',
                                                                 'description'           => 'overrideDescription',
                                                                 'byAuthor'              => 'overrideAuthor',
-                                                                'inCategories'          => array('category' => 'overrideCategories',
-                                                                                                 'domain'   => 'overrideDomain'
+                                                                'inCategories'          => array(array('category' => 'overrideCategories',
+                                                                                                       'domain'   => 'overrideDomain'
+                                                                                                 )
                                                                                            ),
                                                                 'addCommentsAt'         => 'overrideCommentsUrl',
-                                                                'deliveringEnclosures'  => array(array('url'    => 'overrideEnclosureUrl',
+                                                                'deliveringEnclosures'  => array(array('url'   => 'overrideEnclosureUrl',
                                                                                                       'length' => 'overrideEnclosureLength',
                                                                                                       'type'   => 'overrideEnclosureType'
                                                                                                  )
@@ -443,8 +446,9 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('overrideLink', $rssFeedItem->getLink());
         $this->assertEquals('overrideDescription', $rssFeedItem->getDescription());
         $this->assertEquals('nospam@example.com (overrideAuthor)', $rssFeedItem->getAuthor());
-        $this->assertEquals(array('category' => 'overrideCategories',
-                                  'domain'   => 'overrideDomain'
+        $this->assertEquals(array(array('category' => 'overrideCategories',
+                                        'domain'   => 'overrideDomain'
+                                  )
                             ),
                             $rssFeedItem->getCategories()
         );
@@ -480,8 +484,9 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('simpleLink', $rssFeedItem->getLink());
         $this->assertEquals('simpleDescription', $rssFeedItem->getDescription());
         $this->assertEquals('nospam@example.com (extendedAuthor)', $rssFeedItem->getAuthor());
-        $this->assertEquals(array('category' => 'extendedCategories',
-                                  'domain'   => 'extendedDomain'
+        $this->assertEquals(array(array('category' => 'extendedCategories',
+                                        'domain'   => 'extendedDomain'
+                                  )
                             ),
                             $rssFeedItem->getCategories()
         );
@@ -517,8 +522,9 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('url', $rssFeedItem->getLink());
         $this->assertEquals('teaser', $rssFeedItem->getDescription());
         $this->assertEquals('creator@example.com (creator)', $rssFeedItem->getAuthor());
-        $this->assertEquals(array('category' => 'tag1',
-                                  'domain'   => 'other'
+        $this->assertEquals(array(array('category' => 'tag1',
+                                        'domain'   => 'other'
+                                  )
                             ),
                             $rssFeedItem->getCategories()
         );
