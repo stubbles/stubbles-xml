@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\ioc\Injector;
+use net\stubbles\ioc\Binder;
 use net\stubbles\lang\types\Date;
 use net\stubbles\lang\types\TimeZone;
 /**
@@ -24,9 +24,10 @@ class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
      */
     public function writeFeed()
     {
-        $injector = new Injector();
-        $dom      = $injector->getInstance('net\stubbles\xml\serializer\XmlSerializerFacade')
-                             ->serializeToDom($this->createFeed());
+        $binder = new Binder();
+        $dom      = $binder->getInjector()
+                           ->getInstance('net\stubbles\xml\serializer\XmlSerializerFacade')
+                           ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
@@ -54,8 +55,8 @@ class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
       <link>http://example.net/article/1</link>
       <description>A first article</description>
       <author>nospam@example.com (mikey)</author>
-      <category domain="l">l</category>
-      <category domain="e">e</category>
+      <category>live</category>
+      <category>examples</category>
       <comments>http://example.net/article/1/comments</comments>
       <guid isPermaLink="true">http://example.net/article/1</guid>
       <pubDate>Sat 21 Jan 2012 00:00:00 +0100</pubDate>

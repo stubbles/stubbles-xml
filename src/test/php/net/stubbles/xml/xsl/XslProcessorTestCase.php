@@ -95,7 +95,8 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function providedByXslProcessorProvider()
     {
-        $class = XslProcessor::newInstance(new XslCallbacks())->getClass();
+        $xslProcessor = new XslProcessor(new XslCallbacks());
+        $class        = $xslProcessor->getClass();
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
         $this->assertEquals('net\\stubbles\\xml\\xsl\\XslProcessorProvider',
                             $class->getAnnotation('ProvidedBy')
