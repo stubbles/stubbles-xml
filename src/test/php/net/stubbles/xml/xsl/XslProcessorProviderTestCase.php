@@ -43,7 +43,9 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->root                 = vfsStream::setup();
-        $this->mockInjector         = $this->getMock('net\\stubbles\\ioc\\Injector');
+        $this->mockInjector         = $this->getMockBuilder('net\\stubbles\\ioc\\Injector')
+                                           ->disableOriginalConstructor()
+                                           ->getMock();
         $this->xslProcessorProvider = new XslProcessorProvider($this->mockInjector,
                                                                vfsStream::url('root')
                                       );

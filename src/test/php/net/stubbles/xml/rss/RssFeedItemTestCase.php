@@ -126,6 +126,23 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function canSetListOfCategories()
+    {
+        $this->assertEquals(array(array('category' => 'cat1',
+                                        'domain'   => ''
+                                  ),
+                                  array('category' => 'cat2',
+                                        'domain'   => ''
+                                  )
+                            ),
+                            $this->rssFeedItem->inCategories(array('cat1', 'cat2'))
+                                              ->getCategories()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function hasNoCommentsUrlByDefault()
     {
         $this->assertFalse($this->rssFeedItem->hasComments());
