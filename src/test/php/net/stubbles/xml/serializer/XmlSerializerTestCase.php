@@ -48,7 +48,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockInjector = $this->getMock('net\\stubbles\\ioc\\Injector');
+        $this->mockInjector = $this->getMockBuilder('net\\stubbles\\ioc\\Injector')
+                                   ->disableOriginalConstructor()
+                                   ->getMock();
         $this->serializer   = new XmlSerializer($this->mockInjector);
     }
 
