@@ -7,7 +7,7 @@
     "description": "Classes to work with XML",
     "require": {
         "php": ">=5.3.0",
-        "stubbles/core": "2.0.0-beta7"
+        "stubbles/core": "2.1.*"
     },
     "require-dev": {
         "mikey179/vfsStream": "1.0.*"
