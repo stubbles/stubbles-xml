@@ -3,15 +3,10 @@
     "packages": [
         {
             "package": "stubbles/core",
-            "version": "v2.1.0"
+            "version": "v2.1.2"
         }
     ],
-    "packages-dev": [
-        {
-            "package": "mikey179/vfsStream",
-            "version": "v1.0.0"
-        }
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
