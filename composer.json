@@ -10,7 +10,7 @@
         "stubbles/core": "2.1.*"
     },
     "require-dev": {
-        "mikey179/vfsStream": "1.0.*"
+        "mikey179/vfsStream": "1.1.*"
     },
     "autoload": {
         "psr-0": {
