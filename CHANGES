@@ -1,0 +1,8 @@
+2.0.1, 2013-02-06
+==================
+- change dependency to stubbles-core from 2.1.* to ~2.1
+
+
+2.0.0, 2012-09-06
+==================
+- Initial release.
