@@ -8,14 +8,13 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\Object;
 use net\stubbles\xml\XmlStreamWriter;
 /**
  * Interface for object serializers.
  *
  * @since  1.6.0
  */
-interface ObjectXmlSerializer extends Object
+interface ObjectXmlSerializer
 {
     /**
      * serializes given value

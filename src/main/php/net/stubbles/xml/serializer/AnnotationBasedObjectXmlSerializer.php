@@ -8,7 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\lang\reflect\annotation\Annotatable;
 use net\stubbles\xml\XmlStreamWriter;
@@ -19,7 +18,7 @@ use net\stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher;
 /**
  * Container for extracting informations on how to serialize a class.
  */
-class AnnotationBasedObjectXmlSerializer extends BaseObject implements ObjectXmlSerializer
+class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
 {
     /**
      * default tag name for class

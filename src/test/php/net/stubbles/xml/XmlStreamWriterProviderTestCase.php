@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\xml;
 use net\stubbles\lang\reflect\ReflectionClass;
+use net\stubbles\lang\reflect\ReflectionObject;
 /**
  * Test for net\stubbles\xml\XmlStreamWriterProvider.
  *
@@ -22,7 +23,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  XmlStreamWriterProvider
      */
-    protected $xmlStreamWriterProvider;
+    private $xmlStreamWriterProvider;
 
     /**
      * set up test environment
@@ -37,8 +38,8 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetTypesMethod()
     {
-        $method = $this->xmlStreamWriterProvider->getClass()
-                                                ->getMethod('setTypes');
+        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
+                                  ->getMethod('setTypes');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -52,8 +53,8 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetVersionMethod()
     {
-        $method = $this->xmlStreamWriterProvider->getClass()
-                                                ->getMethod('setVersion');
+        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
+                                  ->getMethod('setVersion');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -67,8 +68,8 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetEncodingMethod()
     {
-        $method = $this->xmlStreamWriterProvider->getClass()
-                                                ->getMethod('setEncoding');
+        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
+                                  ->getMethod('setEncoding');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -82,9 +83,9 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultProviderForXmlStreamWriter()
     {
-        $class = new ReflectionClass('net\\stubbles\\xml\\XmlStreamWriter');
+        $class = new ReflectionClass('net\stubbles\xml\XmlStreamWriter');
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('net\\stubbles\\xml\\XmlStreamWriterProvider',
+        $this->assertEquals('net\stubbles\xml\XmlStreamWriterProvider',
                             $class->getAnnotation('ProvidedBy')
                                   ->getProviderClass()
                                   ->getName()
@@ -96,12 +97,12 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function noSpecificRequestedTypeShouldCreateFirstAvailableType()
     {
-        if (extension_loaded('dom') === true) {
-            $this->assertInstanceOf('net\\stubbles\\xml\\DomXmlStreamWriter',
+        if (extension_loaded('dom')) {
+            $this->assertInstanceOf('net\stubbles\xml\DomXmlStreamWriter',
                                     $this->xmlStreamWriterProvider->get()
             );
-        } elseif (extension_loaded('xmlwriter') === true) {
-            $this->assertInstanceOf('net\\stubbles\\xml\\LibXmlStreamWriter',
+        } elseif (extension_loaded('xmlwriter')) {
+            $this->assertInstanceOf('net\stubbles\xml\LibXmlStreamWriter',
                                     $this->xmlStreamWriterProvider->get()
             );
         }
@@ -121,7 +122,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createDomTypeIfRequested()
     {
-        $this->assertInstanceOf('net\\stubbles\\xml\\DomXMLStreamWriter',
+        $this->assertInstanceOf('net\stubbles\xml\DomXMLStreamWriter',
                                 $this->xmlStreamWriterProvider->get('dom')
         );
     }
@@ -131,7 +132,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createXmlWriterTypeIfRequested()
     {
-        $this->assertInstanceOf('net\\stubbles\\xml\\LibXmlStreamWriter',
+        $this->assertInstanceOf('net\stubbles\xml\LibXmlStreamWriter',
                                 $this->xmlStreamWriterProvider->get('xmlwriter')
         );
     }

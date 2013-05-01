@@ -1,3 +1,8 @@
+2.1.?, 2013-??-??
+==================
+- upgraded stubbles/core to ~3.0
+
+
 2.0.1, 2013-02-06
 ==================
 - change dependency to stubbles-core from 2.1.* to ~2.1

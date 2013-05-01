@@ -8,16 +8,14 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\types\Date;
-use net\stubbles\xml\XmlStreamWriter;
 /**
  * Class for representing a rss 2.0 feed.
  *
  * @XmlSerializer(net\stubbles\xml\rss\RssFeedSerializer.class)
  */
-class RssFeed extends BaseObject
+class RssFeed
 {
     /**
      * name of the channel

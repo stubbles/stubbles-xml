@@ -10,14 +10,13 @@
 namespace net\stubbles\xml\xsl;
 use net\stubbles\ioc\InjectionProvider;
 use net\stubbles\ioc\Injector;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\ConfigurationException;
 /**
  * Injection provider for XSL processor instances.
  *
  * @since  1.5.0
  */
-class XslProcessorProvider extends BaseObject implements InjectionProvider
+class XslProcessorProvider implements InjectionProvider
 {
     /**
      * injector instance to create instances of other classes

@@ -8,7 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\xml\serializer\ObjectXmlSerializer;
 use net\stubbles\xml\serializer\XmlSerializer;
@@ -18,7 +17,7 @@ use net\stubbles\xml\XmlStreamWriter;
  *
  * @see  http://rssboard.org/rss-specification
  */
-class RssFeedItemSerializer extends BaseObject implements ObjectXmlSerializer
+class RssFeedItemSerializer implements ObjectXmlSerializer
 {
     /**
      * serializes given value

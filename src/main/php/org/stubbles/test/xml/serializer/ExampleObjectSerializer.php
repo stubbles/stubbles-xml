@@ -8,14 +8,13 @@
  * @package  net\stubbles\xml
  */
 namespace org\stubbles\test\xml\serializer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\xml\XmlStreamWriter;
 use net\stubbles\xml\serializer\ObjectXmlSerializer;
 use net\stubbles\xml\serializer\XmlSerializer;
 /**
  * Simple example class to test the xml serializer with an annotated serializer class.
  */
-class ExampleObjectSerializer extends BaseObject implements ObjectXmlSerializer
+class ExampleObjectSerializer implements ObjectXmlSerializer
 {
     /**
      * serializes given value

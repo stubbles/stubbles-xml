@@ -8,14 +8,13 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\xml\XmlStreamWriter;
 /**
  * Facade to simplify xml serializing.
  *
  * @since  1.1.0
  */
-class XmlSerializerFacade extends BaseObject
+class XmlSerializerFacade
 {
     /**
      * xml serializer to hide
