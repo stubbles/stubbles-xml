@@ -8,6 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
+use net\stubbles\lang\reflect\ReflectionObject;
 use org\bovigo\vfs\vfsStream;
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 /**
@@ -41,8 +42,9 @@ class TestXslProcessor extends XslProcessor
 /**
  * Test for net\stubbles\xml\xsl\XslProcessor.
  *
- * @group  xml
- * @group  xml_xsl
+ * @group     xml
+ * @group     xml_xsl
+ * @requires  extension  xsl
  */
 class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 {
@@ -51,29 +53,25 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  XslProcessor
      */
-    protected $xslProcessor;
+    private $xslProcessor;
     /**
      * a mock for the XSLTProcessor
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXSLTProcessor;
+    private $mockXSLTProcessor;
     /**
      * a dom document to test
      *
      * @type  \DOMDocument
      */
-    protected $document;
+    private $document;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        if (extension_loaded('xsl') === false) {
-            $this->markTestSkipped('net\\stubbles\\xml\\xsl\\XslProcessor requires PHP-extension "xsl".');
-        }
-
         libxml_clear_errors();
         $this->mockXSLTProcessor = $this->getMock('\XSLTProcessor');
         TestXslProcessor::$mockXsltProcessor = $this->mockXSLTProcessor;
@@ -95,10 +93,9 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function providedByXslProcessorProvider()
     {
-        $xslProcessor = new XslProcessor(new XslCallbacks());
-        $class        = $xslProcessor->getClass();
+        $class = ReflectionObject::fromInstance(new XslProcessor(new XslCallbacks()));
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('net\\stubbles\\xml\\xsl\\XslProcessorProvider',
+        $this->assertEquals('net\stubbles\xml\xsl\XslProcessorProvider',
                             $class->getAnnotation('ProvidedBy')
                                   ->getProviderClass()
                                   ->getName()

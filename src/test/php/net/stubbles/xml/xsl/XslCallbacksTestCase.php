@@ -8,7 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\BaseObject;
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 /**
  * Test for net\stubbles\xml\xsl\XslCallbacks.
@@ -23,13 +22,13 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  XslExampleCallback
      */
-    protected $callback;
+    private $callback;
     /**
      * instance to test
      *
      * @type  XslCallbacks
      */
-    protected $xslCallbacks;
+    private $xslCallbacks;
 
     /**
      * set up test environment

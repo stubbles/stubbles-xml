@@ -74,7 +74,7 @@ class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return  RssFeed
      */
-    protected function createFeed()
+    private function createFeed()
     {
         $rssFeed = new RssFeed('Example rss feed', 'http://example.net/rss/', 'An example RSS feed');
         $rssFeed->setCopyright('(c) 2012 example.net')

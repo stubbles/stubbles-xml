@@ -8,14 +8,13 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\types\Date;
 /**
  * Helper class for the test.
  *
  * @RssFeedItem
  */
-class MissingAllRssItemEntity extends BaseObject
+class MissingAllRssItemEntity
 {
     // intentionally empty
 }
@@ -24,7 +23,7 @@ class MissingAllRssItemEntity extends BaseObject
  *
  * @RssFeedItem
  */
-class MissingLinkAndDescriptionRssItemEntity extends BaseObject
+class MissingLinkAndDescriptionRssItemEntity
 {
     /**
      * returns the title
@@ -333,7 +332,7 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  RssFeed
      */
-    protected $rssFeed;
+    private $rssFeed;
 
     /**
      * set up test environment

@@ -8,6 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
+use net\stubbles\lang\reflect\ReflectionObject;
 /**
  * Test for net\stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -22,19 +23,19 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  XmlSerializerFacade
      */
-    protected $xmlSerializerFacade;
+    private $xmlSerializerFacade;
     /**
      * mocked xml serializer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlSerializer;
+    private $mockXmlSerializer;
     /**
      * mocked xml stream writer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlStreamWriter;
+    private $mockXmlStreamWriter;
 
     /**
      * set up test environment
@@ -42,8 +43,10 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockXmlSerializer   = $this->getMock('net\\stubbles\\xml\\serializer\\XMLSerializer', array(), array(), '', false);
-        $this->mockXmlStreamWriter = $this->getMock('net\\stubbles\\xml\\XMLStreamWriter');
+        $this->mockXmlSerializer   = $this->getMockBuilder('net\stubbles\xml\serializer\XmlSerializer')
+                                          ->disableOriginalConstructor()
+                                          ->getMock();
+        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
         $this->xmlSerializerFacade = new XmlSerializerFacade($this->mockXmlSerializer, $this->mockXmlStreamWriter);
     }
 
@@ -60,9 +63,9 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $this->assertTrue($this->xmlSerializerFacade->getClass()
-                                                    ->getConstructor()
-                                                    ->hasAnnotation('Inject')
+        $this->assertTrue(ReflectionObject::fromInstance($this->xmlSerializerFacade)
+                                          ->getConstructor()
+                                          ->hasAnnotation('Inject')
         );
     }
 

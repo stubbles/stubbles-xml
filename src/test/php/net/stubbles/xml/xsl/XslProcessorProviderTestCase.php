@@ -8,6 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
+use net\stubbles\lang\reflect\ReflectionObject;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\xml\xsl\XslProcessorProvider.
@@ -23,19 +24,19 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  XslProcessorProvider.
      */
-    protected $xslProcessorProvider;
+    private $xslProcessorProvider;
     /**
      * mocked injector instance
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockInjector;
+    private $mockInjector;
     /**
      * config directory
      *
      * @type  vfsStreamDirectory
      */
-    protected $root;
+    private $root;
 
     /**
      * set up test environment
@@ -56,8 +57,8 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $constructor = $this->xslProcessorProvider->getClass()->getConstructor();
-
+        $constructor = ReflectionObject::fromInstance($this->xslProcessorProvider)
+                                       ->getConstructor();
         $this->assertTrue($constructor->hasAnnotation('Inject'));
 
         $refParams = $constructor->getParameters();
@@ -95,7 +96,6 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createWithInvalidCallbackConfigurationThrowsConfigurationException()
     {
-
         vfsStream::newFile('xsl-callbacks.ini')
                  ->withContent('!')
                  ->at($this->root);

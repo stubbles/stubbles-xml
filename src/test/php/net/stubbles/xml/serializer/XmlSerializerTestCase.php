@@ -8,6 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
+use net\stubbles\lang\reflect\ReflectionObject;
 use net\stubbles\xml\DomXmlStreamWriter;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListTagName;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListWithoutTagName;
@@ -34,13 +35,13 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type XmlSerializer
      */
-    protected $serializer;
+    private $serializer;
     /**
      * mocked injector instance
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockInjector;
+    private $mockInjector;
 
     /**
      * set up test environment
@@ -48,7 +49,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockInjector = $this->getMockBuilder('net\\stubbles\\ioc\\Injector')
+        $this->mockInjector = $this->getMockBuilder('net\stubbles\ioc\Injector')
                                    ->disableOriginalConstructor()
                                    ->getMock();
         $this->serializer   = new XmlSerializer($this->mockInjector);
@@ -67,9 +68,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $this->assertTrue($this->serializer->getClass()
-                                           ->getConstructor()
-                                           ->hasAnnotation('Inject')
+        $this->assertTrue(ReflectionObject::fromInstance($this->serializer)
+                                          ->getConstructor()
+                                          ->hasAnnotation('Inject')
         );
     }
 

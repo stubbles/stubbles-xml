@@ -9,13 +9,12 @@
  */
 namespace net\stubbles\xml;
 use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\lang\BaseObject;
 /**
  * Provider to create a xml stream writer instances.
  *
  * @since  1.1.0
  */
-class XmlStreamWriterProvider extends BaseObject implements InjectionProvider
+class XmlStreamWriterProvider implements InjectionProvider
 {
     /**
      * list of available streamwriter types

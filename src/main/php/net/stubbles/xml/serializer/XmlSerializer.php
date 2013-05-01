@@ -9,13 +9,12 @@
  */
 namespace net\stubbles\xml\serializer;
 use net\stubbles\ioc\Injector;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionObject;
 use net\stubbles\xml\XmlStreamWriter;
 /**
  * Serializes arbitrary data except resources to xml.
  */
-class XmlSerializer extends BaseObject
+class XmlSerializer
 {
     /**
      * injector to create object serializer instances

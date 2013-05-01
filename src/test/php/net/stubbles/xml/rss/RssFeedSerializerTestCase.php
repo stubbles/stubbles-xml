@@ -22,19 +22,19 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  RssFeedSerializer
      */
-    protected $rssFeedSerializer;
+    private $rssFeedSerializer;
     /**
      * mocked xml serializer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlSerializer;
+    private $mockXmlSerializer;
     /**
      * mocked xml serializer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlStreamWriter;
+    private $mockXmlStreamWriter;
 
     /**
      * set up test environment
@@ -42,8 +42,10 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedSerializer   = new RssFeedSerializer();
-        $this->mockXmlSerializer   = $this->getMock('net\\stubbles\\xml\\serializer\\XmlSerializer', array(), array(), '', false);
-        $this->mockXmlStreamWriter = $this->getMock('net\\stubbles\\xml\\XmlStreamWriter');
+        $this->mockXmlSerializer   = $this->getMockBuilder('net\stubbles\xml\serializer\XmlSerializer')
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
     }
 
     /**
@@ -51,9 +53,9 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $class = new ReflectionClass('net\\stubbles\\xml\\rss\\RssFeed');
+        $class = new ReflectionClass('net\stubbles\xml\rss\RssFeed');
         $this->assertTrue($class->hasAnnotation('XmlSerializer'));
-        $this->assertEquals($this->rssFeedSerializer->getClassName(),
+        $this->assertEquals(get_class($this->rssFeedSerializer),
                             $class->getAnnotation('XmlSerializer')
                                   ->getSerializerClass()
                                   ->getName()
@@ -100,7 +102,7 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
-        $this->mockXmlStreamWriter = $this->getMock('net\\stubbles\\xml\\XmlStreamWriter');
+        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
         $this->mockXmlStreamWriter->expects($this->once())->method('writeProcessingInstruction');
         $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeStartElement');
         $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeEndElement');
@@ -122,7 +124,7 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
-        $this->mockXmlStreamWriter = $this->getMock('net\\stubbles\\xml\\XmlStreamWriter');
+        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
         $this->mockXmlStreamWriter->expects($this->never())->method('writeProcessingInstruction');
         $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeStartElement');
         $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeEndElement');
@@ -151,7 +153,7 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
                 ->setTimeToLive(60)
                 ->setImage('http://example.org/example.gif', 'foo');
 
-        $this->mockXmlStreamWriter = $this->getMock('net\\stubbles\\xml\\XmlStreamWriter');
+        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
         $this->mockXmlStreamWriter->expects($this->never())->method('writeProcessingInstruction');
         $this->mockXmlStreamWriter->expects($this->exactly(3))->method('writeStartElement');
         $this->mockXmlStreamWriter->expects($this->exactly(3))->method('writeEndElement');
