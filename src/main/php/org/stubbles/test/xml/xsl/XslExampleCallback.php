@@ -8,11 +8,10 @@
  * @package  net\stubbles\xml
  */
 namespace org\stubbles\test\xml\xsl;
-use net\stubbles\lang\BaseObject;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */
-class XslExampleCallback extends BaseObject
+class XslExampleCallback
 {
     /**
      * the argument given to hello()

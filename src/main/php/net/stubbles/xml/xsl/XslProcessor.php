@@ -8,8 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\Object;
 use net\stubbles\lang\Clonable;
 use net\stubbles\lang\exception\IOException;
 use net\stubbles\lang\exception\RuntimeException;
@@ -18,7 +16,7 @@ use net\stubbles\lang\exception\RuntimeException;
  *
  * @ProvidedBy(net\stubbles\xml\xsl\XslProcessorProvider.class)
  */
-class XslProcessor extends BaseObject implements Clonable
+class XslProcessor implements Clonable
 {
     /**
      * the document to transform
@@ -191,10 +189,10 @@ class XslProcessor extends BaseObject implements Clonable
      * register an instance as callback
      *
      * @param   string  $name      name to register the callback under
-     * @param   Object  $instance  the instance to register as callback
+     * @param   object  $instance  the instance to register as callback
      * @return  XslProcessor
      */
-    public function usingCallback($name, Object $instance)
+    public function usingCallback($name, $instance)
     {
         $this->xslCallbacks->addCallback($name, $instance);
         return $this;
@@ -203,7 +201,7 @@ class XslProcessor extends BaseObject implements Clonable
     /**
      * returns list of registered callbacks
      *
-     * @return  Object[]
+     * @return  object[]
      */
     public function getCallbacks()
     {

@@ -8,13 +8,12 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang\Object;
 /**
  * Interface to create XML documents
  *
  * @ProvidedBy(net\stubbles\xml\XmlStreamWriterProvider.class)
  */
-interface XmlStreamWriter extends Object
+interface XmlStreamWriter
 {
     /**
      * Is able to import an XmlStreamWriter

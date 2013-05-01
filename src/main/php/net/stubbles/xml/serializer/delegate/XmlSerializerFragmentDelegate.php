@@ -8,7 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer\delegate;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\xml\XmlStreamWriter;
 use net\stubbles\xml\serializer\XmlSerializer;
 /**
@@ -16,7 +15,7 @@ use net\stubbles\xml\serializer\XmlSerializer;
  *
  * @since  1.6.0
  */
-class XmlSerializerFragmentDelegate extends BaseObject implements XmlSerializerDelegate
+class XmlSerializerFragmentDelegate implements XmlSerializerDelegate
 {
     /**
      * name of tag

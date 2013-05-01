@@ -8,20 +8,18 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\lang\reflect\ReflectionObject;
 use net\stubbles\lang\types\Date;
 use net\stubbles\xml\XmlException;
-use net\stubbles\xml\XmlStreamWriter;
 /**
  * Class for a rss 2.0 feed item.
  *
  * @see  http://rssboard.org/rss-specification
  * @XmlSerializer(net\stubbles\xml\rss\RssFeedItemSerializer.class)
  */
-class RssFeedItem extends BaseObject
+class RssFeedItem
 {
     /**
      * title of the item

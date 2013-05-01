@@ -22,7 +22,7 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  RssFeedItem
      */
-    protected $rssFeedItem;
+    private $rssFeedItem;
 
     /**
      * set up test environment

@@ -8,35 +8,40 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\BaseObject;
-use net\stubbles\lang\Object;
+use net\stubbles\lang\exception\IllegalArgumentException;
+use net\stubbles\lang\reflect\ReflectionMethod;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */
-class XslCallbacks extends BaseObject
+class XslCallbacks
 {
     /**
      * list of callback instances
      *
      * @type  Object[]
      */
-    protected $callbacks = array();
+    private $callbacks = array();
 
     /**
      * register a new instance as callback
      *
-     * @param  string  $name      name to register the callback under
-     * @param  Object  $callback
+     * @param   string  $name      name to register the callback under
+     * @param   object  $callback
+     * @throws  IllegalArgumentException
      */
-    public function addCallback($name, Object $callback)
+    public function addCallback($name, $callback)
     {
+        if (!is_object($callback)) {
+            throw new IllegalArgumentException('Given callback must be an object');
+        }
+
         $this->callbacks[$name] = $callback;
     }
 
     /**
      * returns list of added callbacks
      *
-     * @return  Object[]
+     * @return  object[]
      */
     public function getCallbacks()
     {
@@ -58,7 +63,7 @@ class XslCallbacks extends BaseObject
      * returns a callback
      *
      * @param   string  $name
-     * @return  Object
+     * @return  object
      * @throws  XslCallbackException
      */
     private function getCallback($name)
@@ -80,19 +85,18 @@ class XslCallbacks extends BaseObject
      */
     public function invoke($name, $methodName, array $arguments = array())
     {
-        $callback   = $this->getCallback($name);
-        $class      = $callback->getClass();
-        if (!$class->hasMethod($methodName)) {
+        $callback = $this->getCallback($name);
+        if (!method_exists($callback, $methodName)) {
             throw new XslCallbackException('Callback with name ' . $name . ' does not have a method named ' . $methodName);
         }
 
-        $method = $class->getMethod($methodName);
+        $method = new ReflectionMethod(get_class($callback), $methodName);
         if (!$method->hasAnnotation('XslMethod')) {
-            throw new XslCallbackException('The callback\'s ' . $name . ' ' . $callback->getClassName() . '::' . $methodName . '() is not annotated as XslMethod.');
+            throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not annotated as XslMethod.');
         }
 
         if (!$method->isPublic()) {
-            throw new XslCallbackException('The callback\'s ' . $name . ' ' . $callback->getClassName() . '::' . $methodName . '() is not a public method.');
+            throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not a public method.');
         }
 
         if ($method->isStatic()) {

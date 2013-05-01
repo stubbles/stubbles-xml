@@ -8,7 +8,6 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer\matcher;
-use net\stubbles\lang\BaseObject;
 use net\stubbles\lang\reflect\ReflectionMethod;
 use net\stubbles\lang\reflect\ReflectionProperty;
 use net\stubbles\lang\reflect\matcher\MethodMatcher;
@@ -16,7 +15,7 @@ use net\stubbles\lang\reflect\matcher\PropertyMatcher;
 /**
  * Matcher for methods and properties.
  */
-class XmlSerializerMethodPropertyMatcher extends BaseObject implements MethodMatcher, PropertyMatcher
+class XmlSerializerMethodPropertyMatcher implements MethodMatcher, PropertyMatcher
 {
     /**
      * checks whether the matcher is satisfied with the given method

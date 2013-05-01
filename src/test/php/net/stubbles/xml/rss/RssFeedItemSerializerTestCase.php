@@ -23,19 +23,19 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
      *
      * @type  RssFeedItemSerializer
      */
-    protected $rssFeedItemSerializer;
+    private $rssFeedItemSerializer;
     /**
      * mocked xml serializer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlSerializer;
+    private $mockXmlSerializer;
     /**
      * mocked xml serializer
      *
      * @type  \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $mockXmlStreamWriter;
+    private $mockXmlStreamWriter;
 
     /**
      * set up test environment
@@ -43,8 +43,10 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedItemSerializer = new RssFeedItemSerializer();
-        $this->mockXmlSerializer     = $this->getMock('net\\stubbles\\xml\\serializer\\XmlSerializer', array(), array(), '', false);
-        $this->mockXmlStreamWriter   = $this->getMock('net\\stubbles\\xml\\XmlStreamWriter');
+        $this->mockXmlSerializer     = $this->getMockBuilder('net\stubbles\xml\serializer\XmlSerializer')
+                                            ->disableOriginalConstructor()
+                                            ->getMock();
+        $this->mockXmlStreamWriter   = $this->getMock('net\stubbles\xml\XmlStreamWriter');
     }
 
     /**
@@ -52,9 +54,9 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $class = new ReflectionClass('net\\stubbles\\xml\\rss\\RssFeedItem');
+        $class = new ReflectionClass('net\stubbles\xml\rss\RssFeedItem');
         $this->assertTrue($class->hasAnnotation('XmlSerializer'));
-        $this->assertEquals($this->rssFeedItemSerializer->getClassName(),
+        $this->assertEquals(get_class($this->rssFeedItemSerializer),
                             $class->getAnnotation('XmlSerializer')
                                   ->getSerializerClass()
                                   ->getName()

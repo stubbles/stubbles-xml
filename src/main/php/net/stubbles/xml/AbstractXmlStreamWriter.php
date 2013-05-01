@@ -8,11 +8,10 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang\BaseObject;
 /**
  * Abstract base class for XML stream writers.
  */
-abstract class AbstractXmlStreamWriter extends BaseObject
+abstract class AbstractXmlStreamWriter
 {
     /**
      * XML version
