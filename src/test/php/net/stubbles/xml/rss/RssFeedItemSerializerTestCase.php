@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\reflect\ReflectionClass;
+use net\stubbles\lang;
 use net\stubbles\lang\types\Date;
 /**
  * Test for net\stubbles\xml\rss\RssFeedItemSerializer.
@@ -54,7 +54,7 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $class = new ReflectionClass('net\stubbles\xml\rss\RssFeedItem');
+        $class = lang\reflect('net\stubbles\xml\rss\RssFeedItem');
         $this->assertTrue($class->hasAnnotation('XmlSerializer'));
         $this->assertEquals(get_class($this->rssFeedItemSerializer),
                             $class->getAnnotation('XmlSerializer')

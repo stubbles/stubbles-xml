@@ -8,8 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang\reflect\ReflectionClass;
-use net\stubbles\lang\reflect\ReflectionObject;
+use net\stubbles\lang;
 /**
  * Test for net\stubbles\xml\XmlStreamWriterProvider.
  *
@@ -38,8 +37,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetTypesMethod()
     {
-        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
-                                  ->getMethod('setTypes');
+        $method = lang\reflect($this->xmlStreamWriterProvider, 'setTypes');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -53,8 +51,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetVersionMethod()
     {
-        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
-                                  ->getMethod('setVersion');
+        $method = lang\reflect($this->xmlStreamWriterProvider, 'setVersion');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -68,8 +65,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnSetEncodingMethod()
     {
-        $method = ReflectionObject::fromInstance($this->xmlStreamWriterProvider)
-                                  ->getMethod('setEncoding');
+        $method = lang\reflect($this->xmlStreamWriterProvider, 'setEncoding');
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
@@ -83,7 +79,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultProviderForXmlStreamWriter()
     {
-        $class = new ReflectionClass('net\stubbles\xml\XmlStreamWriter');
+        $class = lang\reflect('net\stubbles\xml\XmlStreamWriter');
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
         $this->assertEquals('net\stubbles\xml\XmlStreamWriterProvider',
                             $class->getAnnotation('ProvidedBy')

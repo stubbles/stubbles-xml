@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\reflect\ReflectionObject;
+use net\stubbles\lang;
 /**
  * Test for net\stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -63,10 +63,7 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $this->assertTrue(ReflectionObject::fromInstance($this->xmlSerializerFacade)
-                                          ->getConstructor()
-                                          ->hasAnnotation('Inject')
-        );
+        $this->assertTrue(lang\reflectConstructor($this->xmlSerializerFacade)->hasAnnotation('Inject'));
     }
 
     /**

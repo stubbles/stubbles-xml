@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e82260b8ea96af3537a36cb32f7b4ed8",
+    "hash": "6ef4ac870a0a8702ecd99b8bfc032d03",
     "packages": [
         {
             "name": "stubbles/core",
-            "version": "v3.0.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-core.git",
-                "reference": "v3.0.0"
+                "reference": "v3.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/v3.0.0",
-                "reference": "v3.0.0",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/v3.1.0",
+                "reference": "v3.1.0",
                 "shasum": ""
             },
             "require": {
@@ -29,14 +29,18 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
                     "net\\stubbles": "src/main/php",
                     "org\\stubbles": "src/main/php"
-                }
+                },
+                "files": [
+                    "src/main/php/net/stubbles/lang/functions.php",
+                    "src/main/php/net/stubbles/peer/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -44,7 +48,7 @@
             ],
             "description": "Provides base classes for Stubbles packages.",
             "homepage": "http://stubbles.net/",
-            "time": "2013-05-02 20:53:11"
+            "time": "2013-05-05 15:39:11"
         }
     ],
     "packages-dev": [

@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\reflect\ReflectionObject;
+use net\stubbles\lang;
 use net\stubbles\xml\DomXmlStreamWriter;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListTagName;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListWithoutTagName;
@@ -68,10 +68,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $this->assertTrue(ReflectionObject::fromInstance($this->serializer)
-                                          ->getConstructor()
-                                          ->hasAnnotation('Inject')
-        );
+        $this->assertTrue(lang\reflectConstructor($this->serializer)->hasAnnotation('Inject'));
     }
 
     /**
