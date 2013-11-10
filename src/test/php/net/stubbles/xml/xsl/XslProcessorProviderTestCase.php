@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\reflect\ReflectionObject;
+use net\stubbles\lang;
 use org\bovigo\vfs\vfsStream;
 /**
  * Test for net\stubbles\xml\xsl\XslProcessorProvider.
@@ -57,8 +57,7 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $constructor = ReflectionObject::fromInstance($this->xslProcessorProvider)
-                                       ->getConstructor();
+        $constructor = lang\reflectConstructor($this->xslProcessorProvider);
         $this->assertTrue($constructor->hasAnnotation('Inject'));
 
         $refParams = $constructor->getParameters();
