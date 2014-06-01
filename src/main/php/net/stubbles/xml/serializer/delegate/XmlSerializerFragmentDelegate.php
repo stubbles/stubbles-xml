@@ -67,4 +67,3 @@ class XmlSerializerFragmentDelegate implements XmlSerializerDelegate
         }
     }
 }
-?>

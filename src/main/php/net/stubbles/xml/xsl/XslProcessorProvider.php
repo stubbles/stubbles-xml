@@ -8,9 +8,9 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\ioc\InjectionProvider;
-use net\stubbles\ioc\Injector;
-use net\stubbles\lang\exception\ConfigurationException;
+use stubbles\ioc\InjectionProvider;
+use stubbles\ioc\Injector;
+use stubbles\lang\exception\ConfigurationException;
 /**
  * Injection provider for XSL processor instances.
  *
@@ -43,7 +43,7 @@ class XslProcessorProvider implements InjectionProvider
      * @param  Injector  $injector
      * @param  string    $configPath
      * @Inject
-     * @Named{configPath}('net.stubbles.config.path')
+     * @Named{configPath}('stubbles.config.path')
      */
     public function  __construct(Injector $injector, $configPath)
     {
@@ -56,7 +56,7 @@ class XslProcessorProvider implements InjectionProvider
      *
      * The given name is interpreted in regard on whether the xsl processor
      * instance to create should have callbacks or not. If $name equals
-     * <code>net.stubbles.xml.xsl.callbacks.disabled</code> the resulting
+     * <code>stubbles.xml.xsl.callbacks.disabled</code> the resulting
      * instance will not have callbacks.
      *
      * Callbacks are read from xsl-callbacks.ini within the given config path.
@@ -81,7 +81,7 @@ class XslProcessorProvider implements InjectionProvider
      */
     protected function shouldHaveCallbacks($name)
     {
-        return ('net.stubbles.xml.xsl.callbacks.disabled' !== $name);
+        return ('stubbles.xml.xsl.callbacks.disabled' !== $name);
     }
 
     /**
@@ -109,7 +109,7 @@ class XslProcessorProvider implements InjectionProvider
     {
         if (!is_array($this->callbackList)) {
             if (!file_exists($this->configPath . '/xsl-callbacks.ini')) {
-                $this->callbackList = array();
+                $this->callbackList = [];
             } else {
                 $this->callbackList = @parse_ini_file($this->configPath . '/xsl-callbacks.ini');
                 if (false === $this->callbackList) {
@@ -121,4 +121,3 @@ class XslProcessorProvider implements InjectionProvider
         return $this->callbackList;
     }
 }
-?>

@@ -117,4 +117,3 @@ abstract class AbstractXmlStreamWriter
         return 0 === $this->depth;
     }
 }
-?>

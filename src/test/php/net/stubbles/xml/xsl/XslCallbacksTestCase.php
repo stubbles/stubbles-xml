@@ -45,7 +45,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfCallbacks()
     {
-        $this->assertEquals(array('test' => $this->callback),
+        $this->assertEquals(['test' => $this->callback],
                             $this->xslCallbacks->getCallbacks()
         );
     }
@@ -101,7 +101,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
     public function invokeReturnsValueFromCallbackMethod()
     {
         $this->assertEquals('hello world!',
-                            $this->xslCallbacks->invoke('test', 'hello', array('world!'))
+                            $this->xslCallbacks->invoke('test', 'hello', ['world!'])
         );
     }
 
@@ -115,4 +115,3 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

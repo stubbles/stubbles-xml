@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang;
+use stubbles\lang;
 /**
  * Test for net\stubbles\xml\rss\RssFeedSerializer.
  *
@@ -64,7 +64,7 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeed()
     {
@@ -167,4 +167,3 @@ class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

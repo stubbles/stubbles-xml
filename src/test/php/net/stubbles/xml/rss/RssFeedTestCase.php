@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\types\Date;
+use stubbles\date\Date;
 /**
  * Test for net\stubbles\xml\rss\RssFeedGenerator.
  *
@@ -153,7 +153,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasNoStylesheetsByDefault()
     {
-        $this->assertEquals(array(),
+        $this->assertEquals([],
                             $this->rssFeed->getStylesheets()
         );
     }
@@ -163,7 +163,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
      */
     public function stylesheetsCanBeAdded()
     {
-        $this->assertEquals(array('foo.xsl', 'bar.xsl'),
+        $this->assertEquals(['foo.xsl', 'bar.xsl'],
                             $this->rssFeed->appendStylesheet('foo.xsl')
                                           ->appendStylesheet('bar.xsl')
                                           ->getStylesheets()
@@ -250,7 +250,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function settingInvalidLastBuildDateThrowsIllegalArgumentException()
     {
@@ -419,7 +419,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function imageWidthTooSmallThrowsIllegalArgumentException()
     {
@@ -428,7 +428,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function imageWidthTooGreatThrowsIllegalArgumentException()
     {
@@ -437,7 +437,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function imageHeightTooSmallThrowsIllegalArgumentException()
     {
@@ -446,7 +446,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function imageHeightTooGreatThrowsIllegalArgumentException()
     {
@@ -459,7 +459,7 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
     public function hasNoItemsByDefault()
     {
         $this->assertEquals(0, $this->rssFeed->countItems());
-        $this->assertEquals(array(), $this->rssFeed->getItems());
+        $this->assertEquals([], $this->rssFeed->getItems());
     }
 
     /**
@@ -478,10 +478,9 @@ class RssFeedTestCase extends \PHPUnit_Framework_TestCase
     {
         $item = $this->rssFeed->addItem('item', 'link', 'description');
         $this->assertEquals(1, $this->rssFeed->countItems());
-        $this->assertEquals(array($item), $this->rssFeed->getItems());
+        $this->assertEquals([$item], $this->rssFeed->getItems());
         $this->assertTrue($this->rssFeed->hasItem(0));
         $this->assertSame($item, $this->rssFeed->getItem(0));
     }
 
 }
-?>

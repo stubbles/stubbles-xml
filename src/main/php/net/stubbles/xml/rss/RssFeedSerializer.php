@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\xml\serializer\ObjectXmlSerializer;
 use net\stubbles\xml\serializer\XmlSerializer;
 use net\stubbles\xml\XmlStreamWriter;
@@ -73,43 +73,43 @@ class RssFeedSerializer implements ObjectXmlSerializer
         $xmlWriter->writeAttribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
 
         $xmlWriter->writeStartElement('channel');
-        $xmlWriter->writeElement('title', array(), $object->getTitle());
-        $xmlWriter->writeElement('link', array(), $object->getLink());
-        $xmlWriter->writeElement('description', array(), $object->getDescription());
-        $xmlWriter->writeElement('generator', array(), $this->generator);
+        $xmlWriter->writeElement('title', [], $object->getTitle());
+        $xmlWriter->writeElement('link', [], $object->getLink());
+        $xmlWriter->writeElement('description', [], $object->getDescription());
+        $xmlWriter->writeElement('generator', [], $this->generator);
 
         if ($object->hasLocale()) {
-            $xmlWriter->writeElement('language', array(), $object->getLocale());
+            $xmlWriter->writeElement('language', [], $object->getLocale());
         }
 
         if ($object->hasCopyright()) {
-            $xmlWriter->writeElement('copyright', array(), $object->getCopyright());
+            $xmlWriter->writeElement('copyright', [], $object->getCopyright());
         }
 
         if ($object->hasManagingEditor()) {
-            $xmlWriter->writeElement('managingEditor', array(), $object->getManagingEditor());
+            $xmlWriter->writeElement('managingEditor', [], $object->getManagingEditor());
         }
 
         if ($object->hasWebMaster()) {
-            $xmlWriter->writeElement('webMaster', array(), $object->getWebMaster());
+            $xmlWriter->writeElement('webMaster', [], $object->getWebMaster());
         }
 
         if ($object->hasLastBuildDate()) {
-            $xmlWriter->writeElement('lastBuildDate', array(), $object->getLastBuildDate());
+            $xmlWriter->writeElement('lastBuildDate', [], $object->getLastBuildDate());
         }
 
         if ($object->hasTimeToLive()) {
-            $xmlWriter->writeElement('ttl', array(), $object->getTimeToLive());
+            $xmlWriter->writeElement('ttl', [], $object->getTimeToLive());
         }
 
         if ($object->hasImage()) {
             $xmlWriter->writeStartElement('image');
-            $xmlWriter->writeElement('url', array(), $object->getImageUrl());
-            $xmlWriter->writeElement('title', array(), $object->getTitle());
-            $xmlWriter->writeElement('link', array(), $object->getLink());
-            $xmlWriter->writeElement('width', array(), $object->getImageWidth());
-            $xmlWriter->writeElement('height', array(), $object->getImageHeight());
-            $xmlWriter->writeElement('description', array(), $object->getImageDescription());
+            $xmlWriter->writeElement('url', [], $object->getImageUrl());
+            $xmlWriter->writeElement('title', [], $object->getTitle());
+            $xmlWriter->writeElement('link', [], $object->getLink());
+            $xmlWriter->writeElement('width', [], $object->getImageWidth());
+            $xmlWriter->writeElement('height', [], $object->getImageHeight());
+            $xmlWriter->writeElement('description', [], $object->getImageDescription());
             $xmlWriter->writeEndElement();
         }
 
@@ -122,4 +122,3 @@ class RssFeedSerializer implements ObjectXmlSerializer
         return $xmlWriter;
     }
 }
-?>

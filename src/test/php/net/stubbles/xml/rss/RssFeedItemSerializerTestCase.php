@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang;
-use net\stubbles\lang\types\Date;
+use stubbles\date\Date;
+use stubbles\lang;
 /**
  * Test for net\stubbles\xml\rss\RssFeedItemSerializer.
  *
@@ -65,7 +65,7 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeedItem()
     {
@@ -140,4 +140,3 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

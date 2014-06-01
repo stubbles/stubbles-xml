@@ -26,4 +26,4 @@ interface ObjectXmlSerializer
      */
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName);
 }
-?>
+

@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang\reflect\BaseReflectionClass;
-use net\stubbles\lang\reflect\annotation\Annotatable;
+use stubbles\lang\reflect\BaseReflectionClass;
+use stubbles\lang\reflect\annotation\Annotatable;
 use net\stubbles\xml\XmlStreamWriter;
 use net\stubbles\xml\serializer\delegate\XmlSerializerAttributeDelegate;
 use net\stubbles\xml\serializer\delegate\XmlSerializerFragmentDelegate;
@@ -31,13 +31,13 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      *
      * @type  array
      */
-    protected $properties  = array();
+    protected $properties  = [];
     /**
      * list of methods to serialize
      *
      * @type  array
      */
-    protected $methods     = array();
+    protected $methods     = [];
     /**
      * reflection instance of class to serialize
      *
@@ -55,7 +55,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      *
      * @type  array
      */
-    protected static $cache = array();
+    protected static $cache = [];
 
     /**
      * static initializer
@@ -188,4 +188,3 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     }
 }
 AnnotationBasedObjectXmlSerializer::__static();
-?>

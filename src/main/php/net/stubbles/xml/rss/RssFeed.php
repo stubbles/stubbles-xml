@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\types\Date;
+use stubbles\date\Date;
+use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for representing a rss 2.0 feed.
  *
@@ -40,13 +40,13 @@ class RssFeed
      *
      * @type  RssFeedItem[]
      */
-    protected $items          = array();
+    protected $items          = [];
     /**
      * list of stylesheets to append as processing instructions
      *
      * @type  string[]
      */
-    protected $stylesheets    = array();
+    protected $stylesheets    = [];
     /**
      * the locale the channel is written in
      *
@@ -89,11 +89,11 @@ class RssFeed
      *
      * @type  array
      */
-    protected $image          = array('url'         => '',
-                                      'description' => '',
-                                      'width'       => 88,
-                                      'height'      => 31
-                                );
+    protected $image          = ['url'         => '',
+                                 'description' => '',
+                                 'width'       => 88,
+                                 'height'      => 31
+                                ];
 
     /**
      * constructor
@@ -225,7 +225,7 @@ class RssFeed
      * @param   array   $overrides
      * @return  RssFeedItem
      */
-    public function addEntity($entity, array $overrides = array())
+    public function addEntity($entity, array $overrides = [])
     {
         $rssFeedItem = RssFeedItem::fromEntity($entity, $overrides);
         array_push($this->items, $rssFeedItem);
@@ -382,11 +382,7 @@ class RssFeed
      */
     public function setLastBuildDate($lastBuildDate)
     {
-        if (!($lastBuildDate instanceof Date)) {
-            $lastBuildDate = new Date($lastBuildDate);
-        }
-
-        $this->lastBuildDate = $lastBuildDate;
+        $this->lastBuildDate = Date::castFrom($lastBuildDate, 'lastBuildDate');
         return $this;
     }
 
@@ -468,11 +464,11 @@ class RssFeed
             throw new IllegalArgumentException('Height must be a value between 0 and 400.');
         }
 
-        $this->image = array('url'         => $url,
-                             'description' => $description,
-                             'width'       => $width,
-                             'height'      => $height
-                       );
+        $this->image = ['url'         => $url,
+                        'description' => $description,
+                        'width'       => $width,
+                        'height'      => $height
+                       ];
         return $this;
     }
 
@@ -526,4 +522,3 @@ class RssFeed
         return $this->image['height'];
     }
 }
-?>

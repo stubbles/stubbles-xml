@@ -8,10 +8,10 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer\matcher;
-use net\stubbles\lang\reflect\ReflectionMethod;
-use net\stubbles\lang\reflect\ReflectionProperty;
-use net\stubbles\lang\reflect\matcher\MethodMatcher;
-use net\stubbles\lang\reflect\matcher\PropertyMatcher;
+use stubbles\lang\reflect\ReflectionMethod;
+use stubbles\lang\reflect\ReflectionProperty;
+use stubbles\lang\reflect\matcher\MethodMatcher;
+use stubbles\lang\reflect\matcher\PropertyMatcher;
 /**
  * Matcher for methods and properties.
  */
@@ -81,4 +81,3 @@ class XmlSerializerMethodPropertyMatcher implements MethodMatcher, PropertyMatch
         return ($property->hasAnnotation('XmlIgnore') !== true);
     }
 }
-?>

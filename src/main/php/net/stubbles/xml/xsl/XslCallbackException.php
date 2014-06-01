@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\exception\Exception;
+use stubbles\lang\exception\Exception;
 /**
  * Exception to be thrown when a xsl callback can not be called.
  */
@@ -16,4 +16,3 @@ class XslCallbackException extends Exception
 {
     // intentionally empty
 }
-?>

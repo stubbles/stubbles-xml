@@ -130,7 +130,7 @@ interface XmlStreamWriter
      * @param   string  $cdata
      * @return  XmlStreamWriter
      */
-    public function writeElement($elementName, array $attributes = array(), $cdata = null);
+    public function writeElement($elementName, array $attributes = [], $cdata = null);
 
     /**
      * Import another stream
@@ -161,4 +161,3 @@ interface XmlStreamWriter
      */
     public function asDom();
 }
-?>

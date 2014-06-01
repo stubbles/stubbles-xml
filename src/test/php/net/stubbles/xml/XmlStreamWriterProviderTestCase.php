@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang;
+use stubbles\lang;
 /**
  * Test for net\stubbles\xml\XmlStreamWriterProvider.
  *
@@ -41,7 +41,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.xml.types',
+        $this->assertEquals('stubbles.xml.types',
                             $method->getAnnotation('Named')->getName()
         );
     }
@@ -55,7 +55,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.xml.version',
+        $this->assertEquals('stubbles.xml.version',
                             $method->getAnnotation('Named')->getName()
         );
     }
@@ -69,7 +69,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
         $this->assertTrue($method->hasAnnotation('Inject'));
         $this->assertTrue($method->getAnnotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.xml.encoding',
+        $this->assertEquals('stubbles.xml.encoding',
                             $method->getAnnotation('Named')->getName()
         );
     }
@@ -110,7 +110,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function noTypeAvailableThrowsException()
     {
-        $this->xmlStreamWriterProvider->setTypes(array())->get();
+        $this->xmlStreamWriterProvider->setTypes([])->get();
     }
 
     /**
@@ -179,4 +179,3 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

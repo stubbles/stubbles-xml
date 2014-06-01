@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang;
+use stubbles\lang;
 /**
  * Test for net\stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -99,4 +99,3 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
         $this->assertSame($domDocument, $this->xmlSerializerFacade->serializeToDom('foo'));
     }
 }
-?>

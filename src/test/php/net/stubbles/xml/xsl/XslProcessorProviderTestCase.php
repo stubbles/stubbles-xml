@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang;
 use org\bovigo\vfs\vfsStream;
+use stubbles\lang;
 /**
  * Test for net\stubbles\xml\xsl\XslProcessorProvider.
  *
@@ -44,7 +44,7 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->root                 = vfsStream::setup();
-        $this->mockInjector         = $this->getMockBuilder('net\\stubbles\\ioc\\Injector')
+        $this->mockInjector         = $this->getMockBuilder('stubbles\ioc\Injector')
                                            ->disableOriginalConstructor()
                                            ->getMock();
         $this->xslProcessorProvider = new XslProcessorProvider($this->mockInjector,
@@ -62,7 +62,7 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
 
         $refParams = $constructor->getParameters();
         $this->assertTrue($refParams[1]->hasAnnotation('Named'));
-        $this->assertEquals('net.stubbles.config.path',
+        $this->assertEquals('stubbles.config.path',
                             $refParams[1]->getAnnotation('Named')->getName()
         );
     }
@@ -72,8 +72,8 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createXslProcessorWithoutCallbacks()
     {
-        $this->assertEquals(array(),
-                            $this->xslProcessorProvider->get('net.stubbles.xml.xsl.callbacks.disabled')
+        $this->assertEquals([],
+                            $this->xslProcessorProvider->get('stubbles.xml.xsl.callbacks.disabled')
                                                        ->getCallbacks()
         );
     }
@@ -83,7 +83,7 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createWithNonExistingCallbackConfigurationReturnsXslProcessorWithoutCallbacks()
     {
-        $this->assertEquals(array(),
+        $this->assertEquals([],
                             $this->xslProcessorProvider->get()
                                                        ->getCallbacks()
         );
@@ -91,7 +91,7 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\ConfigurationException
+     * @expectedException  stubbles\lang\exception\ConfigurationException
      */
     public function createWithInvalidCallbackConfigurationThrowsConfigurationException()
     {
@@ -114,10 +114,9 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
                            ->method('getInstance')
                            ->with($this->equalTo('org\\stubbles\\example\\xsl\\ExampleCallback'))
                            ->will($this->returnValue($mockCallback));
-        $this->assertEquals(array('foo' => $mockCallback),
+        $this->assertEquals(['foo' => $mockCallback],
                             $this->xslProcessorProvider->get()
                                                        ->getCallbacks()
         );
     }
 }
-?>

@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\lang;
+use stubbles\lang;
 use net\stubbles\xml\DomXmlStreamWriter;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListTagName;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListWithoutTagName;
@@ -49,7 +49,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockInjector = $this->getMockBuilder('net\stubbles\ioc\Injector')
+        $this->mockInjector = $this->getMockBuilder('stubbles\ioc\Injector')
                                    ->disableOriginalConstructor()
                                    ->getMock();
         $this->serializer   = new XmlSerializer($this->mockInjector);
@@ -302,9 +302,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeAssociativeArrayWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<array><one>two</one><three>four</three></array>'),
-                            $this->serialize(array('one'   => 'two',
-                                                   'three' => 'four'
-                                             )
+                            $this->serialize(['one'   => 'two',
+                                              'three' => 'four'
+                                             ]
                             )
         );
     }
@@ -315,9 +315,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeAssociativeArrayWithGivenTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three>four</three></root>'),
-                            $this->serialize(array('one'   => 'two',
-                                                   'three' => 'four'
-                                             ),
+                            $this->serialize(['one'   => 'two',
+                                              'three' => 'four'
+                                             ],
                                              'root'
                             )
         );
@@ -329,7 +329,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedArrayWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<array><string>one</string><integer>2</integer><string>three</string></array>'),
-                            $this->serialize(array('one', 2, 'three'))
+                            $this->serialize(['one', 2, 'three'])
         );
     }
 
@@ -339,7 +339,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedArrayWithGivenTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><string>one</string><integer>2</integer><string>three</string></root>'),
-                            $this->serialize(array('one', 2, 'three'), 'root')
+                            $this->serialize(['one', 2, 'three'], 'root')
         );
     }
 
@@ -349,7 +349,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedArrayWithoutTagNameAndGivenElementTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'),
-                            $this->serialize(array('one', 2, 'three'), null, 'foo')
+                            $this->serialize(['one', 2, 'three'], null, 'foo')
         );
     }
 
@@ -359,7 +359,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedArrayWithGivenTagNameAndElementTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
-                            $this->serialize(array('one', 2, 'three'), 'root', 'foo')
+                            $this->serialize(['one', 2, 'three'], 'root', 'foo')
         );
     }
 
@@ -369,9 +369,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeNestedArray()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three><four>five</four></three></root>'),
-                            $this->serialize(array('one'   => 'two',
-                                                   'three' => array('four' => 'five')
-                                             ),
+                            $this->serialize(['one'   => 'two',
+                                              'three' => ['four' => 'five']
+                                             ],
                                              'root'
                             )
         );
@@ -383,9 +383,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeAssociativeIteratorWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<array><one>two</one><three>four</three></array>'),
-                            $this->serialize(new \ArrayIterator(array('one'   => 'two',
-                                                                     'three' => 'four'
-                                                               )
+                            $this->serialize(new \ArrayIterator(['one'   => 'two',
+                                                                 'three' => 'four'
+                                                                ]
                                              )
                             )
         );
@@ -397,9 +397,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeAssociativeIteratorWithGivenTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three>four</three></root>'),
-                            $this->serialize(new \ArrayIterator(array('one'   => 'two',
-                                                                     'three' => 'four'
-                                                               )
+                            $this->serialize(new \ArrayIterator(['one'   => 'two',
+                                                                 'three' => 'four'
+                                                                ]
                                              ),
                                              'root'
                             )
@@ -412,7 +412,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedIteratorWithoutTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<array><string>one</string><integer>2</integer><string>three</string></array>'),
-                            $this->serialize(new \ArrayIterator(array('one', 2, 'three')))
+                            $this->serialize(new \ArrayIterator(['one', 2, 'three']))
         );
     }
 
@@ -422,7 +422,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedIteratorWithGivenTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><string>one</string><integer>2</integer><string>three</string></root>'),
-                            $this->serialize(new \ArrayIterator(array('one', 2, 'three')),
+                            $this->serialize(new \ArrayIterator(['one', 2, 'three']),
                                              'root'
                             )
         );
@@ -434,7 +434,7 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeIndexedIteratorWithGivenTagNameAndElementTagName()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
-                            $this->serialize(new \ArrayIterator(array('one', 2, 'three')),
+                            $this->serialize(new \ArrayIterator(['one', 2, 'three']),
                                              'root',
                                              'foo'
                             )
@@ -447,9 +447,9 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function serializeNestedIterator()
     {
         $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three><four>five</four></three></root>'),
-                            $this->serialize(new \ArrayIterator(array('one'   => 'two',
-                                                                      'three' => new \ArrayIterator(array('four' => 'five'))
-                                                                )
+                            $this->serialize(new \ArrayIterator(['one'   => 'two',
+                                                                 'three' => new \ArrayIterator(['four' => 'five'])
+                                                                ]
                                              ),
                                              'root'
                             )
@@ -604,4 +604,3 @@ class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
         fclose($fp);
     }
 }
-?>

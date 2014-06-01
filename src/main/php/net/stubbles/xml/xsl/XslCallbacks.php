@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\reflect\ReflectionMethod;
+use stubbles\lang;
+use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */
@@ -20,7 +20,7 @@ class XslCallbacks
      *
      * @type  Object[]
      */
-    private $callbacks = array();
+    private $callbacks = [];
 
     /**
      * register a new instance as callback
@@ -83,14 +83,14 @@ class XslCallbacks
      * @param   array   $arguments   list of arguments for method to call
      * @return  mixed
      */
-    public function invoke($name, $methodName, array $arguments = array())
+    public function invoke($name, $methodName, array $arguments = [])
     {
         $callback = $this->getCallback($name);
         if (!method_exists($callback, $methodName)) {
             throw new XslCallbackException('Callback with name ' . $name . ' does not have a method named ' . $methodName);
         }
 
-        $method = new ReflectionMethod(get_class($callback), $methodName);
+        $method = lang\reflect($callback, $methodName);
         if (!$method->hasAnnotation('XslMethod')) {
             throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not annotated as XslMethod.');
         }
@@ -106,4 +106,3 @@ class XslCallbacks
         return $method->invokeArgs($callback, $arguments);
     }
 }
-?>

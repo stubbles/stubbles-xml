@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\types\Date;
+use stubbles\date\Date;
 /**
  * Test for net\stubbles\xml\rss\RssFeedItem.
  *
@@ -102,7 +102,7 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasNoCategoriesByDefault()
     {
-        $this->assertEquals(array(), $this->rssFeedItem->getCategories());
+        $this->assertEquals([], $this->rssFeedItem->getCategories());
     }
 
     /**
@@ -110,13 +110,13 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canSetCategories()
     {
-        $this->assertEquals(array(array('category' => 'cat1',
-                                        'domain'   => ''
-                                  ),
-                                  array('category' => 'cat2',
-                                        'domain'   => 'domain'
-                                  )
-                            ),
+        $this->assertEquals([['category' => 'cat1',
+                              'domain'   => ''
+                             ],
+                             ['category' => 'cat2',
+                              'domain'   => 'domain'
+                             ]
+                            ],
                             $this->rssFeedItem->inCategory('cat1')
                                               ->inCategory('cat2', 'domain')
                                               ->getCategories()
@@ -128,14 +128,14 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canSetListOfCategories()
     {
-        $this->assertEquals(array(array('category' => 'cat1',
-                                        'domain'   => ''
-                                  ),
-                                  array('category' => 'cat2',
-                                        'domain'   => ''
-                                  )
-                            ),
-                            $this->rssFeedItem->inCategories(array('cat1', 'cat2'))
+        $this->assertEquals([['category' => 'cat1',
+                              'domain'   => ''
+                             ],
+                             ['category' => 'cat2',
+                              'domain'   => ''
+                             ]
+                            ],
+                            $this->rssFeedItem->inCategories(['cat1', 'cat2'])
                                               ->getCategories()
         );
     }
@@ -172,7 +172,7 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasNoEnclosuresByDefault()
     {
-        $this->assertEquals(array(), $this->rssFeedItem->getEnclosures());
+        $this->assertEquals([], $this->rssFeedItem->getEnclosures());
     }
 
     /**
@@ -180,11 +180,11 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canSetEnclosures()
     {
-        $this->assertEquals(array(array('url'    => 'http://stubbles.net/enclosure.mp3',
-                                        'length' => 50,
-                                        'type' => 'audio/mpeg'
-                                  )
-                            ),
+        $this->assertEquals([['url'    => 'http://stubbles.net/enclosure.mp3',
+                              'length' => 50,
+                              'type' => 'audio/mpeg'
+                             ]
+                            ],
                             $this->rssFeedItem->deliveringEnclosure('http://stubbles.net/enclosure.mp3',
                                                                     50,
                                                                     'audio/mpeg'
@@ -291,7 +291,7 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IllegalArgumentException
+     * @expectedException  stubbles\lang\exception\IllegalArgumentException
      */
     public function settingInvalidPublishingDateThrowsIllegalArgumentException()
     {
@@ -303,7 +303,7 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function hasNoSourcesByDefault()
     {
-        $this->assertEquals(array(), $this->rssFeedItem->getSources());
+        $this->assertEquals([], $this->rssFeedItem->getSources());
     }
 
     /**
@@ -311,10 +311,10 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
      */
     public function canSetSources()
     {
-        $this->assertEquals(array(array('name' => 'stubbles',
-                                        'url'  => 'http://stubbles.net/source/'
-                                  )
-                            ),
+        $this->assertEquals([['name' => 'stubbles',
+                              'url'  => 'http://stubbles.net/source/'
+                             ]
+                            ],
                             $this->rssFeedItem->inspiredBySource('stubbles',
                                                                  'http://stubbles.net/source/'
                                                 )
@@ -349,4 +349,3 @@ class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

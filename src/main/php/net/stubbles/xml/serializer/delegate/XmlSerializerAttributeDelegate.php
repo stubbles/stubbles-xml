@@ -63,4 +63,3 @@ class XmlSerializerAttributeDelegate implements XmlSerializerDelegate
         $xmlWriter->writeAttribute($this->attributeName, (string) $value);
     }
 }
-?>

@@ -8,15 +8,14 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\Clonable;
-use net\stubbles\lang\exception\IOException;
-use net\stubbles\lang\exception\RuntimeException;
+use stubbles\lang\exception\IOException;
+use stubbles\lang\exception\RuntimeException;
 /**
  * Class to transform xml via xsl.
  *
  * @ProvidedBy(net\stubbles\xml\xsl\XslProcessorProvider.class)
  */
-class XslProcessor implements Clonable
+class XslProcessor
 {
     /**
      * the document to transform
@@ -35,7 +34,7 @@ class XslProcessor implements Clonable
      *
      * @type  array
      */
-    private $parameters       = array();
+    private $parameters       = [];
     /**
      * list of callbacks which should be available while processing the stylesheet
      *
@@ -53,7 +52,7 @@ class XslProcessor implements Clonable
      *
      * @type  \DOMDocument[]
      */
-    private $stylesheets      = array();
+    private $stylesheets      = [];
 
     /**
      * constructor
@@ -258,7 +257,7 @@ class XslProcessor implements Clonable
         }
 
         if (!isset($this->parameters[$nameSpace])) {
-            $this->parameters[$nameSpace] = array();
+            $this->parameters[$nameSpace] = [];
         }
 
         $this->parameters[$nameSpace][$paramName] = $paramValue;
@@ -280,7 +279,7 @@ class XslProcessor implements Clonable
         }
 
         if (!isset($this->parameters[$nameSpace])) {
-            $this->parameters[$nameSpace] = array();
+            $this->parameters[$nameSpace] = [];
         }
 
         $this->parameters[$nameSpace] = array_merge($this->parameters[$nameSpace], $params);
@@ -372,4 +371,3 @@ class XslProcessor implements Clonable
         return $message;
     }
 }
-?>

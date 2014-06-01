@@ -8,8 +8,8 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\serializer;
-use net\stubbles\ioc\Injector;
-use net\stubbles\lang\reflect\ReflectionObject;
+use stubbles\ioc\Injector;
+use stubbles\lang;
 use net\stubbles\xml\XmlStreamWriter;
 /**
  * Serializes arbitrary data except resources to xml.
@@ -253,7 +253,7 @@ class XmlSerializer
      */
     protected function getObjectSerializer($object)
     {
-        $objectClass = new ReflectionObject($object);
+        $objectClass = lang\reflect($object);
         if (!$objectClass->hasAnnotation('XmlSerializer')) {
             return AnnotationBasedObjectXmlSerializer::forClass($objectClass);
         }
@@ -264,4 +264,3 @@ class XmlSerializer
                );
     }
 }
-?>

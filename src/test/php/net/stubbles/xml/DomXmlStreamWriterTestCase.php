@@ -133,7 +133,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
                             $this->writer->writeStartElement('root')
                                          ->writeStartElement('foo')
                                          ->writeEndElement()
-                                         ->writeElement('bar', array('baz' => 'blub'), 'content')
+                                         ->writeElement('bar', ['baz' => 'blub'], 'content')
                                          ->writeEndElement()
                                          ->asXml()
         );
@@ -154,7 +154,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
     public function writeElement()
     {
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="value">content</foo>',
-                            $this->writer->writeElement('foo', array('att' => 'value'), 'content')
+                            $this->writer->writeElement('foo', ['att' => 'value'], 'content')
                                          ->asXml()
         );
     }
@@ -165,7 +165,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
     public function writeElementWithGermanUmlautsInNonUtf8WillEncodeValue()
     {
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="hääää">content</foo>',
-                            $this->writer->writeElement('foo', array('att' => utf8_decode('hääää')), 'content')
+                            $this->writer->writeElement('foo', ['att' => utf8_decode('hääää')], 'content')
                                          ->asXml()
         );
     }
@@ -176,7 +176,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
     public function writeElementWithGermanUmlautsUtf8()
     {
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n" . '<foo att="hääää">content</foo>',
-                            $this->writer->writeElement('foo', array('att' => 'hääää'), 'content')
+                            $this->writer->writeElement('foo', ['att' => 'hääää'], 'content')
                                          ->asXml()
         );
     }
@@ -438,7 +438,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
      */
     public function exportAsDom()
     {
-        $dom = $this->writer->writeElement('root', array('foo' => 'bar'))
+        $dom = $this->writer->writeElement('root', ['foo' => 'bar'])
                             ->asDom();
         $this->assertInstanceOf('\\DOMDocument', $dom);
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root foo="bar"/>' . "\n",
@@ -473,4 +473,3 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
         );
     }
 }
-?>

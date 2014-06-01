@@ -8,9 +8,9 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang;
 use org\bovigo\vfs\vfsStream;
 use org\stubbles\test\xml\xsl\XslExampleCallback;
+use stubbles\lang;
 /**
  * Helper class for the test.
  */
@@ -66,6 +66,19 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
      * @type  \DOMDocument
      */
     private $document;
+    /**
+     * some stylesheet
+     *
+     * @type  string
+     */
+    private $stylesheet = '<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xsl:template match="*|/">
+    Intentionally not much content.
+  </xsl:template>
+
+</xsl:stylesheet>';
 
     /**
      * set up test environment
@@ -77,6 +90,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
         TestXslProcessor::$mockXsltProcessor = $this->mockXSLTProcessor;
         $this->xslProcessor = new TestXslProcessor(new XslCallbacks());
         $this->document     = new \DOMDocument();
+        $this->document->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
         $this->xslProcessor->onDocument($this->document);
     }
 
@@ -148,7 +162,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IOException
+     * @expectedException  stubbles\lang\exception\IOException
      */
     public function onXMLFileThrowsIoExceptionIfFileDoesNotExist()
     {
@@ -162,8 +176,9 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
     public function applyStylesheetStoresStylesheet()
     {
         $stylesheet = new \DOMDocument();
+        $stylesheet->loadXML($this->stylesheet);
         $this->assertSame($this->xslProcessor, $this->xslProcessor->applyStylesheet($stylesheet));
-        $this->assertEquals(array($stylesheet), $this->xslProcessor->getStylesheets());
+        $this->assertEquals([$stylesheet], $this->xslProcessor->getStylesheets());
     }
 
     /**
@@ -173,14 +188,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
     {
         $root = vfsStream::setup();
         vfsStream::newFile('test.xsl')
-                 ->withContent('<xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-  <xsl:template match="*|/">
-    Intentionally not much content.
-  </xsl:template>
-
-</xsl:stylesheet>')
+                 ->withContent($this->stylesheet)
                  ->at($root);
         $this->assertEquals(1,
                             count($this->xslProcessor->applyStylesheetFromFile(vfsStream::url('root/test.xsl'))
@@ -191,7 +199,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\lang\exception\IOException
+     * @expectedException  stubbles\lang\exception\IOException
      */
     public function failingToImportStylesheetFromFileThrowsIOException()
     {
@@ -236,14 +244,14 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->mockXSLTProcessor->expects($this->at(0))
                                 ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(array('baz' => 'bar')))
+                                ->with($this->equalTo('baz'), $this->equalTo(['baz' => 'bar']))
                                 ->will($this->returnValue(true));
         $this->mockXSLTProcessor->expects($this->at(1))
                                 ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(array('foo' => 'bar')))
+                                ->with($this->equalTo('baz'), $this->equalTo(['foo' => 'bar']))
                                 ->will($this->returnValue(true));
-        $this->xslProcessor->withParameters('baz', array('baz' => 'bar'))
-                           ->withParameters('baz', array('foo' => 'bar'));
+        $this->xslProcessor->withParameters('baz', ['baz' => 'bar'])
+                           ->withParameters('baz', ['foo' => 'bar']);
     }
 
     /**
@@ -254,9 +262,9 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
     {
         $this->mockXSLTProcessor->expects($this->once())
                                 ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(array('bar' => 'baz')))
+                                ->with($this->equalTo('baz'), $this->equalTo(['bar' => 'baz']))
                                 ->will($this->returnValue(false));
-        $this->xslProcessor->withParameters('baz', array('bar' => 'baz'));
+        $this->xslProcessor->withParameters('baz', ['bar' => 'baz']);
     }
 
     /**
@@ -271,7 +279,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
         $this->mockXSLTProcessor->expects($this->never())->method('setParameter');
         $anotherMockXSLTProcessor->expects($this->once())
                                  ->method('setParameter')
-                                 ->with($this->equalTo('foo'), $this->equalTo(array('bar' => 'baz')));
+                                 ->with($this->equalTo('foo'), $this->equalTo(['bar' => 'baz']));
         $clonedXSLProcessor = clone $this->xslProcessor;
     }
 
@@ -283,6 +291,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
         $anotherMockXSLTProcessor            = $this->getMock('\XSLTProcessor');
         TestXslProcessor::$mockXsltProcessor = $anotherMockXSLTProcessor;
         $stylesheet = new \DOMDocument();
+        $stylesheet->loadXML($this->stylesheet);
         $this->xslProcessor->applyStylesheet($stylesheet);
         $this->mockXSLTProcessor->expects($this->never())->method('importStylesheet');
         $anotherMockXSLTProcessor->expects($this->once())
@@ -318,11 +327,13 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
      */
     public function transformToDocReturnsDOMDocument()
     {
+        $result = new \DOMDocument();
+        $result->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
         $this->mockXSLTProcessor->expects($this->once())
                                 ->method('transformToDoc')
                                 ->with($this->equalTo($this->document))
-                                ->will($this->returnValue(new \DOMDocument()));
-        $this->assertInstanceOf('DOMDocument', $this->xslProcessor->toDoc());
+                                ->will($this->returnValue($result));
+        $this->assertInstanceOf('\DOMDocument', $this->xslProcessor->toDoc());
     }
 
     /**
@@ -448,4 +459,3 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
         $this->assertEquals('mikey', $callback->getHelloArg());
     }
 }
-?>

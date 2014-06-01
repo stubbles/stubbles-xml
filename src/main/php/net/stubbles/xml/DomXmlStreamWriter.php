@@ -24,7 +24,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @type  array
      */
-    protected $elementStack = array();
+    protected $elementStack = [];
 
     /**
      * Create a new writer
@@ -47,7 +47,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     public function clear()
     {
         $this->doc          = new \DOMDocument($this->xmlVersion, $this->encoding);
-        $this->elementStack = array();
+        $this->elementStack = [];
         return $this;
     }
 
@@ -58,9 +58,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     protected function getFeatures()
     {
-        return array(XmlStreamWriter::FEATURE_AS_DOM,
-                     XmlStreamWriter::FEATURE_IMPORT_WRITER
-        );
+        return [XmlStreamWriter::FEATURE_AS_DOM,
+                XmlStreamWriter::FEATURE_IMPORT_WRITER
+        ];
     }
 
     /**
@@ -151,9 +151,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
                                             {
                                                 return $doc->createProcessingInstruction($payload['target'], $payload['data']);
                                             },
-                                            array('target' => $target,
+                                            ['target' => $target,
                                                   'data'   => $data
-                                            ),
+                                            ],
                                             'processing instruction'
         );
     }
@@ -191,9 +191,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
                                             $currentElement = end($elementStack);
                                             $currentElement->setAttribute($payload['name'], $payload['value']);
                                         },
-                                        array('name'  => $attributeName,
+                                        ['name'  => $attributeName,
                                                 'value' => $this->encode($attributeValue)
-                                        ),
+                                        ],
                                         'attributet: "' . $attributeName . ':' . $attributeValue . '"'
         );
     }
@@ -221,9 +221,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  XmlStreamWriter
      * @throws  XmlException
      */
-    public function writeElement($elementName, array $attributes = array(), $cdata = null)
+    public function writeElement($elementName, array $attributes = [], $cdata = null)
     {
-        $atts = array();
+        $atts = [];
         foreach ($attributes as $name => $value) {
             $atts[$name] = $this->encode($value);
         }
@@ -246,10 +246,10 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
                                                 $parent->appendChild($element);
                                             }
                                         },
-                                        array('elementName' => $elementName,
-                                                'attributes'  => $atts,
-                                                'cdata'       => $this->encode($cdata)
-                                        ),
+                                        ['elementName' => $elementName,
+                                         'attributes'  => $atts,
+                                         'cdata'       => $this->encode($cdata)
+                                        ],
                                         'element: "' . $elementName . '"'
         );
     }
@@ -357,7 +357,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     protected function convertLibXmlErrorsToString($errors)
     {
-        $messages = array();
+        $messages = [];
         foreach ($errors as $error) {
             $messages[] = trim($error->message);
         }
@@ -383,4 +383,3 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         return utf8_encode($data);
     }
 }
-?>

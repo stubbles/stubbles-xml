@@ -26,4 +26,3 @@ interface XmlSerializerDelegate
      */
     public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter);
 }
-?>

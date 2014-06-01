@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang\exception\Exception;
+use stubbles\lang\exception\Exception;
 /**
  * XML Exception
  */
@@ -16,4 +16,3 @@ class XmlException extends Exception
 {
     // intentionally empty
 }
-?>

@@ -8,9 +8,9 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\ioc\Binder;
-use net\stubbles\lang\types\Date;
-use net\stubbles\lang\types\TimeZone;
+use stubbles\date\Date;
+use stubbles\date\TimeZone;
+use stubbles\ioc\Binder;
 /**
  * Test for net\stubbles\xml\rss\RssFeedSerializer.
  *
@@ -87,11 +87,10 @@ class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
         $rssFeed->addItem('Entry 1', 'http://example.net/article/1', 'A first article')
                 ->byAuthor('mikey')
                 ->addCommentsAt('http://example.net/article/1/comments')
-                ->inCategories(array('live', 'examples'))
+                ->inCategories(['live', 'examples'])
                 ->publishedOn(new Date('2012-01-21', new TimeZone('Europe/Berlin')))
                 ->withContent('Some article content')
                 ->withGuid('http://example.net/article/1');
         return $rssFeed;
     }
 }
-?>

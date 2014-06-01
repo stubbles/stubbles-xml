@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\exception\IllegalArgumentException;
 use net\stubbles\xml\serializer\ObjectXmlSerializer;
 use net\stubbles\xml\serializer\XmlSerializer;
 use net\stubbles\xml\XmlStreamWriter;
@@ -34,15 +34,15 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
         }
 
         $xmlWriter->writeStartElement(((null == $tagName) ? ('item') : ($tagName)));
-        $xmlWriter->writeElement('title', array(), $object->getTitle());
-        $xmlWriter->writeElement('link', array(), $object->getLink());
-        $xmlWriter->writeElement('description', array(), $object->getDescription());
+        $xmlWriter->writeElement('title', [], $object->getTitle());
+        $xmlWriter->writeElement('link', [], $object->getLink());
+        $xmlWriter->writeElement('description', [], $object->getDescription());
         if ($object->hasAuthor()) {
-            $xmlWriter->writeElement('author', array(), $object->getAuthor());
+            $xmlWriter->writeElement('author', [], $object->getAuthor());
         }
 
         foreach ($object->getCategories() as $category) {
-            $attributes = array();
+            $attributes = [];
             if (isset($category['domain']) && strlen($category['domain']) > 0) {
                 $attributes['domain'] = $category['domain'];
             }
@@ -51,37 +51,36 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
         }
 
         if ($object->hasComments()) {
-            $xmlWriter->writeElement('comments', array(), $object->getComments());
+            $xmlWriter->writeElement('comments', [], $object->getComments());
         }
 
         foreach ($object->getEnclosures() as $enclosure) {
-            $xmlWriter->writeElement('enclosure', array('url'    => $enclosure['url'],
-                                                        'length' => $enclosure['length'],
-                                                        'type'   => $enclosure['type']
-                                                  )
+            $xmlWriter->writeElement('enclosure', ['url'    => $enclosure['url'],
+                                                   'length' => $enclosure['length'],
+                                                   'type'   => $enclosure['type']
+                                                  ]
             );
         }
 
         if ($object->hasGuid()) {
             $xmlWriter->writeElement('guid',
-                                     array('isPermaLink' => $xmlSerializer->convertBoolToString($object->isGuidPermaLink())),
+                                     ['isPermaLink' => $xmlSerializer->convertBoolToString($object->isGuidPermaLink())],
                                      $object->getGuid()
             );
         }
 
         if ($object->hasPubDate()) {
-            $xmlWriter->writeElement('pubDate', array(), $object->getPubDate());
+            $xmlWriter->writeElement('pubDate', [], $object->getPubDate());
         }
 
         foreach ($object->getSources() as $source) {
-            $xmlWriter->writeElement('source', array('url' => $source['url']), $source['name']);
+            $xmlWriter->writeElement('source', ['url' => $source['url']], $source['name']);
         }
 
         if ($object->hasContent()) {
-            $xmlWriter->writeElement('content:encoded', array(), $object->getContent());
+            $xmlWriter->writeElement('content:encoded', [], $object->getContent());
         }
 
         $xmlWriter->writeEndElement();
     }
 }
-?>

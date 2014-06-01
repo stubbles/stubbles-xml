@@ -8,10 +8,10 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\rss;
-use net\stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\lang\reflect\BaseReflectionClass;
-use net\stubbles\lang\reflect\ReflectionObject;
-use net\stubbles\lang\types\Date;
+use stubbles\date\Date;
+use stubbles\lang;
+use stubbles\lang\exception\IllegalArgumentException;
+use stubbles\lang\reflect\BaseReflectionClass;
 use net\stubbles\xml\XmlException;
 /**
  * Class for a rss 2.0 feed item.
@@ -50,7 +50,7 @@ class RssFeedItem
      *
      * @type  array
      */
-    protected $categories  = array();
+    protected $categories  = [];
     /**
      * URL of a page for comments relating to the item
      *
@@ -62,7 +62,7 @@ class RssFeedItem
      *
      * @type  array
      */
-    protected $enclosures  = array();
+    protected $enclosures  = [];
     /**
      * unique identifier for the item
      *
@@ -86,7 +86,7 @@ class RssFeedItem
      *
      * @type  array
      */
-    protected $sources     = array();
+    protected $sources     = [];
     /**
      * content of rss feed item
      *
@@ -130,13 +130,13 @@ class RssFeedItem
      * @throws  IllegalArgumentException
      * @throws  XmlException
      */
-    public static function fromEntity($entity, array $overrides = array())
+    public static function fromEntity($entity, array $overrides = [])
     {
         if (!is_object($entity)) {
             throw new IllegalArgumentException('Given entity must be an object.');
         }
 
-        $entityClass = new ReflectionObject($entity);
+        $entityClass = lang\reflect($entity);
         if (!$entityClass->hasAnnotation('RssFeedItem')) {
             throw new XmlException('Class ' . $entityClass->getName() . ' is not annotated with @RssFeedItem.');
         }
@@ -162,16 +162,16 @@ class RssFeedItem
                             )
                    );
 
-        foreach (array('byAuthor'              => 'getAuthor',
-                       'inCategories'          => 'getCategories',
-                       'addCommentsAt'         => 'getCommentsUrl',
-                       'deliveringEnclosures'  => 'getEnclosures',
-                       'withGuid'              => 'getGuid',
-                       'andGuidIsNotPermaLink' => 'isPermaLink',
-                       'publishedOn'           => 'getPubDate',
-                       'inspiredBySources'     => 'getSources',
-                       'withContent'           => 'getContent'
-                 ) as $itemMethod => $defaultMethod) {
+        foreach (['byAuthor'              => 'getAuthor',
+                  'inCategories'          => 'getCategories',
+                  'addCommentsAt'         => 'getCommentsUrl',
+                  'deliveringEnclosures'  => 'getEnclosures',
+                  'withGuid'              => 'getGuid',
+                  'andGuidIsNotPermaLink' => 'isPermaLink',
+                  'publishedOn'           => 'getPubDate',
+                  'inspiredBySources'     => 'getSources',
+                  'withContent'           => 'getContent'
+                 ] as $itemMethod => $defaultMethod) {
             if (isset($overrides[$itemMethod])) {
                 $self->$itemMethod($overrides[$itemMethod]);
                 continue;
@@ -292,9 +292,9 @@ class RssFeedItem
      */
     public function inCategory($category, $domain = '')
     {
-        $this->categories[] = array('category' => $category,
-                                    'domain'   => $domain
-                              );
+        $this->categories[] = ['category' => $category,
+                               'domain'   => $domain
+                              ];
         return $this;
     }
 
@@ -371,10 +371,10 @@ class RssFeedItem
      */
     public function deliveringEnclosure($url, $length, $type)
     {
-        $this->enclosures[] = array('url'    => $url,
-                                    'length' => $length,
-                                    'type'   => $type
-                              );
+        $this->enclosures[] = ['url'    => $url,
+                               'length' => $length,
+                               'type'   => $type
+                              ];
         return $this;
     }
 
@@ -462,11 +462,7 @@ class RssFeedItem
      */
     public function publishedOn($pubDate)
     {
-        if (!($pubDate instanceof Date)) {
-            $pubDate = new Date($pubDate);
-        }
-
-        $this->pubDate = $pubDate;
+        $this->pubDate = Date::castFrom($pubDate, 'pubDate');
         return $this;
     }
 
@@ -503,7 +499,7 @@ class RssFeedItem
      */
     public function inspiredBySource($name, $url)
     {
-        $this->sources[] = array('name' => $name, 'url' => $url);
+        $this->sources[] = ['name' => $name, 'url' => $url];
         return $this;
     }
 
@@ -560,4 +556,3 @@ class RssFeedItem
         return $this->content;
     }
 }
-?>

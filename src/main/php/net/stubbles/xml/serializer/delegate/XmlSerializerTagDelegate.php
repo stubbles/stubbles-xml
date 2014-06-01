@@ -54,4 +54,3 @@ class XmlSerializerTagDelegate implements XmlSerializerDelegate
         $xmlSerializer->serialize($value, $xmlWriter, $this->tagName, $this->elementTagName);
     }
 }
-?>

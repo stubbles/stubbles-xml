@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\lang\exception\MethodNotSupportedException;
+use stubbles\lang\exception\MethodNotSupportedException;
 /**
  * XML Stream Writer based on libxml
  */
@@ -59,7 +59,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     protected function getFeatures()
     {
-        return array(XmlStreamWriter::FEATURE_AS_DOM);
+        return [XmlStreamWriter::FEATURE_AS_DOM];
     }
 
     /**
@@ -162,7 +162,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $cdata
      * @return  XmlStreamWriter
      */
-    public function writeElement($elementName, array $attributes = array(), $cdata = null)
+    public function writeElement($elementName, array $attributes = [], $cdata = null)
     {
         $this->writeStartElement($elementName);
         foreach ($attributes as $attName => $attValue) {
@@ -210,4 +210,3 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         return rtrim($this->writer->outputMemory());
     }
 }
-?>

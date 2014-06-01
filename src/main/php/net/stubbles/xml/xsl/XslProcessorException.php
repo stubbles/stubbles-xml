@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
-use net\stubbles\lang\exception\Exception;
+use stubbles\lang\exception\Exception;
 /**
  * Exception to be thrown when a xsl processor failed.
  */
@@ -16,4 +16,3 @@ class XslProcessorException extends Exception
 {
     // intentionally empty
 }
-?>

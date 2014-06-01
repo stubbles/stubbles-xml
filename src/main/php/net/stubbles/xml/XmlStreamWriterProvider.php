@@ -8,7 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml;
-use net\stubbles\ioc\InjectionProvider;
+use stubbles\ioc\InjectionProvider;
 /**
  * Provider to create a xml stream writer instances.
  *
@@ -21,9 +21,9 @@ class XmlStreamWriterProvider implements InjectionProvider
      *
      * @type  array
      */
-    protected $types    = array('dom'       => 'net\\stubbles\\xml\\DomXmlStreamWriter',
-                                'xmlwriter' => 'net\\stubbles\\xml\\LibXmlStreamWriter'
-                          );
+    protected $types    = ['dom'       => 'net\\stubbles\\xml\\DomXmlStreamWriter',
+                           'xmlwriter' => 'net\\stubbles\\xml\\LibXmlStreamWriter'
+                          ];
     /**
      * default version of xml stream writers to create
      *
@@ -47,7 +47,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @param   array  $types
      * @return  XmlStreamWriterProvider
      * @Inject(optional=true)
-     * @Named('net.stubbles.xml.types')
+     * @Named('stubbles.xml.types')
      */
     public function setTypes(array $types)
     {
@@ -61,7 +61,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @param   string  $version
      * @return  XmlStreamWriterProvider
      * @Inject(optional=true)
-     * @Named('net.stubbles.xml.version')
+     * @Named('stubbles.xml.version')
      */
     public function setVersion($version)
     {
@@ -75,7 +75,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @param   string  $encoding
      * @return  XmlStreamWriterProvider
      * @Inject(optional=true)
-     * @Named('net.stubbles.xml.encoding')
+     * @Named('stubbles.xml.encoding')
      */
     public function setEncoding($encoding)
     {
@@ -127,4 +127,3 @@ class XmlStreamWriterProvider implements InjectionProvider
         throw new XmlException('No supported xml extension available, can not create a xml stream writer!');
     }
 }
-?>
