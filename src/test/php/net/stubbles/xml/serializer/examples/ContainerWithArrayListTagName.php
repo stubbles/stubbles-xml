@@ -13,14 +13,13 @@ namespace org\stubbles\test\xml\serializer;
  *
  * @XmlTag(tagName='container')
  */
-class ContainerWithArrayListWithoutTagName
+class ContainerWithArrayListTagName
 {
     /**
      * array property
      *
      * @type  array
-     * @XmlTag(tagName=false, elementTagName='item')
+     * @XmlTag(tagName='list', elementTagName='item')
      */
     public $bar = array('one', 'two', 'three');
 }
-?>

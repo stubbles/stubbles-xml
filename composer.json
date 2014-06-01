@@ -15,8 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "net\\stubbles\\xml": "src/main/php",
-            "org\\stubbles\\test\\xml": "src/main/php"
+            "net\\stubbles\\xml": "src/main/php"
         }
     },
     "extra": {

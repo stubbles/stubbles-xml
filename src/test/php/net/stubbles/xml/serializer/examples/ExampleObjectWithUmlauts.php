@@ -30,4 +30,3 @@ class ExampleObjectWithUmlauts
      */
     public $ba = 'Hähnchen';
 }
-?>

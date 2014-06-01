@@ -41,4 +41,3 @@ class ExampleObjectWithXmlFragments
         return "foo\nb&ar\n\nbaz";
     }
 }
-?>

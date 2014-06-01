@@ -30,4 +30,3 @@ class ExampleStaticClass
         return 'bar';
     }
 }
-?>

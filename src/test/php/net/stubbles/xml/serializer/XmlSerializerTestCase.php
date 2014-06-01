@@ -10,6 +10,18 @@
 namespace net\stubbles\xml\serializer;
 use stubbles\lang;
 use net\stubbles\xml\DomXmlStreamWriter;
+require_once __DIR__ . '/examples/ContainerWithArrayListTagName.php';
+require_once __DIR__ . '/examples/ContainerWithArrayListWithoutTagName.php';
+require_once __DIR__ . '/examples/ContainerWithIterator.php';
+require_once __DIR__ . '/examples/ExampleObjectClass.php';
+require_once __DIR__ . '/examples/ExampleObjectClassWithEmptyAttributes.php';
+require_once __DIR__ . '/examples/ExampleObjectClassWithMethods.php';
+require_once __DIR__ . '/examples/ExampleObjectClassWithSerializer.php';
+require_once __DIR__ . '/examples/ExampleObjectSerializer.php';
+require_once __DIR__ . '/examples/ExampleObjectWithInvalidXmlFragments.php';
+require_once __DIR__ . '/examples/ExampleObjectWithUmlauts.php';
+require_once __DIR__ . '/examples/ExampleObjectWithXmlFragments.php';
+require_once __DIR__ . '/examples/ExampleStaticClass.php';
 use org\stubbles\test\xml\serializer\ContainerWithArrayListTagName;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListWithoutTagName;
 use org\stubbles\test\xml\serializer\ContainerWithIterator;

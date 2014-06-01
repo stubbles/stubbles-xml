@@ -8,6 +8,7 @@
  * @package  net\stubbles\xml
  */
 namespace net\stubbles\xml\xsl;
+require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 /**
  * Test for net\stubbles\xml\xsl\XslCallbacks.

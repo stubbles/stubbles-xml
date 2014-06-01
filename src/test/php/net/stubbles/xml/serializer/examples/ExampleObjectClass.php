@@ -37,4 +37,3 @@ class ExampleObjectClass
      */
     public $ignoreMe = 'Ignore';
 }
-?>

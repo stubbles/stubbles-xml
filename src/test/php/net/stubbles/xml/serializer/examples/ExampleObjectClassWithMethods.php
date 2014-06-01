@@ -92,4 +92,3 @@ class ExampleObjectClassWithMethods
         return 'not serialized: ' . $arg;
     }
 }
-?>

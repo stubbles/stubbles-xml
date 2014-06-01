@@ -9,6 +9,7 @@
  */
 namespace net\stubbles\xml\xsl;
 use org\bovigo\vfs\vfsStream;
+require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 use stubbles\lang;
 /**

@@ -31,4 +31,3 @@ class ContainerWithIterator
         $this->bar = new \ArrayIterator(array('one', 'two', 'three'));
     }
 }
-?>
