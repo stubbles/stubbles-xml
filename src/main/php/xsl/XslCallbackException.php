@@ -5,9 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\xsl;
+namespace stubbles\xml\xsl;
 use stubbles\lang\exception\Exception;
 /**
  * Exception to be thrown when a xsl callback can not be called.

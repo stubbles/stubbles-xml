@@ -5,12 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml;
+namespace stubbles\xml;
 use stubbles\lang;
 /**
- * Test for net\stubbles\xml\XmlStreamWriterProvider.
+ * Test for stubbles\xml\XmlStreamWriterProvider.
  *
  * @group  xml
  * @group  xml_core
@@ -79,9 +79,9 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultProviderForXmlStreamWriter()
     {
-        $class = lang\reflect('net\stubbles\xml\XmlStreamWriter');
+        $class = lang\reflect('stubbles\xml\XmlStreamWriter');
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('net\stubbles\xml\XmlStreamWriterProvider',
+        $this->assertEquals('stubbles\xml\XmlStreamWriterProvider',
                             $class->getAnnotation('ProvidedBy')
                                   ->getProviderClass()
                                   ->getName()
@@ -94,11 +94,11 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
     public function noSpecificRequestedTypeShouldCreateFirstAvailableType()
     {
         if (extension_loaded('dom')) {
-            $this->assertInstanceOf('net\stubbles\xml\DomXmlStreamWriter',
+            $this->assertInstanceOf('stubbles\xml\DomXmlStreamWriter',
                                     $this->xmlStreamWriterProvider->get()
             );
         } elseif (extension_loaded('xmlwriter')) {
-            $this->assertInstanceOf('net\stubbles\xml\LibXmlStreamWriter',
+            $this->assertInstanceOf('stubbles\xml\LibXmlStreamWriter',
                                     $this->xmlStreamWriterProvider->get()
             );
         }
@@ -106,7 +106,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function noTypeAvailableThrowsException()
     {
@@ -118,7 +118,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createDomTypeIfRequested()
     {
-        $this->assertInstanceOf('net\stubbles\xml\DomXMLStreamWriter',
+        $this->assertInstanceOf('stubbles\xml\DomXMLStreamWriter',
                                 $this->xmlStreamWriterProvider->get('dom')
         );
     }
@@ -128,7 +128,7 @@ class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
      */
     public function createXmlWriterTypeIfRequested()
     {
-        $this->assertInstanceOf('net\stubbles\xml\LibXmlStreamWriter',
+        $this->assertInstanceOf('stubbles\xml\LibXmlStreamWriter',
                                 $this->xmlStreamWriterProvider->get('xmlwriter')
         );
     }

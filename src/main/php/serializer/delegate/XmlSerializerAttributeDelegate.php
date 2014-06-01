@@ -5,11 +5,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer\delegate;
-use net\stubbles\xml\XmlStreamWriter;
-use net\stubbles\xml\serializer\XmlSerializer;
+namespace stubbles\xml\serializer\delegate;
+use stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\XmlSerializer;
 /**
  * Serializer delegate to serialize a value as attribute.
  *

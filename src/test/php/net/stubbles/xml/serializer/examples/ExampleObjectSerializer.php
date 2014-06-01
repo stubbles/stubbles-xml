@@ -5,12 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
 namespace org\stubbles\test\xml\serializer;
-use net\stubbles\xml\XmlStreamWriter;
-use net\stubbles\xml\serializer\ObjectXmlSerializer;
-use net\stubbles\xml\serializer\XmlSerializer;
+use stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\ObjectXmlSerializer;
+use stubbles\xml\serializer\XmlSerializer;
 /**
  * Simple example class to test the xml serializer with an annotated serializer class.
  */

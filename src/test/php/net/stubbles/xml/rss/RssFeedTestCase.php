@@ -5,12 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\date\Date;
 /**
- * Test for net\stubbles\xml\rss\RssFeedGenerator.
+ * Test for stubbles\xml\rss\RssFeedGenerator.
  *
  * @group  xml
  * @group  xml_rss

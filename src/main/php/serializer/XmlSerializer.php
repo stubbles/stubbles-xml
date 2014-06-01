@@ -5,12 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer;
+namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
 use stubbles\lang;
-use net\stubbles\xml\XmlStreamWriter;
+use stubbles\xml\XmlStreamWriter;
 /**
  * Serializes arbitrary data except resources to xml.
  */

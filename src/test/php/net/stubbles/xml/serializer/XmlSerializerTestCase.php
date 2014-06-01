@@ -5,11 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer;
-use stubbles\lang;
-use net\stubbles\xml\DomXmlStreamWriter;
+namespace stubbles\xml\serializer;
 require_once __DIR__ . '/examples/ContainerWithArrayListTagName.php';
 require_once __DIR__ . '/examples/ContainerWithArrayListWithoutTagName.php';
 require_once __DIR__ . '/examples/ContainerWithIterator.php';
@@ -34,8 +32,10 @@ use org\stubbles\test\xml\serializer\ExampleObjectWithInvalidXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleObjectWithUmlauts;
 use org\stubbles\test\xml\serializer\ExampleObjectWithXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleStaticClass;
+use stubbles\lang;
+use stubbles\xml\DomXmlStreamWriter;
 /**
- * Test for net\stubbles\xml\serializer\XmlSerializer.
+ * Test for stubbles\xml\serializer\XmlSerializer.
  *
  * @group  xml
  * @group  xml_serializer

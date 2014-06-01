@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\lang;
 /**
- * Test for net\stubbles\xml\rss\RssFeedItemSerializer.
+ * Test for stubbles\xml\rss\RssFeedItemSerializer.
  *
  * @group  xml
  * @group  xml_rss
@@ -43,10 +43,10 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedItemSerializer = new RssFeedItemSerializer();
-        $this->mockXmlSerializer     = $this->getMockBuilder('net\stubbles\xml\serializer\XmlSerializer')
+        $this->mockXmlSerializer     = $this->getMockBuilder('stubbles\xml\serializer\XmlSerializer')
                                             ->disableOriginalConstructor()
                                             ->getMock();
-        $this->mockXmlStreamWriter   = $this->getMock('net\stubbles\xml\XmlStreamWriter');
+        $this->mockXmlStreamWriter   = $this->getMock('stubbles\xml\XmlStreamWriter');
     }
 
     /**
@@ -54,7 +54,7 @@ class RssFeedItemSerializerTestCase extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $class = lang\reflect('net\stubbles\xml\rss\RssFeedItem');
+        $class = lang\reflect('stubbles\xml\rss\RssFeedItem');
         $this->assertTrue($class->hasAnnotation('XmlSerializer'));
         $this->assertEquals(get_class($this->rssFeedItemSerializer),
                             $class->getAnnotation('XmlSerializer')

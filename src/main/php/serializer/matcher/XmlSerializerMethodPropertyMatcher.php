@@ -5,9 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer\matcher;
+namespace stubbles\xml\serializer\matcher;
 use stubbles\lang\reflect\ReflectionMethod;
 use stubbles\lang\reflect\ReflectionProperty;
 use stubbles\lang\reflect\matcher\MethodMatcher;

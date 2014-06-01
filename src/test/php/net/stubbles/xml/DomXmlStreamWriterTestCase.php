@@ -5,11 +5,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml;
+namespace stubbles\xml;
 /**
- * Test for net\stubbles\xml\DomXmlStreamWriter.
+ * Test for stubbles\xml\DomXmlStreamWriter.
  *
  * @group  xml
  * @group  xml_core
@@ -141,7 +141,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function writeEndElementBeforeStartElementThrowsXmlException()
     {
@@ -345,7 +345,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function writeProcessingInstructionWithoutPreviousStartElementThrowsXmlException()
     {
@@ -367,7 +367,7 @@ class DomXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function writingInvalidXmlFragmentThrowsXmlException()
     {

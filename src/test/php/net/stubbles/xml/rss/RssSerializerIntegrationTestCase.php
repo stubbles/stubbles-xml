@@ -5,14 +5,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\date\TimeZone;
 use stubbles\ioc\Binder;
 /**
- * Test for net\stubbles\xml\rss\RssFeedSerializer.
+ * Test for stubbles\xml\rss\RssFeedSerializer.
  *
  * @group  xml
  * @group  xml_rss
@@ -26,7 +26,7 @@ class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $dom      = $binder->getInjector()
-                           ->getInstance('net\stubbles\xml\serializer\XmlSerializerFacade')
+                           ->getInstance('stubbles\xml\serializer\XmlSerializerFacade')
                            ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
         $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>

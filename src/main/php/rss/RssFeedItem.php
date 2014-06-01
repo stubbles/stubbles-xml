@@ -5,19 +5,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\lang;
 use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\reflect\BaseReflectionClass;
-use net\stubbles\xml\XmlException;
+use stubbles\xml\XmlException;
 /**
  * Class for a rss 2.0 feed item.
  *
  * @see  http://rssboard.org/rss-specification
- * @XmlSerializer(net\stubbles\xml\rss\RssFeedItemSerializer.class)
+ * @XmlSerializer(stubbles\xml\rss\RssFeedItemSerializer.class)
  */
 class RssFeedItem
 {

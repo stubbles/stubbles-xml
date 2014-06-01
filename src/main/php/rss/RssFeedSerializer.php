@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\lang\exception\IllegalArgumentException;
-use net\stubbles\xml\serializer\ObjectXmlSerializer;
-use net\stubbles\xml\serializer\XmlSerializer;
-use net\stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\ObjectXmlSerializer;
+use stubbles\xml\serializer\XmlSerializer;
+use stubbles\xml\XmlStreamWriter;
 /**
  * Class for generating a rss 2.0 feed.
  *
@@ -60,7 +60,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
     {
         if (!($object instanceof RssFeed)) {
-            throw new IllegalArgumentException('Oject must be of type net\\stubbles\\xml\\rss\\RssFeed');
+            throw new IllegalArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
         }
 
         foreach ($object->getStylesheets() as $stylesheet) {

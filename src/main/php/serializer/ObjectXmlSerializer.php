@@ -5,10 +5,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer;
-use net\stubbles\xml\XmlStreamWriter;
+namespace stubbles\xml\serializer;
+use stubbles\xml\XmlStreamWriter;
 /**
  * Interface for object serializers.
  *
@@ -26,4 +26,3 @@ interface ObjectXmlSerializer
      */
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName);
 }
-

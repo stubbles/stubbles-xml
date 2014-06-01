@@ -5,9 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\rss;
+namespace stubbles\xml\rss;
 use stubbles\date\Date;
 /**
  * Helper class for the test.
@@ -320,7 +320,7 @@ class RssItemWithDifferentMethods
     }
 }
 /**
- * Test for net\stubbles\xml\rss\RssFeedItem::fromEntity().
+ * Test for stubbles\xml\rss\RssFeedItem::fromEntity().
  *
  * @group  xml
  * @group  xml_rss
@@ -353,7 +353,7 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function missingAnnotationThrowsXmlException()
     {
@@ -362,7 +362,7 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function missingTitleThrowsXmlException()
     {
@@ -371,7 +371,7 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function missingLinkThrowsXmlException()
     {
@@ -380,7 +380,7 @@ class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\XmlException
+     * @expectedException  stubbles\xml\XmlException
      */
     public function missingDescriptionThrowsXmlException()
     {

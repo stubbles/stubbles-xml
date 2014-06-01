@@ -5,9 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml;
+namespace stubbles\xml;
 use stubbles\ioc\InjectionProvider;
 /**
  * Provider to create a xml stream writer instances.
@@ -21,8 +21,8 @@ class XmlStreamWriterProvider implements InjectionProvider
      *
      * @type  array
      */
-    protected $types    = ['dom'       => 'net\\stubbles\\xml\\DomXmlStreamWriter',
-                           'xmlwriter' => 'net\\stubbles\\xml\\LibXmlStreamWriter'
+    protected $types    = ['dom'       => 'stubbles\xml\DomXmlStreamWriter',
+                           'xmlwriter' => 'stubbles\xml\LibXmlStreamWriter'
                           ];
     /**
      * default version of xml stream writers to create

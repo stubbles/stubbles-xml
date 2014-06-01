@@ -5,12 +5,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer;
+namespace stubbles\xml\serializer;
 use stubbles\lang;
 /**
- * Test for net\stubbles\xml\serializer\XmlSerializerFacade.
+ * Test for stubbles\xml\serializer\XmlSerializerFacade.
  *
  * @since  1.1.0
  * @group  xml
@@ -43,10 +43,10 @@ class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockXmlSerializer   = $this->getMockBuilder('net\stubbles\xml\serializer\XmlSerializer')
+        $this->mockXmlSerializer   = $this->getMockBuilder('stubbles\xml\serializer\XmlSerializer')
                                           ->disableOriginalConstructor()
                                           ->getMock();
-        $this->mockXmlStreamWriter = $this->getMock('net\stubbles\xml\XmlStreamWriter');
+        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
         $this->xmlSerializerFacade = new XmlSerializerFacade($this->mockXmlSerializer, $this->mockXmlStreamWriter);
     }
 

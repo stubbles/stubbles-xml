@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\xsl;
+namespace stubbles\xml\xsl;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang;
 /**
- * Test for net\stubbles\xml\xsl\XslProcessorProvider.
+ * Test for stubbles\xml\xsl\XslProcessorProvider.
  *
  * @since  1.5.0
  * @group  xml
@@ -107,12 +107,12 @@ class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
     public function createWithCallbacksReturnsXslProcessorWithCallbacks()
     {
         vfsStream::newFile('xsl-callbacks.ini')
-                 ->withContent('foo="org\\stubbles\\example\\xsl\\ExampleCallback"')
+                 ->withContent('foo="org\stubbles\example\xsl\ExampleCallback"')
                  ->at($this->root);
-        $mockCallback = $this->getMock('net\\stubbles\\lang\\Object');
+        $mockCallback = $this->getMock('\stubbles\\lang\\Object');
         $this->mockInjector->expects($this->once())
                            ->method('getInstance')
-                           ->with($this->equalTo('org\\stubbles\\example\\xsl\\ExampleCallback'))
+                           ->with($this->equalTo('org\stubbles\example\xsl\ExampleCallback'))
                            ->will($this->returnValue($mockCallback));
         $this->assertEquals(['foo' => $mockCallback],
                             $this->xslProcessorProvider->get()

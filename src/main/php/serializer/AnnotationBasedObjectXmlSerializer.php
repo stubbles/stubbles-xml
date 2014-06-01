@@ -5,16 +5,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\serializer;
+namespace stubbles\xml\serializer;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\annotation\Annotatable;
-use net\stubbles\xml\XmlStreamWriter;
-use net\stubbles\xml\serializer\delegate\XmlSerializerAttributeDelegate;
-use net\stubbles\xml\serializer\delegate\XmlSerializerFragmentDelegate;
-use net\stubbles\xml\serializer\delegate\XmlSerializerTagDelegate;
-use net\stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher;
+use stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\delegate\XmlSerializerAttributeDelegate;
+use stubbles\xml\serializer\delegate\XmlSerializerFragmentDelegate;
+use stubbles\xml\serializer\delegate\XmlSerializerTagDelegate;
+use stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher;
 /**
  * Container for extracting informations on how to serialize a class.
  */

@@ -5,11 +5,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml;
+namespace stubbles\xml;
 /**
- * Test for net\stubbles\xml\LibXmlStreamWriter.
+ * Test for stubbles\xml\LibXmlStreamWriter.
  *
  * @group  xml
  * @group  xml_core

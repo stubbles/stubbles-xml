@@ -5,13 +5,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\xsl;
+namespace stubbles\xml\xsl;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 /**
- * Test for net\stubbles\xml\xsl\XslCallbacks.
+ * Test for stubbles\xml\xsl\XslCallbacks.
  *
  * @group  xml
  * @group  xml_xsl
@@ -53,7 +53,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callbackDoesNotExistThrowsCallbackException()
     {
@@ -62,7 +62,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callbackNonExistingMethodThrowsCallbackException()
     {
@@ -71,7 +71,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingNonAnnotatedMethodThrowsCallbackException()
     {
@@ -80,7 +80,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingProtectedCallbackMethodThrowsCallbackException()
     {
@@ -89,7 +89,7 @@ class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingPrivateCallbackMethodThrowsCallbackException()
     {

@@ -5,9 +5,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package  net\stubbles\xml
+ * @package  stubbles\xml
  */
-namespace net\stubbles\xml\xsl;
+namespace stubbles\xml\xsl;
 use org\bovigo\vfs\vfsStream;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
@@ -41,7 +41,7 @@ class TestXslProcessor extends XslProcessor
     }
 }
 /**
- * Test for net\stubbles\xml\xsl\XslProcessor.
+ * Test for stubbles\xml\xsl\XslProcessor.
  *
  * @group     xml
  * @group     xml_xsl
@@ -110,7 +110,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
     {
         $class = lang\reflect(new XslProcessor(new XslCallbacks()));
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('net\stubbles\xml\xsl\XslProcessorProvider',
+        $this->assertEquals('stubbles\xml\xsl\XslProcessorProvider',
                             $class->getAnnotation('ProvidedBy')
                                   ->getProviderClass()
                                   ->getName()
@@ -227,7 +227,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function failingToAddSingleParametersThrowsXSLProcessorException()
     {
@@ -257,7 +257,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function failingToAddListOfParametersThrowsXSLProcessorException()
     {
@@ -303,7 +303,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function cloneInstanceDoesNotCopyDocumentToTransform()
     {
@@ -315,7 +315,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function transformToDocWithoutDocThrowsXslProcessorException()
     {
@@ -339,7 +339,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function failingTransformationToDomDocumentThrowsXSLProcessorException()
     {
@@ -351,7 +351,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function transformToUriWithoutDocThrowsXslProcessorException()
     {
@@ -376,7 +376,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function failingTransformationToUriThrowsXSLProcessorException()
     {
@@ -389,7 +389,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function transformToXmlWithoutDocThrowsXslProcessorException()
     {
@@ -414,7 +414,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslProcessorException
+     * @expectedException  stubbles\xml\xsl\XslProcessorException
      */
     public function failingTransformationToXmlThrowsXSLProcessorException()
     {
@@ -427,7 +427,7 @@ class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  net\stubbles\xml\xsl\XslCallbackException
+     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function tooLessParamsForCallbackInvocationThrowsCallbackException()
     {
