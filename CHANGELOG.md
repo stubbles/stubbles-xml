@@ -1,3 +1,15 @@
+3.0.0 (2014-06-??)
+------------------
+
+### BC breaks
+
+  * removed namespace prefix `net`, base namespace is now `stubbles\xml` only
+
+### Other changes
+
+  * upgraded to stubbles/core 4.x
+
+
 2.1.0 (2013-05-02)
 ------------------
 
