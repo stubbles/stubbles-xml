@@ -14,8 +14,8 @@
         "phpunit/phpunit": "~4.1"
     },
     "autoload": {
-        "psr-0": {
-            "net\\stubbles\\xml": "src/main/php"
+        "psr-4": {
+            "net\\stubbles\\xml\\": "src/main/php"
         }
     },
     "extra": {
