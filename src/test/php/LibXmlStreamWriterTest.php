@@ -14,7 +14,7 @@ namespace stubbles\xml;
  * @group  xml
  * @group  xml_core
  */
-class LibXmlStreamWriterTestCase extends \PHPUnit_Framework_TestCase
+class LibXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

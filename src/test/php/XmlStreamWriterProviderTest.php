@@ -15,7 +15,7 @@ use stubbles\lang;
  * @group  xml
  * @group  xml_core
  */
-class XmlStreamWriterProviderTestCase extends \PHPUnit_Framework_TestCase
+class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

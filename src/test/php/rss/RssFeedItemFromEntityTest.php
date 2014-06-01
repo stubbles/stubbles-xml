@@ -325,7 +325,7 @@ class RssItemWithDifferentMethods
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedItemFromEntityTestCase extends \PHPUnit_Framework_TestCase
+class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

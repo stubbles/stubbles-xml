@@ -15,7 +15,7 @@ use stubbles\lang;
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedSerializerTestCase extends \PHPUnit_Framework_TestCase
+class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

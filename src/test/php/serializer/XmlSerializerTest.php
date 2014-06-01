@@ -40,7 +40,7 @@ use stubbles\xml\DomXmlStreamWriter;
  * @group  xml
  * @group  xml_serializer
  */
-class XmlSerializerTestCase extends \PHPUnit_Framework_TestCase
+class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

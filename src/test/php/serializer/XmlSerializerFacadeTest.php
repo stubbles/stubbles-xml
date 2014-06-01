@@ -16,7 +16,7 @@ use stubbles\lang;
  * @group  xml
  * @group  xml_serializer
  */
-class XmlSerializerFacadeTestCase extends \PHPUnit_Framework_TestCase
+class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

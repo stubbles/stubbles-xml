@@ -47,7 +47,7 @@ class TestXslProcessor extends XslProcessor
  * @group     xml_xsl
  * @requires  extension  xsl
  */
-class XslProcessorTestCase extends \PHPUnit_Framework_TestCase
+class XslProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

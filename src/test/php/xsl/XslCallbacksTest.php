@@ -16,7 +16,7 @@ use org\stubbles\test\xml\xsl\XslExampleCallback;
  * @group  xml
  * @group  xml_xsl
  */
-class XslCallbacksTestCase extends \PHPUnit_Framework_TestCase
+class XslCallbacksTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * callback class used for tests

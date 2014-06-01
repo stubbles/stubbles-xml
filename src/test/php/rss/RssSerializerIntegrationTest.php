@@ -17,7 +17,7 @@ use stubbles\ioc\Binder;
  * @group  xml
  * @group  xml_rss
  */
-class RssSerializerIntegrationTestCase extends \PHPUnit_Framework_TestCase
+class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test

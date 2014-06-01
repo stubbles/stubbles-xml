@@ -17,7 +17,7 @@ use stubbles\lang;
  * @group  xml
  * @group  xml_xsl
  */
-class XslProcessorProviderTestCase extends \PHPUnit_Framework_TestCase
+class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test

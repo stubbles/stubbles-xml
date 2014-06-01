@@ -15,7 +15,7 @@ use stubbles\date\Date;
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedItemTestCase extends \PHPUnit_Framework_TestCase
+class RssFeedItemTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
