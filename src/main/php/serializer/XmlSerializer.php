@@ -19,14 +19,14 @@ class XmlSerializer
     /**
      * injector to create object serializer instances
      *
-     * @type  Injector
+     * @type  \stubbles\ioc\Injector
      */
     protected $injector;
 
     /**
      * constructor
      *
-     * @param  Injector  $injector
+     * @param  \stubbles\ioc\Injector  $injector
      * @Inject
      */
     public function  __construct(Injector $injector)
@@ -37,11 +37,11 @@ class XmlSerializer
     /**
      * serialize any data structure to xml
      *
-     * @param   mixed            $value           data to serialize
-     * @param   XmlStreamWriter  $xmlWriter       xml writer to write serialized data into
-     * @param   string           $tagName         name of the surrounding xml tag
-     * @param   string           $elementTagName  recurring element tag name for lists
-     * @return  XmlStreamWriter
+     * @param   mixed                          $value           data to serialize
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized data into
+     * @param   string                         $tagName         name of the surrounding xml tag
+     * @param   string                         $elementTagName  recurring element tag name for lists
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function serialize($value, XmlStreamWriter $xmlWriter, $tagName = null, $elementTagName = null)
     {
@@ -82,9 +82,9 @@ class XmlSerializer
     /**
      * serializes null to xml
      *
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeNull(XmlStreamWriter $xmlWriter, $tagName = null)
@@ -102,10 +102,10 @@ class XmlSerializer
     /**
      * serializes boolean value to xml
      *
-     * @param   bool             $value
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmltreamWriter
+     * @param   bool                           $value
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmltreamWriter
      * @since   1.6.0
      */
     public function serializeBool($value, XmlStreamWriter $xmlWriter, $tagName = null)
@@ -136,10 +136,10 @@ class XmlSerializer
     /**
      * serializes string to xml
      *
-     * @param   string           $value
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   string                         $value
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeString($value, XmlStreamWriter $xmlWriter, $tagName = null)
@@ -150,10 +150,10 @@ class XmlSerializer
     /**
      * serializes integer to xml
      *
-     * @param   int              $value
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   int                            $value
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeInt($value, XmlStreamWriter $xmlWriter, $tagName = null)
@@ -164,10 +164,10 @@ class XmlSerializer
     /**
      * serializes float value to xml
      *
-     * @param   float            $value
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   float                          $value
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeFloat($value, XmlStreamWriter $xmlWriter, $tagName = null)
@@ -178,10 +178,10 @@ class XmlSerializer
     /**
      * serializes any scalar value to xml
      *
-     * @param   scalar           $value
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   scalar                         $value
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     protected function serializeScalarValue($value, XmlStreamWriter $xmlWriter, $tagName = null)
     {
@@ -198,11 +198,11 @@ class XmlSerializer
     /**
      * serializes an array to xml
      *
-     * @param   array            $array           array to serialize
-     * @param   XmlStreamWriter  $xmlWriter       xml writer to write serialized array into
-     * @param   string           $tagName         name of the surrounding xml tag
-     * @param   string           $elementTagName  necurring element tag name for lists
-     * @return  XmlStreamWriter
+     * @param   array                          $array           array to serialize
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized array into
+     * @param   string                         $tagName         name of the surrounding xml tag
+     * @param   string                         $elementTagName  necurring element tag name for lists
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeArray($array, XmlStreamWriter $xmlWriter, $tagName = null, $elementTagName = null)
@@ -233,10 +233,10 @@ class XmlSerializer
     /**
      * serializes an object to xml
      *
-     * @param   object           $object     object to serialize
-     * @param   XmlStreamWriter  $xmlWriter  xml writer to write serialized object into
-     * @param   string           $tagName    name of the surrounding xml tag
-     * @return  XmlStreamWriter
+     * @param   object                         $object     object to serialize
+     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized object into
+     * @param   string                         $tagName    name of the surrounding xml tag
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
       */
     public function serializeObject($object, XmlStreamWriter $xmlWriter, $tagName = null)
@@ -249,7 +249,7 @@ class XmlSerializer
      * returns serializer for given object
      *
      * @param   object  $object
-     * @return  XmlObjectSerializer
+     * @return  \stubbles\xml\serializer\XmlObjectSerializer
      */
     protected function getObjectSerializer($object)
     {

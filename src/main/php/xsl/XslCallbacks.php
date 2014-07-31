@@ -27,7 +27,7 @@ class XslCallbacks
      *
      * @param   string  $name      name to register the callback under
      * @param   object  $callback
-     * @throws  IllegalArgumentException
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
      */
     public function addCallback($name, $callback)
     {
@@ -64,7 +64,7 @@ class XslCallbacks
      *
      * @param   string  $name
      * @return  object
-     * @throws  XslCallbackException
+     * @throws  \stubbles\xml\xsl\XslCallbackException
      */
     private function getCallback($name)
     {
@@ -82,6 +82,7 @@ class XslCallbacks
      * @param   string  $methodName  name of method to call
      * @param   array   $arguments   list of arguments for method to call
      * @return  mixed
+     * @throws  \stubbles\xml\xsl\XslCallbackException
      */
     public function invoke($name, $methodName, array $arguments = [])
     {

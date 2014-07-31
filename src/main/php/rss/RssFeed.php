@@ -143,7 +143,7 @@ class RssFeed
      * set the locale the channel is written in
      *
      * @param   string  $locale
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setLocale($locale)
     {
@@ -175,7 +175,7 @@ class RssFeed
      * set copyright notice for content in the channel
      *
      * @param   string  $copyright
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setCopyright($copyright)
     {
@@ -209,7 +209,7 @@ class RssFeed
      * @param   string  $title        title of the item
      * @param   string  $link         URL of the item
      * @param   string  $description  item synopsis
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function addItem($title, $link, $description)
     {
@@ -223,7 +223,7 @@ class RssFeed
      *
      * @param   object  $entity
      * @param   array   $overrides
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function addEntity($entity, array $overrides = [])
     {
@@ -247,7 +247,7 @@ class RssFeed
      * returns item at given position
      *
      * @param   int  $pos
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function getItem($pos)
     {
@@ -261,7 +261,7 @@ class RssFeed
     /**
      * returns a list of all items
      *
-     * @return  RssFeedItem[]
+     * @return  \stubbles\xml\rss\RssFeedItem[]
      */
     public function getItems()
     {
@@ -282,7 +282,7 @@ class RssFeed
      * append a stylesheet to the document
      *
      * @param   string  $stylesheet  the stylesheet to append
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function appendStylesheet($stylesheet)
     {
@@ -304,7 +304,7 @@ class RssFeed
      * set email address for person responsible for editorial content
      *
      * @param   string  $managingEditor
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setManagingEditor($managingEditor)
     {
@@ -341,7 +341,7 @@ class RssFeed
      * set email address for person responsible for technical issues relating to channel
      *
      * @param   string  $webMaster
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setWebMaster($webMaster)
     {
@@ -378,7 +378,7 @@ class RssFeed
      * set the last time when the content of the channel changed
      *
      * @param   string|int   $lastBuildDate  last time the content of the channel changed
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setLastBuildDate($lastBuildDate)
     {
@@ -415,7 +415,7 @@ class RssFeed
      * before refreshing from the source
      *
      * @param   int  $ttl
-     * @return  RssFeed
+     * @return  \stubbles\xml\rss\RssFeed
      */
     public function setTimeToLive($ttl)
     {
@@ -451,8 +451,8 @@ class RssFeed
      * @param   string  $description  contains text that is included in the TITLE attribute of the link formed around the image in the HTML rendering
      * @param   int     $width        indicating the width of the image in pixels, must be 0 < $width <= 144, default 88
      * @param   int     $height       indicating the height of the image in pixels, must be 0 < $height <= 400, default 31
-     * @return  RssFeed
-     * @throws  IllegalArgumentException  in case $width or $height have invalid values
+     * @return  \stubbles\xml\rss\RssFeed
+     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case $width or $height have invalid values
      */
     public function setImage($url, $description, $width = 88, $height = 31)
     {

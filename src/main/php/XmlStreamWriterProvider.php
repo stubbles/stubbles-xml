@@ -45,7 +45,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * implementation.
      *
      * @param   array  $types
-     * @return  XmlStreamWriterProvider
+     * @return  \stubbles\xml\XmlStreamWriterProvider
      * @Inject(optional=true)
      * @Named('stubbles.xml.types')
      */
@@ -59,7 +59,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * sets the default version of xml stream writers to create
      *
      * @param   string  $version
-     * @return  XmlStreamWriterProvider
+     * @return  \stubbles\xml\XmlStreamWriterProvider
      * @Inject(optional=true)
      * @Named('stubbles.xml.version')
      */
@@ -73,7 +73,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * sets the default encoding of xml stream writers to create
      *
      * @param   string  $encoding
-     * @return  XmlStreamWriterProvider
+     * @return  \stubbles\xml\XmlStreamWriterProvider
      * @Inject(optional=true)
      * @Named('stubbles.xml.encoding')
      */
@@ -102,7 +102,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * creates a xml stream writer of the given type
      *
      * @param   string  $xmlExtension  concrete type to create
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     protected function createStreamWriter($xmlExtension)
     {
@@ -113,8 +113,8 @@ class XmlStreamWriterProvider implements InjectionProvider
     /**
      * creates a xml stream writer depending on available xml extensions
      *
-     * @return  XmlStreamWriter
-     * @throws  XMLException
+     * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \stubbles\xml\XMLException
      */
     protected function createAsAvailable()
     {

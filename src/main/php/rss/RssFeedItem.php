@@ -114,7 +114,7 @@ class RssFeedItem
      * @param   string  $title        title of the item
      * @param   string  $link         URL of the item
      * @param   string  $description  item synopsis
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public static function create($title, $link, $description)
     {
@@ -126,9 +126,9 @@ class RssFeedItem
      *
      * @param   object  $entity
      * @param   array   $overrides
-     * @return  RssFeedItem
-     * @throws  IllegalArgumentException
-     * @throws  XmlException
+     * @return  \stubbles\xml\rss\RssFeedItem
+     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \stubbles\xml\XmlException
      */
     public static function fromEntity($entity, array $overrides = [])
     {
@@ -195,13 +195,13 @@ class RssFeedItem
     /**
      * helper method to retrieve a required attribute
      *
-     * @param   object               $entity
-     * @param   BaseReflectionClass  $entityClass
-     * @param   string               $name
-     * @param   string               $method
-     * @param   array                $overrides
+     * @param   object                                      $entity
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $entityClass
+     * @param   string                                      $name
+     * @param   string                                      $method
+     * @param   array                                       $overrides
      * @return  string
-     * @throws  XmlException
+     * @throws  \stubbles\xml\XmlException
      */
     private static function getRequiredAttribute($entity, BaseReflectionClass $entityClass, $name, $method, array $overrides)
     {
@@ -250,7 +250,7 @@ class RssFeedItem
      * set the email address of the author of the item who created the item
      *
      * @param   string  $author  author of rss feed item
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function byAuthor($author)
     {
@@ -288,7 +288,7 @@ class RssFeedItem
      *
      * @param   string  $category  category where the item is included
      * @param   string  $domain    categorization taxonomy
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inCategory($category, $domain = '')
     {
@@ -304,7 +304,7 @@ class RssFeedItem
      * Does not consider the domain of the category.
      *
      * @param   string[]  $categories
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inCategories(array $categories)
     {
@@ -333,7 +333,7 @@ class RssFeedItem
      * set the URL of a page for comments relating to the item
      *
      * @param   string  $comments
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function addCommentsAt($comments)
     {
@@ -367,7 +367,7 @@ class RssFeedItem
      * @param   string  $url     location of enclosure
      * @param   int     $length  length of enclosure in bytes
      * @param   string  $type    MIME type of enclosure
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function deliveringEnclosure($url, $length, $type)
     {
@@ -382,7 +382,7 @@ class RssFeedItem
      * sets enclosures for the item
      *
      * @param   array  $enclosures
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function deliveringEnclosures(array $enclosures)
     {
@@ -404,7 +404,7 @@ class RssFeedItem
      * set id of rss feed item
      *
      * @param   string  $guid         the id of the item
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function withGuid($guid)
     {
@@ -436,7 +436,7 @@ class RssFeedItem
     /**
      * sets whether guid is perma link or not
      *
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function andGuidIsNotPermaLink()
     {
@@ -458,7 +458,7 @@ class RssFeedItem
      * set the date when the item was published
      *
      * @param   string|int|Date  $pubDate  publishing date of rss feed item
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function publishedOn($pubDate)
     {
@@ -495,7 +495,7 @@ class RssFeedItem
      *
      * @param   string  $name  name of the source
      * @param   string  $url   url of the source
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inspiredBySource($name, $url)
     {
@@ -507,7 +507,7 @@ class RssFeedItem
      * sets the sources where that the item came from
      *
      * @param   array  $sources
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inspiredBySources(array $sources)
     {
@@ -529,7 +529,7 @@ class RssFeedItem
      * set the content of the item
      *
      * @param   string  $content  content of rss feed item
-     * @return  RssFeedItem
+     * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function withContent($content)
     {

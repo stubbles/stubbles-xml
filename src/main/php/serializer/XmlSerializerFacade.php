@@ -19,21 +19,21 @@ class XmlSerializerFacade
     /**
      * xml serializer to hide
      *
-     * @type  XmlSerializer
+     * @type  \stubbles\xml\serializer\XmlSerializer
      */
     protected $xmlSerializer;
     /**
      * xml stream writer to write serialization to
      *
-     * @type  XmlStreamWriter
+     * @type  \stubbles\xml\XmlStreamWriter
      */
     protected $xmlStreamWriter;
 
     /**
      * constructor
      *
-     * @param  XmlSerializer    $xmlSerializer
-     * @param  XmlStreamWriter  $xmlStreamWriter
+     * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer
+     * @param  \stubbles\xml\XmlStreamWriter           $xmlStreamWriter
      * @Inject
      */
     public function __construct(XmlSerializer $xmlSerializer, XmlStreamWriter $xmlStreamWriter)

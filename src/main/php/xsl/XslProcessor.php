@@ -38,13 +38,13 @@ class XslProcessor
     /**
      * list of callbacks which should be available while processing the stylesheet
      *
-     * @type  XslCallbacks
+     * @type  \stubbles\xml\xsl\XslCallbacks
      */
     private $xslCallbacks;
     /**
      * workaround for limitation of XSLTProcessor::registerPHPFunctions()
      *
-     * @type  XslCallback
+     * @type  \stubbles\xml\xsl\XslCallbacks
      */
     private static $_callbacks;
     /**
@@ -57,8 +57,8 @@ class XslProcessor
     /**
      * constructor
      *
-     * @param   XslCallbacks  $callbacks
-     * @throws  RuntimeException
+     * @param   \stubbles\xml\xsl\XslCallbacks  $callbacks
+     * @throws  \stubbles\lang\exception\RuntimeException
      */
     public function __construct(XslCallbacks $callbacks)
     {
@@ -101,7 +101,7 @@ class XslProcessor
      * enables profiling of a transformation
      *
      * @param   string  $profileOutputFile  file to write profile data to
-     * @return  XslProcessor
+     * @return  \stubbles\xml\xsl\XslProcessor
      * @since   2.0.0
      */
     public function enableProfiling($profileOutputFile)
@@ -114,7 +114,7 @@ class XslProcessor
      * sets the document to transform
      *
      * @param   \DOMDocument  $doc
-     * @return  XslProcessor
+     * @return  \stubbles\xml\xsl\XslProcessor
      */
     public function onDocument(\DOMDocument $doc)
     {
@@ -127,8 +127,8 @@ class XslProcessor
      *
      * @param   string  $xmlFile   name of the xml file containing the document to transform
      * @param   bool    $xinclude  whether to resolve xincludes or not, defaults to true
-     * @return  XslProcessor
-     * @throws  IOException
+     * @return  \stubbles\xml\xsl\XslProcessor
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function onXmlFile($xmlFile, $xinclude = true)
     {
@@ -148,7 +148,7 @@ class XslProcessor
      * add a stylesheet to use
      *
      * @param   \DOMDocument  $stylesheet
-     * @return  XslProcessor
+     * @return  \stubbles\xml\xsl\XslProcessor
      */
     public function applyStylesheet(\DOMDocument $stylesheet)
     {
@@ -161,8 +161,8 @@ class XslProcessor
      * add a stylesheet to use from a file
      *
      * @param   string  $stylesheetFile
-     * @return  XslProcessor
-     * @throws  IOException
+     * @return  \stubbles\xml\xsl\XslProcessor
+     * @throws  \stubbles\lang\exception\IOException
      */
     public function applyStylesheetFromFile($stylesheetFile)
     {
@@ -189,7 +189,7 @@ class XslProcessor
      *
      * @param   string  $name      name to register the callback under
      * @param   object  $instance  the instance to register as callback
-     * @return  XslProcessor
+     * @return  \stubbles\xml\xsl\XslProcessor
      */
     public function usingCallback($name, $instance)
     {
@@ -226,7 +226,7 @@ class XslProcessor
      * invoke a method on a callback class
      *
      * @return  mixed
-     * @throws  XslCallbackException
+     * @throws  \stubbles\xml\xsl\XslCallbackException
      * @since   1.5.0
      */
     public static function invokeCallback()
@@ -247,8 +247,8 @@ class XslProcessor
      * @param   string  $nameSpace   the namespace where the parameter is in
      * @param   string  $paramName   the name of the parameter to set
      * @param   string  $paramValue  the value to set the parameter to
-     * @return  XslProcessor
-     * @throws  XslProcessorException
+     * @return  \stubbles\xml\xsl\XslProcessor
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function withParameter($nameSpace, $paramName, $paramValue)
     {
@@ -269,8 +269,8 @@ class XslProcessor
      *
      * @param   string  $nameSpace  the namespace where the parameters are in
      * @param   array   $params     the list of parameters to set: name => value
-     * @return  XslProcessor
-     * @throws  XslProcessorException
+     * @return  \stubbles\xml\xsl\XslProcessor
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function withParameters($nameSpace, array $params)
     {
@@ -290,7 +290,7 @@ class XslProcessor
      * transoforms the document into another DOMDocument
      *
      * @return  \DOMDocument
-     * @throws  XslProcessorException
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function toDoc()
     {
@@ -313,7 +313,7 @@ class XslProcessor
      *
      * @param   string  $uri
      * @return  int
-     * @throws  XslProcessorException
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function toUri($uri)
     {
@@ -334,7 +334,7 @@ class XslProcessor
      * transforms the document and returns the result as string
      *
      * @return  string
-     * @throws  XslProcessorException
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function toXml()
     {

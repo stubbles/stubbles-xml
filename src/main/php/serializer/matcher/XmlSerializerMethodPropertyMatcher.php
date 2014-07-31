@@ -47,7 +47,7 @@ class XmlSerializerMethodPropertyMatcher implements MethodMatcher, PropertyMatch
     /**
      * checks whether the matcher is satisfied with the given method
      *
-     * @param   ReflectionMethod  $method
+     * @param   \stubbles\lang\reflect\ReflectionMethod  $method
      * @return  bool
      */
     public function matchesAnnotatableMethod(ReflectionMethod $method)
@@ -73,7 +73,7 @@ class XmlSerializerMethodPropertyMatcher implements MethodMatcher, PropertyMatch
     /**
      * checks whether the matcher is satisfied with the given property
      *
-     * @param   ReflectionProperty  $property
+     * @param   \stubbles\lang\reflect\ReflectionProperty  $property
      * @return  bool
      */
     public function matchesAnnotatableProperty(ReflectionProperty $property)
