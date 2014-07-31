@@ -41,13 +41,13 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * reflection instance of class to serialize
      *
-     * @type  BaseReflectionClass
+     * @type  \stubbles\lang\reflect\BaseReflectionClass
      */
     protected $refClass;
     /**
      * the matcher to be used for methods and properties
      *
-     * @type  XmlSerializerMethodPropertyMatcher
+     * @type  \stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher
      */
     protected static $methodAndPropertyMatcher;
     /**
@@ -72,7 +72,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * method. The constructor should be used if one is sure that there is only
      * one instance of a class to serialize.
      *
-     * @param  BaseReflectionClass  $objectClass
+     * @param  \stubbles\lang\reflect\BaseReflectionClass  $objectClass
      */
     public function __construct(BaseReflectionClass $objectClass)
     {
@@ -88,8 +88,8 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * class it will return the same result, even if the given object is a
      * different instance.
      *
-     * @param   BaseReflectionClass  $objectClass
-     * @return  AnnotationBasedObjectXmlSerializer
+     * @param   \stubbles\lang\reflect\BaseReflectionClass  $objectClass
+     * @return  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer
      */
     public static function forClass(BaseReflectionClass $objectClass)
     {
@@ -105,10 +105,10 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param  mixed            $object
-     * @param  XmlSerializer    $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param  XmlStreamWriter  $xmlWriter      xml writer to write serialized object into
-     * @param  string           $tagName        name of the surrounding xml tag
+     * @param  mixed                                   $object
+     * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
+     * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
+     * @param  string                                  $tagName        name of the surrounding xml tag
      */
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
     {
@@ -167,9 +167,9 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extracts informations about annotated element
      *
-     * @param   Annotatable  $annotatable      the annotatable element to serialize
-     * @param   string       $annotatableName  name of annotatable element
-     * @return  XmlSerializerDelegate
+     * @param   \stubbles\lang\reflect\annotation\Annotatable  $annotatable      the annotatable element to serialize
+     * @param   string                                         $annotatableName  name of annotatable element
+     * @return  \stubbles\xml\serializer\delegate\XmlSerializerDelegate
      */
     protected function createSerializerDelegate(Annotatable $annotatable, $annotatableName)
     {

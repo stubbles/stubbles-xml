@@ -21,7 +21,7 @@ class XslProcessorProvider implements InjectionProvider
     /**
      * injector instance to create instances of other classes
      *
-     * @type  Injector
+     * @type  \stubbles\ioc\Injector
      */
     private $injector;
     /**
@@ -40,7 +40,7 @@ class XslProcessorProvider implements InjectionProvider
     /**
      * constructor
      *
-     * @param  Injector  $injector
+     * @param  \stubbles\ioc\Injector  $injector
      * @param  string    $configPath
      * @Inject
      * @Named{configPath}('stubbles.config.path')
@@ -87,7 +87,7 @@ class XslProcessorProvider implements InjectionProvider
     /**
      * creates callbacks
      *
-     * @return  XslCallbacks
+     * @return  \stubbles\xml\xsl\XslCallbacks
      */
     protected function createXslCallbacks()
     {
@@ -103,7 +103,7 @@ class XslProcessorProvider implements InjectionProvider
      * reads list of callbacks from configuration
      *
      * @return  array
-     * @throws  ConfigurationException
+     * @throws  \stubbles\lang\exception\ConfigurationException
      */
     protected function getCallbackList()
     {

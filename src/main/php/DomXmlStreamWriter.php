@@ -42,7 +42,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Clears all previously written elements so that the document starts fresh.
      *
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function clear()
     {
@@ -91,7 +91,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a text node
      *
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeText($data)
     {
@@ -108,7 +108,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a cdata section
      *
      * @param   string  $cdata
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeCData($cdata)
     {
@@ -125,7 +125,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a comment
      *
      * @param   string  $comment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeComment($comment)
     {
@@ -143,7 +143,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $target
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeProcessingInstruction($target, $data = '')
     {
@@ -162,7 +162,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write an xml fragment
      *
      * @param   string  $fragment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeXmlFragment($fragment)
     {
@@ -182,7 +182,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $attributeName
      * @param   string  $attributeValue
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeAttribute($attributeName, $attributeValue)
     {
@@ -201,7 +201,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * really writes an end element
      *
-     * @throws  XmlException
+     * @throws  \stubbles\xml\XmlException
      */
     protected function doWriteEndElement()
     {
@@ -218,8 +218,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $elementName
      * @param   array   $attributes
      * @param   string  $cdata
-     * @return  XmlStreamWriter
-     * @throws  XmlException
+     * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \stubbles\xml\XmlException
      */
     public function writeElement($elementName, array $attributes = [], $cdata = null)
     {
@@ -257,9 +257,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Import another stream
      *
-     * @param   XmlStreamWriter  $writer
-     * @return  XmlStreamWriter
-     * @throws  XmlException
+     * @param   \stubbles\xml\XmlStreamWriter  $writer
+     * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \stubbles\xml\XmlException
      */
     public function importStreamWriter(XmlStreamWriter $writer)
     {
@@ -298,8 +298,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   \Closure  $stackHandling  function to work with element stack
      * @param   mixed     $payload        payload to pass to stack handling
      * @param   string    $type           type of stack handling
-     * @return  DomXmlStreamWriter
-     * @throws  XmlException
+     * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \stubbles\xml\XmlException
      */
     protected function wrapStackHandling(\Closure $stackHandling, $payload, $type)
     {
@@ -324,8 +324,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   \Closure  $createElement  function to create element
      * @param   mixed     $payload        payload to pass for element creation
      * @param   string    $type           type of element
-     * @return  DomXmlStreamWriter
-     * @throws  XmlException
+     * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \stubbles\xml\XmlException
      */
     protected function handleElementCreation(\Closure $createElement, $payload, $type)
     {

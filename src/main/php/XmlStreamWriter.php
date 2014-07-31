@@ -53,7 +53,7 @@ interface XmlStreamWriter
     /**
      * Clears all previously written elements so that the document starts fresh.
      *
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function clear();
 
@@ -61,7 +61,7 @@ interface XmlStreamWriter
      * Write an opening tag
      *
      * @param   string  $elementName
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeStartElement($elementName);
 
@@ -69,7 +69,7 @@ interface XmlStreamWriter
      * Write a text node
      *
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeText($data);
 
@@ -77,7 +77,7 @@ interface XmlStreamWriter
      * Write a cdata section
      *
      * @param   string  $cdata
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeCData($cdata);
 
@@ -85,7 +85,7 @@ interface XmlStreamWriter
      * Write a comment
      *
      * @param   string  $comment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeComment($comment);
 
@@ -94,7 +94,7 @@ interface XmlStreamWriter
      *
      * @param   string  $target
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeProcessingInstruction($target, $data = '');
 
@@ -102,7 +102,7 @@ interface XmlStreamWriter
      * Write an xml fragment
      *
      * @param   string  $fragment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeXmlFragment($fragment);
 
@@ -111,14 +111,14 @@ interface XmlStreamWriter
      *
      * @param   string  $attributeName
      * @param   string  $attributeValue
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeAttribute($attributeName, $attributeValue);
 
     /**
      * Write an end element
      *
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeEndElement();
 
@@ -128,15 +128,15 @@ interface XmlStreamWriter
      * @param   string  $elementName
      * @param   array   $attributes
      * @param   string  $cdata
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeElement($elementName, array $attributes = [], $cdata = null);
 
     /**
      * Import another stream
      *
-     * @param   XmlStreamWriter  $writer
-     * @return  XmlStreamWriter
+     * @param   \stubbles\xml\XmlStreamWriter  $writer
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function importStreamWriter(XmlStreamWriter $writer);
 

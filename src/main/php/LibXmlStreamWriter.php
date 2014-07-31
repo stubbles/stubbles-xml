@@ -40,7 +40,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Clears all previously written elements so that the document starts fresh.
      *
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function clear()
     {
@@ -76,7 +76,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a text node
      *
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeText($data)
     {
@@ -88,7 +88,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a cdata section
      *
      * @param   string  $cdata
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeCData($cdata)
     {
@@ -100,7 +100,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write a comment
      *
      * @param   string  $comment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeComment($comment)
     {
@@ -113,7 +113,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $target
      * @param   string  $data
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeProcessingInstruction($target, $data = '')
     {
@@ -125,7 +125,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Write an xml fragment
      *
      * @param   string  $fragment
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeXmlFragment($fragment)
     {
@@ -138,7 +138,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $attributeName
      * @param   string  $attributeValue
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeAttribute($attributeName, $attributeValue)
     {
@@ -160,7 +160,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $elementName
      * @param   array   $attributes
      * @param   string  $cdata
-     * @return  XmlStreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeElement($elementName, array $attributes = [], $cdata = null)
     {
@@ -180,8 +180,8 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     /**
      * Import another stream
      *
-     * @param   XmlStreamWriter  $writer
-     * @throws  MethodNotSupportedException
+     * @param   \stubbles\xml\XmlStreamWriter  $writer
+     * @throws  \stubbles\lang\exception\MethodNotSupportedException
      */
     public function importStreamWriter(XmlStreamWriter $writer)
     {
