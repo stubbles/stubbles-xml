@@ -8,7 +8,6 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\xml\serializer\ObjectXmlSerializer;
 use stubbles\xml\serializer\XmlSerializer;
 use stubbles\xml\XmlStreamWriter;
@@ -52,15 +51,16 @@ class RssFeedSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param  mixed                                   $object
-     * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
-     * @param  string                                  $tagName        name of the surrounding xml tag
+     * @param   mixed                                   $object
+     * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
+     * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
+     * @param   string                                  $tagName        name of the surrounding xml tag
+     * @throws  \InvalidArgumentException  in case $object is not an instance of stubbles\xml\rss\RssFeed
      */
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
     {
         if (!($object instanceof RssFeed)) {
-            throw new IllegalArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
+            throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
         }
 
         foreach ($object->getStylesheets() as $stylesheet) {

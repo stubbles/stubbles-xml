@@ -9,7 +9,6 @@
  */
 namespace stubbles\xml\xsl;
 use stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */
@@ -27,12 +26,12 @@ class XslCallbacks
      *
      * @param   string  $name      name to register the callback under
      * @param   object  $callback
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      */
     public function addCallback($name, $callback)
     {
         if (!is_object($callback)) {
-            throw new IllegalArgumentException('Given callback must be an object');
+            throw new \InvalidArgumentException('Given callback must be an object');
         }
 
         $this->callbacks[$name] = $callback;

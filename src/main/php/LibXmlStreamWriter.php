@@ -8,7 +8,6 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml;
-use stubbles\lang\exception\MethodNotSupportedException;
 /**
  * XML Stream Writer based on libxml
  */
@@ -181,11 +180,11 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * Import another stream
      *
      * @param   \stubbles\xml\XmlStreamWriter  $writer
-     * @throws  \stubbles\lang\exception\MethodNotSupportedException
+     * @throws  \BadMethodCallException
      */
     public function importStreamWriter(XmlStreamWriter $writer)
     {
-        throw new MethodNotSupportedException('Can not import another stream writer.');
+        throw new \BadMethodCallException('Can not import another stream writer.');
     }
 
     /**

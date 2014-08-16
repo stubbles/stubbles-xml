@@ -137,7 +137,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
         }
 
         if ($this->refClass->hasAnnotation('XmlTag')) {
-            return $this->refClass->getAnnotation('XmlTag')->getTagName();
+            return $this->refClass->annotation('XmlTag')->tagName();
         }
 
         $className = $this->refClass->getName();
@@ -174,14 +174,14 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     protected function createSerializerDelegate(Annotatable $annotatable, $annotatableName)
     {
         if ($annotatable->hasAnnotation('XmlAttribute')) {
-            $xmlAttribute = $annotatable->getAnnotation('XmlAttribute');
-            return new XmlSerializerAttributeDelegate($xmlAttribute->getAttributeName(), $xmlAttribute->getSkipEmpty(true));
+            $xmlAttribute = $annotatable->annotation('XmlAttribute');
+            return new XmlSerializerAttributeDelegate($xmlAttribute->attributeName(), $xmlAttribute->getValueByName('skipEmpty', true));
         } elseif ($annotatable->hasAnnotation('XmlFragment')) {
-            $xmlFragment = $annotatable->getAnnotation('XmlFragment');
-            return new XmlSerializerFragmentDelegate($xmlFragment->getTagName(), $xmlFragment->isTransformNewLineToBr());
+            $xmlFragment = $annotatable->annotation('XmlFragment');
+            return new XmlSerializerFragmentDelegate($xmlFragment->tagName(), $xmlFragment->getValueByName('transformNewLineToBr', false));
         } elseif ($annotatable->hasAnnotation('XmlTag')) {
-            $xmlTag = $annotatable->getAnnotation('XmlTag');
-            return new XmlSerializerTagDelegate($xmlTag->getTagName(), $xmlTag->getElementTagName());
+            $xmlTag = $annotatable->annotation('XmlTag');
+            return new XmlSerializerTagDelegate($xmlTag->tagName(), $xmlTag->getValueByName('elementTagName'));
         }
 
         return new XmlSerializerTagDelegate($annotatableName);

@@ -10,7 +10,6 @@
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\lang;
-use stubbles\lang\exception\IllegalArgumentException;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\xml\XmlException;
 /**
@@ -127,13 +126,13 @@ class RssFeedItem
      * @param   object  $entity
      * @param   array   $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
-     * @throws  \stubbles\lang\exception\IllegalArgumentException
+     * @throws  \InvalidArgumentException
      * @throws  \stubbles\xml\XmlException
      */
     public static function fromEntity($entity, array $overrides = [])
     {
         if (!is_object($entity)) {
-            throw new IllegalArgumentException('Given entity must be an object.');
+            throw new \InvalidArgumentException('Given entity must be an object.');
         }
 
         $entityClass = lang\reflect($entity);

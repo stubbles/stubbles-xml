@@ -291,7 +291,7 @@ class LibXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\MethodNotSupportedException
+     * @expectedException  BadMethodCallException
      */
     public function importStreamWriter()
     {

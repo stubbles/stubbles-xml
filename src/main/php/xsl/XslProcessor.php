@@ -9,7 +9,6 @@
  */
 namespace stubbles\xml\xsl;
 use stubbles\lang\exception\IOException;
-use stubbles\lang\exception\RuntimeException;
 /**
  * Class to transform xml via xsl.
  *
@@ -58,12 +57,12 @@ class XslProcessor
      * constructor
      *
      * @param   \stubbles\xml\xsl\XslCallbacks  $callbacks
-     * @throws  \stubbles\lang\exception\RuntimeException
+     * @throws  \RuntimeException
      */
     public function __construct(XslCallbacks $callbacks)
     {
         if (!extension_loaded('xsl')) {
-            throw new RuntimeException('Can not create ' . __CLASS__ . ', requires PHP-extension "xsl".');
+            throw new \RuntimeException('Can not create ' . __CLASS__ . ', requires PHP-extension "xsl".');
         }
 
         $this->xslCallbacks  = $callbacks;

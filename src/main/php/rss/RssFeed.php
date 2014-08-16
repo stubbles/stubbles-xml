@@ -9,7 +9,6 @@
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
-use stubbles\lang\exception\IllegalArgumentException;
 /**
  * Class for representing a rss 2.0 feed.
  *
@@ -452,16 +451,16 @@ class RssFeed
      * @param   int     $width        indicating the width of the image in pixels, must be 0 < $width <= 144, default 88
      * @param   int     $height       indicating the height of the image in pixels, must be 0 < $height <= 400, default 31
      * @return  \stubbles\xml\rss\RssFeed
-     * @throws  \stubbles\lang\exception\IllegalArgumentException  in case $width or $height have invalid values
+     * @throws  \InvalidArgumentException  in case $width or $height have invalid values
      */
     public function setImage($url, $description, $width = 88, $height = 31)
     {
         if (144 < $width || 0 > $width) {
-            throw new IllegalArgumentException('Width must be a value between 0 and 144.');
+            throw new \InvalidArgumentException('Width must be a value between 0 and 144.');
         }
 
         if (400 < $height || 0 > $height) {
-            throw new IllegalArgumentException('Height must be a value between 0 and 400.');
+            throw new \InvalidArgumentException('Height must be a value between 0 and 400.');
         }
 
         $this->image = ['url'         => $url,

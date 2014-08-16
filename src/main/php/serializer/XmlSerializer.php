@@ -241,7 +241,7 @@ class XmlSerializer
       */
     public function serializeObject($object, XmlStreamWriter $xmlWriter, $tagName = null)
     {
-        $this->getObjectSerializer($object)->serialize($object, $this, $xmlWriter, $tagName);
+        $this->serializerFor($object)->serialize($object, $this, $xmlWriter, $tagName);
         return $xmlWriter;
     }
 
@@ -251,16 +251,17 @@ class XmlSerializer
      * @param   object  $object
      * @return  \stubbles\xml\serializer\XmlObjectSerializer
      */
-    protected function getObjectSerializer($object)
+    protected function serializerFor($object)
     {
         $objectClass = lang\reflect($object);
         if (!$objectClass->hasAnnotation('XmlSerializer')) {
             return AnnotationBasedObjectXmlSerializer::forClass($objectClass);
         }
 
-        return $this->injector->getInstance($objectClass->getAnnotation('XmlSerializer')
-                                                        ->getSerializerClass()
-                                                        ->getName()
-               );
+        return $this->injector->getInstance(
+                $objectClass->annotation('XmlSerializer')
+                            ->getValue()
+                            ->getName()
+        );
     }
 }
