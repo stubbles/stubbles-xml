@@ -18,6 +18,28 @@ use stubbles\lang\reflect\matcher\PropertyMatcher;
 class XmlSerializerMethodPropertyMatcher implements MethodMatcher, PropertyMatcher
 {
     /**
+     * single instance of this matcher
+     *
+     * @type  \stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher
+     */
+    private static $instance;
+
+    /**
+     * returns a single instance
+     *
+     * @return  \stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher
+     * @since   4.0.0
+     */
+    public static function instance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    /**
      * checks whether the matcher is satisfied with the given method
      *
      * @param   \ReflectionMethod  $method

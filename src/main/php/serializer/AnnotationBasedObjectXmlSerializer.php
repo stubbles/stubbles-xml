@@ -45,25 +45,11 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     protected $refClass;
     /**
-     * the matcher to be used for methods and properties
-     *
-     * @type  \stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher
-     */
-    protected static $methodAndPropertyMatcher;
-    /**
      * simple cache
      *
      * @type  array
      */
     protected static $cache = [];
-
-    /**
-     * static initializer
-     */
-    public static function __static()
-    {
-        self::$methodAndPropertyMatcher = new XmlSerializerMethodPropertyMatcher();
-    }
 
     /**
      * constructor
@@ -149,7 +135,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     protected function extractProperties()
     {
-        foreach ($this->refClass->getPropertiesByMatcher(self::$methodAndPropertyMatcher) as $property) {
+        foreach ($this->refClass->getPropertiesByMatcher(XmlSerializerMethodPropertyMatcher::instance()) as $property) {
             $this->properties[$property->getName()] = $this->createSerializerDelegate($property, $property->getName());
         }
     }
@@ -159,7 +145,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     protected function extractMethods()
     {
-        foreach ($this->refClass->getMethodsByMatcher(self::$methodAndPropertyMatcher) as $method) {
+        foreach ($this->refClass->getMethodsByMatcher(XmlSerializerMethodPropertyMatcher::instance()) as $method) {
             $this->methods[$method->getName()] = $this->createSerializerDelegate($method, $method->getName());
         }
     }
@@ -187,4 +173,3 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
         return new XmlSerializerTagDelegate($annotatableName);
     }
 }
-AnnotationBasedObjectXmlSerializer::__static();
