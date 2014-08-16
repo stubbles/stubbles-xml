@@ -15,7 +15,7 @@ use stubbles\xml\serializer\XmlSerializer;
  *
  * @since  1.6.0
  */
-class XmlSerializerFragmentDelegate implements XmlSerializerDelegate
+class Fragment implements XmlSerializerDelegate
 {
     /**
      * name of tag

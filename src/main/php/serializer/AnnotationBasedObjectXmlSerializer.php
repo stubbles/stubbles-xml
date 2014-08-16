@@ -11,9 +11,9 @@ namespace stubbles\xml\serializer;
 use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\lang\reflect\annotation\Annotatable;
 use stubbles\xml\XmlStreamWriter;
-use stubbles\xml\serializer\delegate\XmlSerializerAttributeDelegate;
-use stubbles\xml\serializer\delegate\XmlSerializerFragmentDelegate;
-use stubbles\xml\serializer\delegate\XmlSerializerTagDelegate;
+use stubbles\xml\serializer\delegate\Attribute;
+use stubbles\xml\serializer\delegate\Fragment;
+use stubbles\xml\serializer\delegate\Tag;
 use stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher;
 /**
  * Container for extracting informations on how to serialize a class.
@@ -161,15 +161,15 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     {
         if ($annotatable->hasAnnotation('XmlAttribute')) {
             $xmlAttribute = $annotatable->annotation('XmlAttribute');
-            return new XmlSerializerAttributeDelegate($xmlAttribute->attributeName(), $xmlAttribute->getValueByName('skipEmpty', true));
+            return new Attribute($xmlAttribute->attributeName(), $xmlAttribute->getValueByName('skipEmpty', true));
         } elseif ($annotatable->hasAnnotation('XmlFragment')) {
             $xmlFragment = $annotatable->annotation('XmlFragment');
-            return new XmlSerializerFragmentDelegate($xmlFragment->tagName(), $xmlFragment->getValueByName('transformNewLineToBr', false));
+            return new Fragment($xmlFragment->tagName(), $xmlFragment->getValueByName('transformNewLineToBr', false));
         } elseif ($annotatable->hasAnnotation('XmlTag')) {
             $xmlTag = $annotatable->annotation('XmlTag');
-            return new XmlSerializerTagDelegate($xmlTag->tagName(), $xmlTag->getValueByName('elementTagName'));
+            return new Tag($xmlTag->tagName(), $xmlTag->getValueByName('elementTagName'));
         }
 
-        return new XmlSerializerTagDelegate($annotatableName);
+        return new Tag($annotatableName);
     }
 }

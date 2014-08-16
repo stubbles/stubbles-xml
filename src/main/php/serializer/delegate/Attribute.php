@@ -15,7 +15,7 @@ use stubbles\xml\serializer\XmlSerializer;
  *
  * @since  1.6.0
  */
-class XmlSerializerAttributeDelegate implements XmlSerializerDelegate
+class Attribute implements XmlSerializerDelegate
 {
     /**
      * name of attribute
