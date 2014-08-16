@@ -57,7 +57,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
         $class = lang\reflect('stubbles\xml\rss\RssFeedItem');
         $this->assertTrue($class->hasAnnotation('XmlSerializer'));
         $this->assertEquals(get_class($this->rssFeedItemSerializer),
-                            $class->getAnnotation('XmlSerializer')
+                            $class->annotation('XmlSerializer')
                                   ->getSerializerClass()
                                   ->getName()
         );

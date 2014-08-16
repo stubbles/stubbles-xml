@@ -63,7 +63,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
         $refParams = $constructor->getParameters();
         $this->assertTrue($refParams[1]->hasAnnotation('Named'));
         $this->assertEquals('stubbles.config.path',
-                            $refParams[1]->getAnnotation('Named')->getName()
+                            $refParams[1]->annotation('Named')->getName()
         );
     }
 

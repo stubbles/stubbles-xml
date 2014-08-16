@@ -39,10 +39,10 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         $method = lang\reflect($this->xmlStreamWriterProvider, 'setTypes');
         $this->assertTrue($method->hasAnnotation('Inject'));
-        $this->assertTrue($method->getAnnotation('Inject')->isOptional());
+        $this->assertTrue($method->annotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
         $this->assertEquals('stubbles.xml.types',
-                            $method->getAnnotation('Named')->getName()
+                            $method->annotation('Named')->getName()
         );
     }
 
@@ -53,10 +53,10 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         $method = lang\reflect($this->xmlStreamWriterProvider, 'setVersion');
         $this->assertTrue($method->hasAnnotation('Inject'));
-        $this->assertTrue($method->getAnnotation('Inject')->isOptional());
+        $this->assertTrue($method->annotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
         $this->assertEquals('stubbles.xml.version',
-                            $method->getAnnotation('Named')->getName()
+                            $method->annotation('Named')->getName()
         );
     }
 
@@ -67,10 +67,10 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         $method = lang\reflect($this->xmlStreamWriterProvider, 'setEncoding');
         $this->assertTrue($method->hasAnnotation('Inject'));
-        $this->assertTrue($method->getAnnotation('Inject')->isOptional());
+        $this->assertTrue($method->annotation('Inject')->isOptional());
         $this->assertTrue($method->hasAnnotation('Named'));
         $this->assertEquals('stubbles.xml.encoding',
-                            $method->getAnnotation('Named')->getName()
+                            $method->annotation('Named')->getName()
         );
     }
 

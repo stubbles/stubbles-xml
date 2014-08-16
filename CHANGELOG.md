@@ -1,7 +1,8 @@
 4.0.0 (2014-08-??)
 ------------------
 
-  * upgraded to stubbles/core 5.x
+  * upgraded stubbles/core to 5.x
+  * upgraded stubbles/date to 5.x
 
 
 3.0.0 (2014-07-31)

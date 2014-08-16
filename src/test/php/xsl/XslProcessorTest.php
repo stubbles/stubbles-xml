@@ -111,7 +111,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $class = lang\reflect(new XslProcessor(new XslCallbacks()));
         $this->assertTrue($class->hasAnnotation('ProvidedBy'));
         $this->assertEquals('stubbles\xml\xsl\XslProcessorProvider',
-                            $class->getAnnotation('ProvidedBy')
+                            $class->annotation('ProvidedBy')
                                   ->getProviderClass()
                                   ->getName()
         );

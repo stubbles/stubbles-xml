@@ -140,7 +140,7 @@ class RssFeedItem
             throw new XmlException('Class ' . $entityClass->getName() . ' is not annotated with @RssFeedItem.');
         }
 
-        $rssFeedItemAnnotation = $entityClass->getAnnotation('RssFeedItem');
+        $rssFeedItemAnnotation = $entityClass->annotation('RssFeedItem');
         $self    = new self(self::getRequiredAttribute($entity,
                                                        $entityClass,
                                                        'title',
