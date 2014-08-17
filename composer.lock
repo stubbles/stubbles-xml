@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "stubbles/core",
-            "version": "dev-master",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-core.git",
-                "reference": "14053f6e3605cdf93b7287a3eef6301ebbad3db5"
+                "reference": "e2d8274fabddcb662ae031f71f7748270445fd78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/14053f6e3605cdf93b7287a3eef6301ebbad3db5",
-                "reference": "14053f6e3605cdf93b7287a3eef6301ebbad3db5",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/e2d8274fabddcb662ae031f71f7748270445fd78",
+                "reference": "e2d8274fabddcb662ae031f71f7748270445fd78",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
             ],
             "description": "Provides base classes for Stubbles packages.",
             "homepage": "http://stubbles.net/",
-            "time": "2014-08-16 13:03:21"
+            "time": "2014-08-17 20:18:24"
         },
         {
             "name": "stubbles/date",
@@ -493,16 +493,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.2.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "58db726aa45fe26bca93f692cb3d77e9a46b7830"
+                "reference": "e08a5b64400b9ca9124d38db30448d4b10b9f047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/58db726aa45fe26bca93f692cb3d77e9a46b7830",
-                "reference": "58db726aa45fe26bca93f692cb3d77e9a46b7830",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e08a5b64400b9ca9124d38db30448d4b10b9f047",
+                "reference": "e08a5b64400b9ca9124d38db30448d4b10b9f047",
                 "shasum": ""
             },
             "require": {
@@ -563,7 +563,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-08-08 05:13:30"
+            "time": "2014-08-17 08:08:26"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -939,12 +939,18 @@
             "time": "2014-08-05 09:00:40"
         }
     ],
-    "aliases": [],
+    "aliases": [
+
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": [
+
+    ],
     "prefer-stable": true,
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": []
+    "platform-dev": [
+
+    ]
 }
