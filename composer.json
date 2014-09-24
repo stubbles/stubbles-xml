@@ -6,11 +6,11 @@
     "description": "Classes to work with XML",
     "require": {
         "php": ">=5.4.0",
-        "stubbles/core": "~5.0",
+        "stubbles/core": "~5.1",
         "stubbles/date": "~5.0"
     },
     "require-dev": {
-        "mikey179/vfsStream": "~1.3",
+        "mikey179/vfsStream": "~1.4",
         "phpunit/phpunit": "~4.2"
     },
     "autoload": {
@@ -20,7 +20,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.0.x-dev"
+            "dev-master": "4.1.x-dev"
         }
     },
     "minimum-stability": "dev",

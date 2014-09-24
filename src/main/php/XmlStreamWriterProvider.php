@@ -17,70 +17,49 @@ use stubbles\ioc\InjectionProvider;
 class XmlStreamWriterProvider implements InjectionProvider
 {
     /**
-     * list of available streamwriter types
-     *
-     * @type  array
-     */
-    protected $types    = ['dom'       => 'stubbles\xml\DomXmlStreamWriter',
-                           'xmlwriter' => 'stubbles\xml\LibXmlStreamWriter'
-                          ];
-    /**
-     * default version of xml stream writers to create
-     *
-     * @type  string
-     */
-    protected $version  = '1.0';
-    /**
-     * default encoding of xml stream writers to create
-     *
-     * @type  string
-     */
-    protected $encoding = 'UTF-8';
-
-    /**
-     * set available xml stream writer types
+     * map of available streamwriter types
      *
      * Types has to be a map where the key denotes the required PHP extension
      * and the value the full qualified class name of the XmlStreamWriter
      * implementation.
      *
-     * @param   array  $types
-     * @return  \stubbles\xml\XmlStreamWriterProvider
-     * @Inject(optional=true)
-     * @Named('stubbles.xml.types')
+     * @type  array
      */
-    public function setTypes(array $types)
-    {
-        $this->types = $types;
-        return $this;
-    }
+    private $types    = ['dom'       => 'stubbles\xml\DomXmlStreamWriter',
+                         'xmlwriter' => 'stubbles\xml\LibXmlStreamWriter'
+                        ];
+    /**
+     * default version of xml stream writers to create
+     *
+     * @type  string
+     */
+    private $version;
+    /**
+     * default encoding of xml stream writers to create
+     *
+     * @type  string
+     */
+    private $encoding;
 
     /**
-     * sets the default version of xml stream writers to create
+     * constructor
      *
-     * @param   string  $version
-     * @return  \stubbles\xml\XmlStreamWriterProvider
-     * @Inject(optional=true)
-     * @Named('stubbles.xml.version')
+     * @param  array   $types     optional  map of available streamwriter types
+     * @param  string  $version   optional  xml version
+     * @param  string  $encoding  optional  xml encoding
+     * @Inject
+     * @Named{types}('stubbles.xml.types')
+     * @Named{version}('stubbles.xml.version')
+     * @Named{encoding}('stubbles.xml.encoding')
      */
-    public function setVersion($version)
+    public function __construct(array $types = null, $version = '1.0', $encoding = 'UTF-8')
     {
-        $this->version = $version;
-        return $this;
-    }
+        if (null !== $types) {
+            $this->types = $types;
+        }
 
-    /**
-     * sets the default encoding of xml stream writers to create
-     *
-     * @param   string  $encoding
-     * @return  \stubbles\xml\XmlStreamWriterProvider
-     * @Inject(optional=true)
-     * @Named('stubbles.xml.encoding')
-     */
-    public function setEncoding($encoding)
-    {
+        $this->version  = $version;
         $this->encoding = $encoding;
-        return $this;
     }
 
     /**
