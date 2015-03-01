@@ -9,7 +9,7 @@
  */
 namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
-use stubbles\lang;
+use stubbles\lang\reflect;
 use stubbles\xml\XmlStreamWriter;
 /**
  * Serializes arbitrary data except resources to xml.
@@ -253,15 +253,15 @@ class XmlSerializer
      */
     protected function serializerFor($object)
     {
-        $objectClass = lang\reflect($object);
-        if (!$objectClass->hasAnnotation('XmlSerializer')) {
-            return AnnotationBasedObjectXmlSerializer::forClass($objectClass);
+        if (!reflect\annotationsOf($object)->contain('XmlSerializer')) {
+            return AnnotationBasedObjectXmlSerializer::fromObject($object);
         }
 
         return $this->injector->getInstance(
-                $objectClass->annotation('XmlSerializer')
-                            ->getValue()
-                            ->getName()
+                reflect\annotationsOf($object)
+                        ->firstNamed('XmlSerializer')
+                        ->getValue()
+                        ->getName()
         );
     }
 }

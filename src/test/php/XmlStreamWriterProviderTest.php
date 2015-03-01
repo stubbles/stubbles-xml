@@ -8,7 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml;
-use stubbles\lang;
+use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\XmlStreamWriterProvider.
  *
@@ -37,24 +37,37 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $constructor = lang\reflectConstructor($this->xmlStreamWriterProvider);
-        $this->assertTrue($constructor->hasAnnotation('Inject'));
+        $this->assertTrue(
+                reflect\constructorAnnotationsOf($this->xmlStreamWriterProvider)
+                        ->contain('Inject')
+        );
 
-        $parameters = $constructor->getParameters();
-        $this->assertTrue($parameters[0]->hasAnnotation('Named'));
+        $typesParamAnnotations = reflect\annotationsOfConstructorParameter(
+                'types',
+                $this->xmlStreamWriterProvider
+        );
+        $this->assertTrue($typesParamAnnotations->contain('Named'));
         $this->assertEquals(
                 'stubbles.xml.types',
-                $parameters[0]->annotation('Named')->getName()
+                $typesParamAnnotations->firstNamed('Named')->getName()
         );
-        $this->assertTrue($parameters[1]->hasAnnotation('Named'));
+        $versionParamAnnotations = reflect\annotationsOfConstructorParameter(
+                'version',
+                $this->xmlStreamWriterProvider
+        );
+        $this->assertTrue($versionParamAnnotations->contain('Named'));
         $this->assertEquals(
                 'stubbles.xml.version',
-                $parameters[1]->annotation('Named')->getName()
+                $versionParamAnnotations->firstNamed('Named')->getName()
         );
-        $this->assertTrue($parameters[2]->hasAnnotation('Named'));
+        $encodingParamAnnotations = reflect\annotationsOfConstructorParameter(
+                'encoding',
+                $this->xmlStreamWriterProvider
+        );
+        $this->assertTrue($encodingParamAnnotations->contain('Named'));
         $this->assertEquals(
                 'stubbles.xml.encoding',
-                $parameters[2]->annotation('Named')->getName()
+                $encodingParamAnnotations->firstNamed('Named')->getName()
         );
     }
 
@@ -63,12 +76,12 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultProviderForXmlStreamWriter()
     {
-        $class = lang\reflect('stubbles\xml\XmlStreamWriter');
-        $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('stubbles\xml\XmlStreamWriterProvider',
-                            $class->getAnnotation('ProvidedBy')
-                                  ->getProviderClass()
-                                  ->getName()
+        $this->assertEquals(
+                'stubbles\xml\XmlStreamWriterProvider',
+                reflect\annotationsOf('stubbles\xml\XmlStreamWriter')
+                        ->firstNamed('ProvidedBy')
+                        ->getProviderClass()
+                        ->getName()
         );
     }
 

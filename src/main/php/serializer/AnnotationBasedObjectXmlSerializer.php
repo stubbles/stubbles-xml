@@ -8,13 +8,12 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\serializer;
-use stubbles\lang\reflect\BaseReflectionClass;
-use stubbles\lang\reflect\annotation\Annotatable;
+use stubbles\lang\reflect;
+use stubbles\lang\reflect\annotation\Annotations;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\delegate\Attribute;
 use stubbles\xml\serializer\delegate\Fragment;
 use stubbles\xml\serializer\delegate\Tag;
-use stubbles\xml\serializer\matcher\XmlSerializerMethodPropertyMatcher;
 /**
  * Container for extracting informations on how to serialize a class.
  */
@@ -25,31 +24,25 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      *
      * @type  string
      */
-    protected $classTagName;
+    private $classTagName;
     /**
-     * list of properties to serialize
+     * map of delegates to serialize properties of class with
      *
-     * @type  array
+     * @type  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
      */
-    protected $properties  = [];
+    private $properties  = [];
     /**
-     * list of methods to serialize
+     * map of delegates to serialize methods of class with
      *
-     * @type  array
+     * @type  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
      */
-    protected $methods     = [];
+    private $methods     = [];
     /**
-     * reflection instance of class to serialize
+     * map of serializer instances for different classes
      *
-     * @type  \stubbles\lang\reflect\BaseReflectionClass
+     * @type  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer[]
      */
-    protected $refClass;
-    /**
-     * simple cache
-     *
-     * @type  array
-     */
-    protected static $cache = [];
+    private static $cache = [];
 
     /**
      * constructor
@@ -58,13 +51,19 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * method. The constructor should be used if one is sure that there is only
      * one instance of a class to serialize.
      *
-     * @param  \stubbles\lang\reflect\BaseReflectionClass  $objectClass
+     * @param  \ReflectionClass  $objectClass
      */
-    public function __construct(BaseReflectionClass $objectClass)
+    public function __construct(\ReflectionClass $objectClass)
     {
-        $this->refClass = $objectClass;
-        $this->extractProperties();
-        $this->extractMethods();
+        $this->extractProperties($objectClass);
+        $this->extractMethods($objectClass);
+        $annotations = reflect\annotationsOf($objectClass);
+        if ($annotations->contain('XmlTag')) {
+            $this->classTagName = $annotations->firstNamed('XmlTag')->tagName();
+        } else {
+            $className = $objectClass->getName();
+            $this->classTagName = substr($className, strrpos($className, '\\') + 1);
+        }
     }
 
     /**
@@ -74,17 +73,17 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * class it will return the same result, even if the given object is a
      * different instance.
      *
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $objectClass
+     * @param   object  $object
      * @return  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer
      */
-    public static function forClass(BaseReflectionClass $objectClass)
+    public static function fromObject($object)
     {
-        $className = $objectClass->getName();
+        $className = get_class($object);
         if (isset(self::$cache[$className])) {
             return self::$cache[$className];
         }
 
-        self::$cache[$className] = new self($objectClass);
+        self::$cache[$className] = new self(new \ReflectionObject($object));
         return self::$cache[$className];
     }
 
@@ -98,78 +97,107 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
     {
-        $xmlWriter->writeStartElement($this->getClassTagName($tagName));
+        $xmlWriter->writeStartElement($tagName != null ? $tagName : $this->classTagName);
         foreach ($this->properties as $propertyName => $xmlSerializerDelegate) {
-            $xmlSerializerDelegate->serialize($object->$propertyName, $xmlSerializer, $xmlWriter);
+            $xmlSerializerDelegate->serialize(
+                    $object->$propertyName,
+                    $xmlSerializer,
+                    $xmlWriter
+            );
         }
 
         foreach ($this->methods as $methodName => $xmlSerializerDelegate) {
-            $xmlSerializerDelegate->serialize($object->$methodName(), $xmlSerializer, $xmlWriter);
+            $xmlSerializerDelegate->serialize(
+                    $object->$methodName(),
+                    $xmlSerializer,
+                    $xmlWriter
+            );
         }
 
         $xmlWriter->writeEndElement();
     }
 
     /**
-     * returns tag name for the class itself
-     *
-     * @param   string  $tagName  default tag name to be used
-     * @return  string
-     */
-    protected function getClassTagName($tagName)
-    {
-        if (null !== $tagName) {
-            return $tagName;
-        }
-
-        if ($this->refClass->hasAnnotation('XmlTag')) {
-            return $this->refClass->annotation('XmlTag')->tagName();
-        }
-
-        $className = $this->refClass->getName();
-        return substr($className, strrpos($className, '\\') + 1);
-    }
-
-    /**
      * extract informations about properties
+     *
+     * @param  \ReflectionClass  $objectClass
      */
-    protected function extractProperties()
+    private function extractProperties(\ReflectionClass $objectClass)
     {
-        foreach ($this->refClass->getPropertiesByMatcher(XmlSerializerMethodPropertyMatcher::instance()) as $property) {
-            $this->properties[$property->getName()] = $this->createSerializerDelegate($property, $property->getName());
+        $properties = reflect\propertiesOf($objectClass, \ReflectionProperty::IS_PUBLIC)
+                ->filter(
+                        function(\ReflectionProperty $property)
+                        {
+                            return !$property->isStatic() && !reflect\annotationsOf($property)->contain('XmlIgnore');
+                        }
+        );
+        foreach ($properties as $property) {
+            $this->properties[$property->getName()] = $this->createSerializerDelegate(
+                    reflect\annotationsOf($property),
+                    $property->getName()
+            );
         }
     }
 
     /**
      * extract informations about methods
+     *
+     * @param  \ReflectionClass  $objectClass
      */
-    protected function extractMethods()
+    private function extractMethods(\ReflectionClass $objectClass)
     {
-        foreach ($this->refClass->getMethodsByMatcher(XmlSerializerMethodPropertyMatcher::instance()) as $method) {
-            $this->methods[$method->getName()] = $this->createSerializerDelegate($method, $method->getName());
+        $methods = reflect\methodsOf($objectClass, \ReflectionMethod::IS_PUBLIC)
+                ->filter(
+                        function(\ReflectionMethod $method)
+                        {
+                            if ($method->getNumberOfParameters() != 0
+                                    || $method->isStatic()
+                                    || $method->isConstructor()
+                                    || $method->isDestructor()
+                                    || 0 == strncmp($method->getName(), '__', 2)) {
+                                return false;
+                            }
+
+                            return !reflect\annotationsOf($method)->contain('XmlIgnore');
+                        }
+        );
+        foreach ($methods as $method) {
+            $this->methods[$method->getName()] = $this->createSerializerDelegate(
+                    reflect\annotationsOf($method),
+                    $method->getName()
+            );
         }
     }
 
     /**
      * extracts informations about annotated element
      *
-     * @param   \stubbles\lang\reflect\annotation\Annotatable  $annotatable      the annotatable element to serialize
-     * @param   string                                         $annotatableName  name of annotatable element
+     * @param   \stubbles\lang\reflect\annotation\Annotations  $annotations     annotations of the element to serialize
+     * @param   string                                         $defaultTagName  default tag name in case element is not annotated
      * @return  \stubbles\xml\serializer\delegate\XmlSerializerDelegate
      */
-    protected function createSerializerDelegate(Annotatable $annotatable, $annotatableName)
+    private function createSerializerDelegate(Annotations $annotations, $defaultTagName)
     {
-        if ($annotatable->hasAnnotation('XmlAttribute')) {
-            $xmlAttribute = $annotatable->annotation('XmlAttribute');
-            return new Attribute($xmlAttribute->attributeName(), $xmlAttribute->getValueByName('skipEmpty', true));
-        } elseif ($annotatable->hasAnnotation('XmlFragment')) {
-            $xmlFragment = $annotatable->annotation('XmlFragment');
-            return new Fragment($xmlFragment->tagName(), $xmlFragment->getValueByName('transformNewLineToBr', false));
-        } elseif ($annotatable->hasAnnotation('XmlTag')) {
-            $xmlTag = $annotatable->annotation('XmlTag');
-            return new Tag($xmlTag->tagName(), $xmlTag->getValueByName('elementTagName'));
+        if ($annotations->contain('XmlAttribute')) {
+            $xmlAttribute = $annotations->firstNamed('XmlAttribute');
+            return new Attribute(
+                    $xmlAttribute->attributeName(),
+                    $xmlAttribute->getValueByName('skipEmpty', true)
+            );
+        } elseif ($annotations->contain('XmlFragment')) {
+            $xmlFragment = $annotations->firstNamed('XmlFragment');
+            return new Fragment(
+                    $xmlFragment->tagName(),
+                    $xmlFragment->getValueByName('transformNewLineToBr', false)
+            );
+        } elseif ($annotations->contain('XmlTag')) {
+            $xmlTag = $annotations->firstNamed('XmlTag');
+            return new Tag(
+                    $xmlTag->tagName(),
+                    $xmlTag->getValueByName('elementTagName')
+            );
         }
 
-        return new Tag($annotatableName);
+        return new Tag($defaultTagName);
     }
 }

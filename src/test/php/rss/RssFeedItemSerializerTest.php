@@ -9,7 +9,7 @@
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
-use stubbles\lang;
+use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\rss\RssFeedItemSerializer.
  *
@@ -54,12 +54,12 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $class = lang\reflect('stubbles\xml\rss\RssFeedItem');
-        $this->assertTrue($class->hasAnnotation('XmlSerializer'));
-        $this->assertEquals(get_class($this->rssFeedItemSerializer),
-                            $class->annotation('XmlSerializer')
-                                  ->getSerializerClass()
-                                  ->getName()
+        $this->assertEquals(
+                get_class($this->rssFeedItemSerializer),
+                reflect\annotationsOf('stubbles\xml\rss\RssFeedItem')
+                        ->firstNamed('XmlSerializer')
+                        ->getSerializerClass()
+                        ->getName()
         );
     }
 
@@ -69,10 +69,11 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeedItem()
     {
-        $this->rssFeedItemSerializer->serialize(new \stdClass(),
-                                                $this->mockXmlSerializer,
-                                                $this->mockXmlStreamWriter,
-                                                null
+        $this->rssFeedItemSerializer->serialize(
+                new \stdClass(),
+                $this->mockXmlSerializer,
+                $this->mockXmlStreamWriter,
+                null
         );
     }
 
@@ -86,10 +87,11 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                                   ->with($this->equalTo('item'));
         $this->mockXmlStreamWriter->expects($this->exactly(3))
                                   ->method('writeElement');
-        $this->rssFeedItemSerializer->serialize(RssFeedItem::create('title', 'link', 'description'),
-                                                $this->mockXmlSerializer,
-                                                $this->mockXmlStreamWriter,
-                                                null
+        $this->rssFeedItemSerializer->serialize(
+                RssFeedItem::create('title', 'link', 'description'),
+                $this->mockXmlSerializer,
+                $this->mockXmlStreamWriter,
+                null
         );
     }
 
@@ -103,10 +105,11 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                                   ->with($this->equalTo('other'));
         $this->mockXmlStreamWriter->expects($this->exactly(3))
                                   ->method('writeElement');
-        $this->rssFeedItemSerializer->serialize(RssFeedItem::create('title', 'link', 'description'),
-                                                $this->mockXmlSerializer,
-                                                $this->mockXmlStreamWriter,
-                                                'other'
+        $this->rssFeedItemSerializer->serialize(
+                RssFeedItem::create('title', 'link', 'description'),
+                $this->mockXmlSerializer,
+                $this->mockXmlStreamWriter,
+                'other'
         );
     }
 
@@ -119,24 +122,27 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                                   ->method('writeStartElement');
         $this->mockXmlStreamWriter->expects($this->exactly(12))
                                   ->method('writeElement');
-        $this->rssFeedItemSerializer->serialize(RssFeedItem::create('title', 'link', 'description')
-                                                           ->byAuthor('mikey')
-                                                           ->inCategory('cat1')
-                                                           ->inCategory('cat2', 'domain')
-                                                           ->addCommentsAt('http://stubbles.net/comments/')
-                                                           ->deliveringEnclosure('http://stubbles.net/enclosure.mp3',
-                                                                                 50,
-                                                                                 'audio/mpeg'
-                                                             )
-                                                           ->withGuid('dummy')
-                                                           ->publishedOn(new Date('2008-05-24'))
-                                                           ->inspiredBySource('stubbles',
-                                                                              'http://stubbles.net/source/'
-                                                             )
-                                                           ->withContent('<foo>bar</foo><baz/>'),
-                                                $this->mockXmlSerializer,
-                                                $this->mockXmlStreamWriter,
-                                                null
+        $this->rssFeedItemSerializer->serialize(
+                RssFeedItem::create('title', 'link', 'description')
+                        ->byAuthor('mikey')
+                        ->inCategory('cat1')
+                        ->inCategory('cat2', 'domain')
+                        ->addCommentsAt('http://stubbles.net/comments/')
+                        ->deliveringEnclosure(
+                                'http://stubbles.net/enclosure.mp3',
+                                50,
+                                'audio/mpeg'
+                        )
+                        ->withGuid('dummy')
+                        ->publishedOn(new Date('2008-05-24'))
+                        ->inspiredBySource(
+                                'stubbles',
+                                'http://stubbles.net/source/'
+                        )
+                        ->withContent('<foo>bar</foo><baz/>'),
+                $this->mockXmlSerializer,
+                $this->mockXmlStreamWriter,
+                null
         );
     }
 }

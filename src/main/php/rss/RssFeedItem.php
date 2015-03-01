@@ -10,7 +10,6 @@
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\lang;
-use stubbles\lang\reflect\BaseReflectionClass;
 use stubbles\xml\XmlException;
 /**
  * Class for a rss 2.0 feed item.
@@ -135,31 +134,36 @@ class RssFeedItem
             throw new \InvalidArgumentException('Given entity must be an object.');
         }
 
-        $entityClass = lang\reflect($entity);
-        if (!$entityClass->hasAnnotation('RssFeedItem')) {
-            throw new XmlException('Class ' . $entityClass->getName() . ' is not annotated with @RssFeedItem.');
+        $annotations = lang\reflect\annotationsOf($entity);
+        if (!$annotations->contain('RssFeedItem')) {
+            throw new XmlException('Class ' . get_class($entity) . ' is not annotated with @RssFeedItem.');
         }
 
-        $rssFeedItemAnnotation = $entityClass->annotation('RssFeedItem');
-        $self    = new self(self::getRequiredAttribute($entity,
-                                                       $entityClass,
-                                                       'title',
-                                                       $rssFeedItemAnnotation->getTitleMethod('getTitle'),
-                                                       $overrides
-                            ),
-                            self::getRequiredAttribute($entity,
-                                                       $entityClass,
-                                                       'link',
-                                                       $rssFeedItemAnnotation->getLinkMethod('getLink'),
-                                                       $overrides
-                            ),
-                            self::getRequiredAttribute($entity,
-                                                       $entityClass,
-                                                       'description',
-                                                       $rssFeedItemAnnotation->getDescriptionMethod('getDescription'),
-                                                       $overrides
-                            )
-                   );
+        $entityClass           = lang\reflect($entity);
+        $rssFeedItemAnnotation = $annotations->firstNamed('RssFeedItem');
+        $self    = new self(
+                self::getRequiredAttribute(
+                        $entity,
+                        $entityClass,
+                        'title',
+                        $rssFeedItemAnnotation->getTitleMethod('getTitle'),
+                        $overrides
+                ),
+                self::getRequiredAttribute(
+                        $entity,
+                        $entityClass,
+                        'link',
+                        $rssFeedItemAnnotation->getLinkMethod('getLink'),
+                        $overrides
+                ),
+                self::getRequiredAttribute(
+                        $entity,
+                        $entityClass,
+                        'description',
+                        $rssFeedItemAnnotation->getDescriptionMethod('getDescription'),
+                        $overrides
+                )
+        );
 
         foreach (['byAuthor'              => 'getAuthor',
                   'inCategories'          => 'getCategories',
@@ -182,7 +186,7 @@ class RssFeedItem
                 $annotationMethod = 'get' . $defaultMethod . 'Method';
             }
 
-            $entityMethod     = $rssFeedItemAnnotation->$annotationMethod($defaultMethod);
+            $entityMethod = $rssFeedItemAnnotation->$annotationMethod($defaultMethod);
             if ($entityClass->hasMethod($entityMethod)) {
                 $self->$itemMethod($entity->$entityMethod());
             }
@@ -194,15 +198,15 @@ class RssFeedItem
     /**
      * helper method to retrieve a required attribute
      *
-     * @param   object                                      $entity
-     * @param   \stubbles\lang\reflect\BaseReflectionClass  $entityClass
-     * @param   string                                      $name
-     * @param   string                                      $method
-     * @param   array                                       $overrides
+     * @param   object            $entity
+     * @param   \ReflectionClass  $entityClass
+     * @param   string            $name
+     * @param   string            $method
+     * @param   array             $overrides
      * @return  string
      * @throws  \stubbles\xml\XmlException
      */
-    private static function getRequiredAttribute($entity, BaseReflectionClass $entityClass, $name, $method, array $overrides)
+    private static function getRequiredAttribute($entity, \ReflectionClass $entityClass, $name, $method, array $overrides)
     {
         if (isset($overrides[$name])) {
             return $overrides[$name];

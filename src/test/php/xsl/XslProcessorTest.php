@@ -11,7 +11,7 @@ namespace stubbles\xml\xsl;
 use org\bovigo\vfs\vfsStream;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
-use stubbles\lang;
+use stubbles\lang\reflect;
 /**
  * Helper class for the test.
  */
@@ -108,12 +108,12 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function providedByXslProcessorProvider()
     {
-        $class = lang\reflect(new XslProcessor(new XslCallbacks()));
-        $this->assertTrue($class->hasAnnotation('ProvidedBy'));
-        $this->assertEquals('stubbles\xml\xsl\XslProcessorProvider',
-                            $class->annotation('ProvidedBy')
-                                  ->getProviderClass()
-                                  ->getName()
+        $this->assertEquals(
+                'stubbles\xml\xsl\XslProcessorProvider',
+                reflect\annotationsOf(__NAMESPACE__ . '\XslProcessor')
+                        ->firstNamed('ProvidedBy')
+                        ->getProviderClass()
+                        ->getName()
         );
     }
 

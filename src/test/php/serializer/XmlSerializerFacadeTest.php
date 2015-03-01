@@ -8,7 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\serializer;
-use stubbles\lang;
+use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -63,7 +63,10 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresent()
     {
-        $this->assertTrue(lang\reflectConstructor($this->xmlSerializerFacade)->hasAnnotation('Inject'));
+        $this->assertTrue(
+                reflect\constructorAnnotationsOf($this->xmlSerializerFacade)
+                        ->contain('Inject')
+        );
     }
 
     /**
@@ -78,8 +81,9 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
         $this->mockXmlStreamWriter->expects($this->once())
                                   ->method('asXML')
                                   ->will($this->returnValue('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>'));
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>',
-                            $this->xmlSerializerFacade->serializeToXml('foo')
+        $this->assertEquals(
+                '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>',
+                $this->xmlSerializerFacade->serializeToXml('foo')
         );
     }
 
