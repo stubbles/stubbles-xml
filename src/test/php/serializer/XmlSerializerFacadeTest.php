@@ -64,7 +64,7 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresent()
     {
         $this->assertTrue(
-                reflect\constructorAnnotationsOf($this->xmlSerializerFacade)
+                reflect\annotationsOfConstructor($this->xmlSerializerFacade)
                         ->contain('Inject')
         );
     }

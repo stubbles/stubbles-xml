@@ -59,7 +59,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresentOnConstructor()
     {
         $this->assertTrue(
-                reflect\constructorAnnotationsOf($this->xslProcessorProvider)
+                reflect\annotationsOfConstructor($this->xslProcessorProvider)
                         ->contain('Inject')
         );
 

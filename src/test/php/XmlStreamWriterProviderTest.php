@@ -38,7 +38,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function annotationsPresentOnConstructor()
     {
         $this->assertTrue(
-                reflect\constructorAnnotationsOf($this->xmlStreamWriterProvider)
+                reflect\annotationsOfConstructor($this->xmlStreamWriterProvider)
                         ->contain('Inject')
         );
 
