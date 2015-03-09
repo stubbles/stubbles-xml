@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "stubbles/core",
-            "version": "dev-master",
+            "version": "v5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-core.git",
-                "reference": "2f1419754ba3b708e9c50e54d2444e3d58349a3b"
+                "reference": "6ea79c0be795ba55cf4b6f3abbb282ea3d655f3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/2f1419754ba3b708e9c50e54d2444e3d58349a3b",
-                "reference": "2f1419754ba3b708e9c50e54d2444e3d58349a3b",
+                "url": "https://api.github.com/repos/stubbles/stubbles-core/zipball/6ea79c0be795ba55cf4b6f3abbb282ea3d655f3b",
+                "reference": "6ea79c0be795ba55cf4b6f3abbb282ea3d655f3b",
                 "shasum": ""
             },
             "require": {
@@ -50,39 +50,42 @@
             ],
             "description": "Provides base classes for Stubbles packages.",
             "homepage": "http://stubbles.net/",
-            "time": "2015-03-02 12:18:40"
+            "time": "2015-03-09 10:40:51"
         },
         {
             "name": "stubbles/date",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-date.git",
-                "reference": "7b0615bd4d0294965f2b55d2a0932492f1f75a1d"
+                "reference": "791eda292077d9746a245dbc534da5315f43affa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-date/zipball/7b0615bd4d0294965f2b55d2a0932492f1f75a1d",
-                "reference": "7b0615bd4d0294965f2b55d2a0932492f1f75a1d",
+                "url": "https://api.github.com/repos/stubbles/stubbles-date/zipball/791eda292077d9746a245dbc534da5315f43affa",
+                "reference": "791eda292077d9746a245dbc534da5315f43affa",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.3",
-                "stubbles/core": "~5.1"
+                "phpunit/phpunit": "~4.5",
+                "stubbles/core": "~5.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.1.x-dev"
+                    "dev-master": "5.2.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "stubbles\\date\\": "src/main/php"
-                }
+                },
+                "files": [
+                    "src/main/php/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -90,7 +93,7 @@
             ],
             "description": "Simplified handling of dates and datespans.",
             "homepage": "http://stubbles.net/",
-            "time": "2014-11-13 14:18:22"
+            "time": "2015-03-06 16:21:58"
         }
     ],
     "packages-dev": [
