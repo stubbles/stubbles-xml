@@ -501,15 +501,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
-
-
-
-
-
-
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeAssociativeSequenceWithoutTagName()
     {
@@ -521,6 +515,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeAssociativeSequenceWithGivenTagName()
     {
@@ -539,6 +534,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeIndexedSequenceWithoutTagName()
     {
@@ -550,6 +546,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeIndexedSequenceWithGivenTagName()
     {
@@ -561,6 +558,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeIndexedSequenceWithoutTagNameAndGivenElementTagName()
     {
@@ -572,6 +570,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeIndexedSequenceWithGivenTagNameAndElementTagName()
     {
@@ -583,6 +582,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  4.2.0
      */
     public function serializeFinalSequence()
     {
@@ -596,10 +596,6 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
                 )
         );
     }
-
-
-
-
 
     /**
      * @test
