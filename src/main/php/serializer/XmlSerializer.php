@@ -65,7 +65,7 @@ class XmlSerializer
                 break;
 
             case 'object':
-                if ($value instanceof \Iterator) {
+                if ($value instanceof \Traversable) {
                     $this->serializeArray($value, $xmlWriter, $tagName, $elementTagName);
                 } else {
                     $this->serializeObject($value, $xmlWriter, $tagName);

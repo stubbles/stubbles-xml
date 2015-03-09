@@ -1,3 +1,11 @@
+4.2.0 (2015-03-??)
+------------------
+
+  ### BC breaks
+
+  * XML serializer now serializes all `\Traversable` as array, not only `\Iterator`
+
+
 4.1.0 (2014-09-29)
 ------------------
 

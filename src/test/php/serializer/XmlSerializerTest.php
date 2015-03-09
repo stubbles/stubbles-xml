@@ -32,6 +32,7 @@ use org\stubbles\test\xml\serializer\ExampleObjectWithInvalidXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleObjectWithUmlauts;
 use org\stubbles\test\xml\serializer\ExampleObjectWithXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleStaticClass;
+use stubbles\lang\Sequence;
 use stubbles\lang\reflect;
 use stubbles\xml\DomXmlStreamWriter;
 /**
@@ -95,8 +96,12 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     protected function serialize($value, $tagName = null, $elementTagName = null)
     {
-        return $this->serializer->serialize($value, new DomXmlStreamWriter(), $tagName, $elementTagName)
-                                ->asXml();
+        return $this->serializer->serialize(
+                $value,
+                new DomXmlStreamWriter(),
+                $tagName,
+                $elementTagName
+        )->asXml();
     }
 
     /**
@@ -105,7 +110,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      * @param   string  $xml
      * @return  string
      */
-    protected function getXmlWithPrefix($xml)
+    protected function prefixXml($xml)
     {
         return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
     }
@@ -116,7 +121,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeNullWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<null><null/></null>'),
+                $this->prefixXml('<null><null/></null>'),
                 $this->serialize(null)
         );
     }
@@ -127,7 +132,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeNullWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root><null/></root>'),
+                $this->prefixXml('<root><null/></root>'),
                 $this->serialize(null, 'root')
         );
     }
@@ -138,7 +143,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeBooleanTrueWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<boolean>true</boolean>'),
+                $this->prefixXml('<boolean>true</boolean>'),
                 $this->serialize(true)
         );
     }
@@ -149,7 +154,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeBooleanTrueWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>true</root>'),
+                $this->prefixXml('<root>true</root>'),
                 $this->serialize(true, 'root')
         );
     }
@@ -160,7 +165,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeBooleanFalseWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<boolean>false</boolean>'),
+                $this->prefixXml('<boolean>false</boolean>'),
                 $this->serialize(false)
         );
     }
@@ -171,7 +176,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeBooleanFalseWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>false</root>'),
+                $this->prefixXml('<root>false</root>'),
                 $this->serialize(false, 'root')
         );
     }
@@ -182,7 +187,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeStringWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<string>This is a string.</string>'),
+                $this->prefixXml('<string>This is a string.</string>'),
                 $this->serialize('This is a string.')
         );
     }
@@ -193,7 +198,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeStringWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>This is a string.</root>'),
+                $this->prefixXml('<root>This is a string.</root>'),
                 $this->serialize('This is a string.', 'root')
         );
     }
@@ -204,12 +209,11 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeStringWithoutTagNameDirectly()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<string>This is a string.</string>'),
+                $this->prefixXml('<string>This is a string.</string>'),
                 $this->serializer->serializeString(
                                 'This is a string.',
                                 new DomXmlStreamWriter()
-                        )
-                        ->asXml()
+                )->asXml()
         );
     }
 
@@ -219,13 +223,12 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeStringWithGivenTagNameDirectly()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>This is a string.</root>'),
+                $this->prefixXml('<root>This is a string.</root>'),
                 $this->serializer->serializeString(
                                 'This is a string.',
                                 new DomXmlStreamWriter(),
                                 'root'
-                        )
-                        ->asXml()
+                )->asXml()
         );
     }
 
@@ -235,7 +238,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeIntegerWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<integer>45</integer>'),
+                $this->prefixXml('<integer>45</integer>'),
                 $this->serialize(45)
         );
     }
@@ -246,7 +249,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeIntegerWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>45</root>'),
+                $this->prefixXml('<root>45</root>'),
                 $this->serialize(45, 'root')
         );
     }
@@ -257,7 +260,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeIntegerWithoutTagNameDirectly()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<integer>45</integer>'),
+                $this->prefixXml('<integer>45</integer>'),
                 $this->serializer->serializeInt(45, new DomXmlStreamWriter())
                         ->asXml()
         );
@@ -269,7 +272,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeIntegerWithGivenTagNameDirectly()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>45</root>'),
+                $this->prefixXml('<root>45</root>'),
                 $this->serializer->serializeInt(45, new DomXmlStreamWriter(), 'root')
                         ->asXml()
         );
@@ -281,7 +284,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeFloatWithoutTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<double>2.352</double>'),
+                $this->prefixXml('<double>2.352</double>'),
                 $this->serialize(2.352)
         );
     }
@@ -292,7 +295,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function serializeFloatWithGivenTagName()
     {
         $this->assertEquals(
-                $this->getXmlWithPrefix('<root>2.352</root>'),
+                $this->prefixXml('<root>2.352</root>'),
                 $this->serialize(2.352, 'root')
         );
     }
@@ -302,11 +305,12 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeFloatWithoutTagNameDirectly()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<double>2.352</double>'),
-                            $this->serializer->serializeFloat(2.352,
-                                                              new DomXmlStreamWriter()
-                                               )
-                                             ->asXml()
+        $this->assertEquals(
+                $this->prefixXml('<double>2.352</double>'),
+                $this->serializer->serializeFloat(
+                        2.352,
+                        new DomXmlStreamWriter()
+                )->asXml()
         );
     }
 
@@ -315,12 +319,13 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeFloatWithGivenTagNameDirectly()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root>2.352</root>'),
-                            $this->serializer->serializeFloat(2.352,
-                                                              new DomXmlStreamWriter(),
-                                                              'root'
-                                               )
-                                             ->asXml()
+        $this->assertEquals(
+                $this->prefixXml('<root>2.352</root>'),
+                $this->serializer->serializeFloat(
+                        2.352,
+                        new DomXmlStreamWriter(),
+                        'root'
+                )->asXml()
         );
     }
 
@@ -329,11 +334,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeAssociativeArrayWithoutTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<array><one>two</one><three>four</three></array>'),
-                            $this->serialize(['one'   => 'two',
-                                              'three' => 'four'
-                                             ]
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<array><one>two</one><three>four</three></array>'),
+                $this->serialize(['one' => 'two', 'three' => 'four'])
         );
     }
 
@@ -342,12 +345,14 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeAssociativeArrayWithGivenTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three>four</three></root>'),
-                            $this->serialize(['one'   => 'two',
-                                              'three' => 'four'
-                                             ],
-                                             'root'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><one>two</one><three>four</three></root>'),
+                $this->serialize(
+                        ['one'   => 'two',
+                         'three' => 'four'
+                        ],
+                        'root'
+                )
         );
     }
 
@@ -356,8 +361,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedArrayWithoutTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<array><string>one</string><integer>2</integer><string>three</string></array>'),
-                            $this->serialize(['one', 2, 'three'])
+        $this->assertEquals(
+                $this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'),
+                $this->serialize(['one', 2, 'three'])
         );
     }
 
@@ -366,8 +372,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedArrayWithGivenTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><string>one</string><integer>2</integer><string>three</string></root>'),
-                            $this->serialize(['one', 2, 'three'], 'root')
+        $this->assertEquals(
+                $this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'),
+                $this->serialize(['one', 2, 'three'], 'root')
         );
     }
 
@@ -376,8 +383,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedArrayWithoutTagNameAndGivenElementTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'),
-                            $this->serialize(['one', 2, 'three'], null, 'foo')
+        $this->assertEquals(
+                $this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'),
+                $this->serialize(['one', 2, 'three'], null, 'foo')
         );
     }
 
@@ -386,8 +394,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedArrayWithGivenTagNameAndElementTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
-                            $this->serialize(['one', 2, 'three'], 'root', 'foo')
+        $this->assertEquals(
+                $this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
+                $this->serialize(['one', 2, 'three'], 'root', 'foo')
         );
     }
 
@@ -396,12 +405,14 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeNestedArray()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three><four>five</four></three></root>'),
-                            $this->serialize(['one'   => 'two',
-                                              'three' => ['four' => 'five']
-                                             ],
-                                             'root'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'),
+                $this->serialize(
+                        ['one'   => 'two',
+                         'three' => ['four' => 'five']
+                        ],
+                        'root'
+                )
         );
     }
 
@@ -410,12 +421,11 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeAssociativeIteratorWithoutTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<array><one>two</one><three>four</three></array>'),
-                            $this->serialize(new \ArrayIterator(['one'   => 'two',
-                                                                 'three' => 'four'
-                                                                ]
-                                             )
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<array><one>two</one><three>four</three></array>'),
+                $this->serialize(
+                        new \ArrayIterator(['one' => 'two', 'three' => 'four'])
+                )
         );
     }
 
@@ -424,13 +434,12 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeAssociativeIteratorWithGivenTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three>four</three></root>'),
-                            $this->serialize(new \ArrayIterator(['one'   => 'two',
-                                                                 'three' => 'four'
-                                                                ]
-                                             ),
-                                             'root'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><one>two</one><three>four</three></root>'),
+                $this->serialize(
+                        new \ArrayIterator(['one' => 'two', 'three' => 'four']),
+                        'root'
+                )
         );
     }
 
@@ -439,8 +448,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedIteratorWithoutTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<array><string>one</string><integer>2</integer><string>three</string></array>'),
-                            $this->serialize(new \ArrayIterator(['one', 2, 'three']))
+        $this->assertEquals(
+                $this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'),
+                $this->serialize(new \ArrayIterator(['one', 2, 'three']))
         );
     }
 
@@ -449,10 +459,12 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedIteratorWithGivenTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><string>one</string><integer>2</integer><string>three</string></root>'),
-                            $this->serialize(new \ArrayIterator(['one', 2, 'three']),
-                                             'root'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'),
+                $this->serialize(
+                        new \ArrayIterator(['one', 2, 'three']),
+                        'root'
+                )
         );
     }
 
@@ -461,11 +473,13 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeIndexedIteratorWithGivenTagNameAndElementTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
-                            $this->serialize(new \ArrayIterator(['one', 2, 'three']),
-                                             'root',
-                                             'foo'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
+                $this->serialize(
+                        new \ArrayIterator(['one', 2, 'three']),
+                        'root',
+                        'foo'
+                )
         );
     }
 
@@ -474,23 +488,127 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeNestedIterator()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<root><one>two</one><three><four>five</four></three></root>'),
-                            $this->serialize(new \ArrayIterator(['one'   => 'two',
-                                                                 'three' => new \ArrayIterator(['four' => 'five'])
-                                                                ]
-                                             ),
-                                             'root'
-                            )
+        $this->assertEquals(
+                $this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'),
+                $this->serialize(
+                        new \ArrayIterator(
+                                ['one'   => 'two',
+                                 'three' => new \ArrayIterator(['four' => 'five'])
+                                ]
+                        ),
+                        'root'
+                )
+        );
+    }
+
+
+
+
+
+
+
+
+    /**
+     * @test
+     */
+    public function serializeAssociativeSequenceWithoutTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<array><one>two</one><three>four</three></array>'),
+                $this->serialize(Sequence::of(['one' => 'two', 'three' => 'four']))
         );
     }
 
     /**
      * @test
      */
+    public function serializeAssociativeSequenceWithGivenTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<root><one>two</one><three>four</three></root>'),
+                $this->serialize(
+                        Sequence::of(
+                                ['one'   => 'two',
+                                 'three' => 'four'
+                                ]
+                        ),
+                        'root'
+                )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeIndexedSequenceWithoutTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'),
+                $this->serialize(Sequence::of(['one', 2, 'three']))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeIndexedSequenceWithGivenTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'),
+                $this->serialize(Sequence::of(['one', 2, 'three']), 'root')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeIndexedSequenceWithoutTagNameAndGivenElementTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'),
+                $this->serialize(Sequence::of(['one', 2, 'three']), null, 'foo')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeIndexedSequenceWithGivenTagNameAndElementTagName()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'),
+                $this->serialize(Sequence::of(['one', 2, 'three']), 'root', 'foo')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function serializeFinalSequence()
+    {
+        $this->assertEquals(
+                $this->prefixXml('<root><one>TWO</one><three>FOUR</three></root>'),
+                $this->serialize(
+                        Sequence::of(
+                            ['one'   => 'two', 'three' => 'four']
+                        )->map(function($value) { return strtoupper($value); }),
+                        'root'
+                )
+        );
+    }
+
+
+
+
+
+    /**
+     * @test
+     */
     public function serializeObjectWithoutTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<foo bar="test"><bar>42</bar></foo>'),
-                            $this->serialize(new ExampleObjectClass())
+        $this->assertEquals(
+                $this->prefixXml('<foo bar="test"><bar>42</bar></foo>'),
+                $this->serialize(new ExampleObjectClass())
         );
     }
 
@@ -499,8 +617,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWithGivenTagName()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<baz bar="test"><bar>42</bar></baz>'),
-                            $this->serialize(new ExampleObjectClass(), 'baz')
+        $this->assertEquals(
+                $this->prefixXml('<baz bar="test"><bar>42</bar></baz>'),
+                $this->serialize(new ExampleObjectClass(), 'baz')
         );
     }
 
@@ -513,8 +632,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
                            ->method('getInstance')
                            ->with($this->equalTo('org\\stubbles\\test\\xml\\serializer\\ExampleObjectSerializer'))
                            ->will($this->returnValue(new ExampleObjectSerializer()));
-        $this->assertEquals($this->getXmlWithPrefix('<example sound="303"><anything>something</anything></example>'),
-                            $this->serialize(new ExampleObjectClassWithSerializer())
+        $this->assertEquals(
+                $this->prefixXml('<example sound="303"><anything>something</anything></example>'),
+                $this->serialize(new ExampleObjectClassWithSerializer())
         );
     }
 
@@ -525,8 +645,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $obj      = new ExampleObjectClass();
         $obj->bar = new ExampleObjectClass();
-        $this->assertEquals($this->getXmlWithPrefix('<foo bar="test"><bar bar="test"><bar>42</bar></bar></foo>'),
-                            $this->serialize($obj)
+        $this->assertEquals(
+                $this->prefixXml('<foo bar="test"><bar bar="test"><bar>42</bar></bar></foo>'),
+                $this->serialize($obj)
         );
     }
 
@@ -535,8 +656,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWhichContainsArray()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<container><list><item>one</item><item>two</item><item>three</item></list></container>'),
-                            $this->serialize(new ContainerWithArrayListTagName())
+        $this->assertEquals(
+                $this->prefixXml('<container><list><item>one</item><item>two</item><item>three</item></list></container>'),
+                $this->serialize(new ContainerWithArrayListTagName())
         );
     }
 
@@ -545,8 +667,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWhichContainsArrayWhereArrayTagNameIsDisabled()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<container><item>one</item><item>two</item><item>three</item></container>'),
-                            $this->serialize(new ContainerWithArrayListWithoutTagName())
+        $this->assertEquals(
+                $this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'),
+                $this->serialize(new ContainerWithArrayListWithoutTagName())
         );
     }
 
@@ -555,8 +678,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWhichContainsIterator()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<container><item>one</item><item>two</item><item>three</item></container>'),
-                            $this->serialize(new ContainerWithIterator())
+        $this->assertEquals(
+                $this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'),
+                $this->serialize(new ContainerWithIterator())
         );
     }
 
@@ -565,8 +689,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeStandardObject()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<class method="returned" isFoo="true" isBar="false"><getBaz>baz</getBaz></class>'),
-                            $this->serialize(new ExampleObjectClassWithMethods())
+        $this->assertEquals(
+                $this->prefixXml('<class method="returned" isFoo="true" isBar="false"><getBaz>baz</getBaz></class>'),
+                $this->serialize(new ExampleObjectClassWithMethods())
         );
     }
 
@@ -575,8 +700,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWithXmlFragment()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<test><xml><foo>bar</foo></xml><foo>bar</foo><description>foo<br/>' . "\n" . 'b&amp;ar<br/>' . "\n" . '<br/>' . "\n" . 'baz</description></test>'),
-                            $this->serialize(new ExampleObjectWithXmlFragments())
+        $this->assertEquals(
+                $this->prefixXml('<test><xml><foo>bar</foo></xml><foo>bar</foo><description>foo<br/>' . "\n" . 'b&amp;ar<br/>' . "\n" . '<br/>' . "\n" . 'baz</description></test>'),
+                $this->serialize(new ExampleObjectWithXmlFragments())
         );
     }
 
@@ -585,8 +711,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWithInvalidXmlFragment()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<test><noXml>bar</noXml><noData/></test>'),
-                            $this->serialize(new ExampleObjectWithInvalidXmlFragments())
+        $this->assertEquals(
+                $this->prefixXml('<test><noXml>bar</noXml><noData/></test>'),
+                $this->serialize(new ExampleObjectWithInvalidXmlFragments())
         );
     }
 
@@ -595,8 +722,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectWithEmptyAttributes()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<test emptyProp2="" emptyMethod2=""/>'),
-                            $this->serialize(new ExampleObjectClassWithEmptyAttributes())
+        $this->assertEquals(
+                $this->prefixXml('<test emptyProp2="" emptyMethod2=""/>'),
+                $this->serialize(new ExampleObjectClassWithEmptyAttributes())
         );
     }
 
@@ -605,8 +733,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotSerializeStaticPropertiesAndMethods()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<ExampleStaticClass/>'),
-                            $this->serialize(new ExampleStaticClass())
+        $this->assertEquals(
+                $this->prefixXml('<ExampleStaticClass/>'),
+                $this->serialize(new ExampleStaticClass())
         );
     }
 
@@ -615,8 +744,9 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeObjectContainingUmlauts()
     {
-        $this->assertEquals($this->getXmlWithPrefix('<test bar="Hähnchen"><foo>Hähnchen</foo></test>'),
-                            $this->serialize(new ExampleObjectWithUmlauts())
+        $this->assertEquals(
+                $this->prefixXml('<test bar="Hähnchen"><foo>Hähnchen</foo></test>'),
+                $this->serialize(new ExampleObjectWithUmlauts())
         );
     }
 
