@@ -1,9 +1,13 @@
-4.2.0 (2015-03-??)
+4.2.0 (2015-03-09)
 ------------------
 
   ### BC breaks
 
   * XML serializer now serializes all `\Traversable` as array, not only `\Iterator`
+
+### Other changes
+
+  * upgraded to stubbles/core 5.3
 
 
 4.1.0 (2014-09-29)
