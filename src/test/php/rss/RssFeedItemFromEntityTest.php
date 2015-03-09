@@ -462,11 +462,13 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('overrideGuid', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
         $date = new Date(1221598221);
-        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
-                            $rssFeedItem->getPubDate()
+        $this->assertEquals(
+                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
+                $rssFeedItem->getPubDate()
         );
-        $this->assertEquals([['name' => 'overrideSourceName', 'url' => 'overrideSourceUrl']],
-                            $rssFeedItem->getSources()
+        $this->assertEquals(
+                [['name' => 'overrideSourceName', 'url' => 'overrideSourceUrl']],
+                $rssFeedItem->getSources()
         );
         $this->assertEquals('overrideContent', $rssFeedItem->getContent());
     }
@@ -500,11 +502,13 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('extendedGuid', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
         $date = new Date(1221598221);
-        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
-                            $rssFeedItem->getPubDate()
+        $this->assertEquals(
+                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
+                $rssFeedItem->getPubDate()
         );
-        $this->assertEquals([['name' => 'extendedSourceName', 'url' => 'extendedSourceUrl']],
-                            $rssFeedItem->getSources()
+        $this->assertEquals(
+                [['name' => 'extendedSourceName', 'url' => 'extendedSourceUrl']],
+                $rssFeedItem->getSources()
         );
         $this->assertEquals('extendedContent', $rssFeedItem->getContent());
     }
@@ -538,11 +542,13 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('id', $rssFeedItem->getGuid());
         $this->assertFalse($rssFeedItem->isGuidPermaLink());
         $date = new Date(1221598221);
-        $this->assertEquals('Tue 16 Sep 2008 ' . $date->getHours() . ':50:21 ' . $date->getOffset(),
-                            $rssFeedItem->getPubDate()
+        $this->assertEquals(
+                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
+                $rssFeedItem->getPubDate()
         );
-        $this->assertEquals([['name' => 'originName', 'url' => 'originUrl']],
-                            $rssFeedItem->getSources()
+        $this->assertEquals(
+                [['name' => 'originName', 'url' => 'originUrl']],
+                $rssFeedItem->getSources()
         );
         $this->assertEquals('text', $rssFeedItem->getContent());
     }

@@ -76,7 +76,7 @@ class RssFeedItem
     /**
      * indicates when the item was published
      *
-     * @type  Date
+     * @type  \stubbles\date\Date
      */
     protected $pubDate     = null;
     /**
@@ -460,7 +460,7 @@ class RssFeedItem
     /**
      * set the date when the item was published
      *
-     * @param   string|int|Date  $pubDate  publishing date of rss feed item
+     * @param   string|int|\stubbles\date\Date  $pubDate  publishing date of rss feed item
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function publishedOn($pubDate)

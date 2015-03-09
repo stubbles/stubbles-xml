@@ -74,7 +74,7 @@ class RssFeed
     /**
      * last time the content of the channel changed
      *
-     * @type  Date
+     * @type  \stubbles\date\Date
      */
     protected $lastBuildDate  = null;
     /**
@@ -376,7 +376,7 @@ class RssFeed
     /**
      * set the last time when the content of the channel changed
      *
-     * @param   string|int   $lastBuildDate  last time the content of the channel changed
+     * @param   string|int|\stubbles\date\Date   $lastBuildDate  last time the content of the channel changed
      * @return  \stubbles\xml\rss\RssFeed
      */
     public function setLastBuildDate($lastBuildDate)

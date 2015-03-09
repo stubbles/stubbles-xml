@@ -230,7 +230,7 @@ class RssFeedTest extends \PHPUnit_Framework_TestCase
     public function lastBuildDateCanBePassedAsDateInstance()
     {
         $date = new Date('2008-05-24');
-        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->getOffset(),
+        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->offset(),
                             $this->rssFeed->setLastBuildDate($date)
                                           ->getLastBuildDate()
         );
@@ -242,7 +242,7 @@ class RssFeedTest extends \PHPUnit_Framework_TestCase
     public function alternativeLastBuildDate()
     {
         $date = new Date('2008-05-24');
-        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->getOffset(),
+        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->offset(),
                             $this->rssFeed->setLastBuildDate('2008-05-24')
                                           ->getLastBuildDate()
         );
