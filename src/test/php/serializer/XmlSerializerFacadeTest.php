@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\serializer;
+use bovigo\callmap\NewInstance;
 use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\serializer\XmlSerializerFacade.
@@ -27,15 +28,15 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked xml serializer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlSerializer;
+    private $xmlSerializer;
     /**
      * mocked xml stream writer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlStreamWriter;
+    private $xmlStreamWriter;
 
     /**
      * set up test environment
@@ -43,11 +44,12 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockXmlSerializer   = $this->getMockBuilder('stubbles\xml\serializer\XmlSerializer')
-                                          ->disableOriginalConstructor()
-                                          ->getMock();
-        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
-        $this->xmlSerializerFacade = new XmlSerializerFacade($this->mockXmlSerializer, $this->mockXmlStreamWriter);
+        $this->xmlSerializer   = NewInstance::stub('stubbles\xml\serializer\XmlSerializer');
+        $this->xmlStreamWriter = NewInstance::of('stubbles\xml\XmlStreamWriter');
+        $this->xmlSerializerFacade = new XmlSerializerFacade(
+                $this->xmlSerializer,
+                $this->xmlStreamWriter
+        );
     }
 
     /**
@@ -61,27 +63,13 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function annotationsPresent()
-    {
-        $this->assertTrue(
-                reflect\annotationsOfConstructor($this->xmlSerializerFacade)
-                        ->contain('Inject')
-        );
-    }
-
-    /**
-     * @test
-     */
     public function serializeToXmlReturnsXmlString()
     {
-        $this->mockXmlSerializer->expects($this->once())
-                                ->method('serialize')
-                                ->with($this->equalTo('foo'), $this->equalTo($this->mockXmlStreamWriter))
-                                ->will($this->returnValue($this->mockXmlStreamWriter));
-        $this->mockXmlStreamWriter->expects($this->once())
-                                  ->method('asXML')
-                                  ->will($this->returnValue('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>'));
-        $this->assertEquals(
+        $this->xmlSerializer->mapCalls(['serialize' => $this->xmlStreamWriter]);
+        $this->xmlStreamWriter->mapCalls(
+                ['asXml' => '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>']
+        );
+        assertEquals(
                 '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>',
                 $this->xmlSerializerFacade->serializeToXml('foo')
         );
@@ -93,13 +81,11 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     public function serializeToDomReturnsDOMDocument()
     {
         $domDocument = new \DOMDocument();
-        $this->mockXmlSerializer->expects($this->once())
-                                ->method('serialize')
-                                ->with($this->equalTo('foo'), $this->equalTo($this->mockXmlStreamWriter))
-                                ->will($this->returnValue($this->mockXmlStreamWriter));
-        $this->mockXmlStreamWriter->expects($this->once())
-                                  ->method('asDom')
-                                  ->will($this->returnValue($domDocument));
-        $this->assertSame($domDocument, $this->xmlSerializerFacade->serializeToDom('foo'));
+        $this->xmlSerializer->mapCalls(['serialize' => $this->xmlStreamWriter]);
+        $this->xmlStreamWriter->mapCalls(['asDom' => $domDocument]);
+        assertSame(
+                $domDocument,
+                $this->xmlSerializerFacade->serializeToDom('foo')
+        );
     }
 }

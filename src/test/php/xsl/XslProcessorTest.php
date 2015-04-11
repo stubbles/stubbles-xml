@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
+use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
@@ -20,16 +21,16 @@ class TestXslProcessor extends XslProcessor
     /**
      * mocked xslt processor
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    public static $mockXsltProcessor;
+    public static $xsltProcessor;
 
     /**
      * overwrite creation method to inject the mock object
      */
     protected function createXsltProcessor()
     {
-        return self::$mockXsltProcessor;
+        return self::$xsltProcessor;
     }
 
     /**
@@ -58,9 +59,9 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     /**
      * a mock for the XSLTProcessor
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXSLTProcessor;
+    private $baseXsltProcessor;
     /**
      * a dom document to test
      *
@@ -87,8 +88,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->mockXSLTProcessor = $this->getMock('\XSLTProcessor');
-        TestXslProcessor::$mockXsltProcessor = $this->mockXSLTProcessor;
+        $this->baseXsltProcessor = NewInstance::of('\XSLTProcessor');
+        TestXslProcessor::$xsltProcessor = $this->baseXsltProcessor;
         $this->xslProcessor = new TestXslProcessor(new XslCallbacks());
         $this->document     = new \DOMDocument();
         $this->document->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
@@ -108,7 +109,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function providedByXslProcessorProvider()
     {
-        $this->assertEquals(
+        assertEquals(
                 'stubbles\xml\xsl\XslProcessorProvider',
                 reflect\annotationsOf(__NAMESPACE__ . '\XslProcessor')
                         ->firstNamed('ProvidedBy')
@@ -124,11 +125,13 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     public function enableProfilingBySettingPathToProfileDataFile()
     {
         vfsStream::setup();
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('setProfiling')
-                                ->with($this->equalTo(vfsStream::url('root/profile.txt')));
-        $this->assertSame($this->xslProcessor,
-                          $this->xslProcessor->enableProfiling(vfsStream::url('root/profile.txt'))
+        assertSame(
+                $this->xslProcessor,
+                $this->xslProcessor->enableProfiling(vfsStream::url('root/profile.txt'))
+        );
+        assertEquals(
+                [vfsStream::url('root/profile.txt')],
+                $this->baseXsltProcessor->argumentsReceivedFor('setProfiling')
         );
     }
 
@@ -137,7 +140,10 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function onDocumentReturnsItself()
     {
-        $this->assertSame($this->xslProcessor, $this->xslProcessor->onDocument($this->document));
+        assertSame(
+                $this->xslProcessor,
+                $this->xslProcessor->onDocument($this->document)
+        );
     }
 
     /**
@@ -156,8 +162,9 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
 
 </xsl:stylesheet>')
                  ->at($root);
-        $this->assertSame($this->xslProcessor,
-                          $this->xslProcessor->onXmlFile(vfsStream::url('root/test.xsl'))
+        assertSame(
+                $this->xslProcessor,
+                $this->xslProcessor->onXmlFile(vfsStream::url('root/test.xsl'))
         );
     }
 
@@ -178,8 +185,11 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $stylesheet = new \DOMDocument();
         $stylesheet->loadXML($this->stylesheet);
-        $this->assertSame($this->xslProcessor, $this->xslProcessor->applyStylesheet($stylesheet));
-        $this->assertEquals([$stylesheet], $this->xslProcessor->getStylesheets());
+        assertSame(
+                $this->xslProcessor,
+                $this->xslProcessor->applyStylesheet($stylesheet)
+        );
+        assertEquals([$stylesheet], $this->xslProcessor->getStylesheets());
     }
 
     /**
@@ -191,10 +201,13 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('test.xsl')
                  ->withContent($this->stylesheet)
                  ->at($root);
-        $this->assertEquals(1,
-                            count($this->xslProcessor->applyStylesheetFromFile(vfsStream::url('root/test.xsl'))
-                                                     ->getStylesheets()
-                            )
+        assertEquals(
+                1,
+                count(
+                        $this->xslProcessor
+                                ->applyStylesheetFromFile(vfsStream::url('root/test.xsl'))
+                                ->getStylesheets()
+                )
         );
     }
 
@@ -213,16 +226,17 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function singleParameters()
     {
-        $this->mockXSLTProcessor->expects($this->at(0))
-                                ->method('setParameter')
-                                ->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo('baz'))
-                                ->will($this->returnValue(true));
-        $this->mockXSLTProcessor->expects($this->at(1))
-                                ->method('setParameter')
-                                ->with($this->equalTo('foo'), $this->equalTo('foo'), $this->equalTo('bar'))
-                                ->will($this->returnValue(true));
+        $this->baseXsltProcessor->mapCalls(['setParameter' => true]);
         $this->xslProcessor->withParameter('foo', 'bar', 'baz')
-                           ->withParameter('foo', 'foo', 'bar');
+                ->withParameter('foo', 'foo', 'bar');
+        assertEquals(
+                ['foo', 'bar', 'baz'],
+                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 1)
+        );
+        assertEquals(
+                ['foo', 'foo', 'bar'],
+                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 2)
+        );
     }
 
     /**
@@ -231,10 +245,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function failingToAddSingleParametersThrowsXSLProcessorException()
     {
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('setParameter')
-                                ->with($this->equalTo('foo'), $this->equalTo('bar'), $this->equalTo('baz'))
-                                ->will($this->returnValue(false));
+        $this->baseXsltProcessor->mapCalls(['setParameter' => false]);
         $this->xslProcessor->withParameter('foo', 'bar', 'baz');
     }
 
@@ -243,16 +254,17 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function arrayParameters()
     {
-        $this->mockXSLTProcessor->expects($this->at(0))
-                                ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(['baz' => 'bar']))
-                                ->will($this->returnValue(true));
-        $this->mockXSLTProcessor->expects($this->at(1))
-                                ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(['foo' => 'bar']))
-                                ->will($this->returnValue(true));
+        $this->baseXsltProcessor->mapCalls(['setParameter' => true]);
         $this->xslProcessor->withParameters('baz', ['baz' => 'bar'])
-                           ->withParameters('baz', ['foo' => 'bar']);
+                ->withParameters('baz', ['foo' => 'bar']);
+        assertEquals(
+                ['baz', ['baz' => 'bar']],
+                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 1)
+        );
+        assertEquals(
+                ['baz', ['foo' => 'bar']],
+                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 2)
+        );
     }
 
     /**
@@ -261,10 +273,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function failingToAddListOfParametersThrowsXSLProcessorException()
     {
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('setParameter')
-                                ->with($this->equalTo('baz'), $this->equalTo(['bar' => 'baz']))
-                                ->will($this->returnValue(false));
+        $this->baseXsltProcessor->mapCalls(['setParameter' => false]);
         $this->xslProcessor->withParameters('baz', ['bar' => 'baz']);
     }
 
@@ -273,15 +282,17 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function cloneInstanceCopiesParameters()
     {
-        $anotherMockXSLTProcessor            = $this->getMock('\XSLTProcessor');
-        TestXslProcessor::$mockXsltProcessor = $anotherMockXSLTProcessor;
+        $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
+        TestXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
         $this->xslProcessor->withParameter('foo', 'bar', 'baz');
+        $this->baseXsltProcessor->mapCalls(['importStylesheet' => true]);
+        $anotherBaseXsltProcessor->mapCalls(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet(new \DOMDocument());
-        $this->mockXSLTProcessor->expects($this->never())->method('setParameter');
-        $anotherMockXSLTProcessor->expects($this->once())
-                                 ->method('setParameter')
-                                 ->with($this->equalTo('foo'), $this->equalTo(['bar' => 'baz']));
         $clonedXSLProcessor = clone $this->xslProcessor;
+        assertEquals(
+                ['foo', ['bar' => 'baz']],
+                $anotherBaseXsltProcessor->argumentsReceivedFor('setParameter')
+        );
     }
 
     /**
@@ -289,16 +300,18 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function cloneInstanceCopiesStylesheets()
     {
-        $anotherMockXSLTProcessor            = $this->getMock('\XSLTProcessor');
-        TestXslProcessor::$mockXsltProcessor = $anotherMockXSLTProcessor;
+        $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
+        TestXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
         $stylesheet = new \DOMDocument();
         $stylesheet->loadXML($this->stylesheet);
+        $this->baseXsltProcessor->mapCalls(['importStylesheet' => true]);
+        $anotherBaseXsltProcessor->mapCalls(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet($stylesheet);
-        $this->mockXSLTProcessor->expects($this->never())->method('importStylesheet');
-        $anotherMockXSLTProcessor->expects($this->once())
-                                 ->method('importStylesheet')
-                                 ->with($this->equalTo($stylesheet));
         $clonedXSLProcessor = clone $this->xslProcessor;
+        assertEquals(
+                [$stylesheet],
+                $anotherBaseXsltProcessor->argumentsReceivedFor('importStylesheet')
+        );
     }
 
     /**
@@ -307,7 +320,9 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function cloneInstanceDoesNotCopyDocumentToTransform()
     {
-        TestXslProcessor::$mockXsltProcessor = $this->getMock('\XSLTProcessor');
+        TestXslProcessor::$xsltProcessor = NewInstance::of('\XSLTProcessor')
+                ->mapCalls(['importStylesheet' => true]);
+        $this->baseXsltProcessor->mapCalls(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet(new \DOMDocument());
         $clonedXSLProcessor = clone $this->xslProcessor;
         $clonedXSLProcessor->toDoc();
@@ -330,11 +345,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $result = new \DOMDocument();
         $result->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('transformToDoc')
-                                ->with($this->equalTo($this->document))
-                                ->will($this->returnValue($result));
-        $this->assertInstanceOf('\DOMDocument', $this->xslProcessor->toDoc());
+        $this->baseXsltProcessor->mapCalls(['transformToDoc' => $result]);
+        assertInstanceOf('\DOMDocument', $this->xslProcessor->toDoc());
     }
 
     /**
@@ -343,9 +355,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function failingTransformationToDomDocumentThrowsXSLProcessorException()
     {
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('transformToDoc')
-                                ->will($this->returnValue(false));
+        $this->baseXsltProcessor->mapCalls(['transformToDoc' => false]);
         $this->xslProcessor->toDoc();
     }
 
@@ -366,12 +376,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function transformToUri()
     {
-        $this->mockXSLTProcessor->expects($this->exactly(2))
-                                ->method('transformToUri')
-                                ->with($this->equalTo($this->document))
-                                ->will($this->onConsecutiveCalls(4555, 0));
-        $this->assertEquals(4555, $this->xslProcessor->toUri('foo'));
-        $this->assertEquals(0, $this->xslProcessor->toUri('foo'));
+        $this->baseXsltProcessor->mapCalls(['transformToUri' => 4555]);
+        assertEquals(4555, $this->xslProcessor->toUri('foo'));
     }
 
     /**
@@ -380,10 +386,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function failingTransformationToUriThrowsXSLProcessorException()
     {
-        $this->mockXSLTProcessor->expects($this->once())
-                                ->method('transformToUri')
-                                ->with($this->equalTo($this->document))
-                                ->will($this->returnValue(false));
+        $this->baseXsltProcessor->mapCalls(['transformToUri' => false]);
         $this->xslProcessor->toUri('foo');
     }
 
@@ -404,12 +407,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function transformToXmlReturnsTransformedXml()
     {
-        $this->mockXSLTProcessor->expects($this->exactly(2))
-                                ->method('transformToXml')
-                                ->with($this->equalTo($this->document))
-                                ->will($this->onConsecutiveCalls('<foo>', ''));
-        $this->assertEquals('<foo>', $this->xslProcessor->toXML());
-        $this->assertEquals('', $this->xslProcessor->toXML());
+        $this->baseXsltProcessor->mapCalls(['transformToXml' => '<foo>']);
+        assertEquals('<foo>', $this->xslProcessor->toXML());
     }
 
     /**
@@ -418,10 +417,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function failingTransformationToXmlThrowsXSLProcessorException()
     {
-        $this->mockXSLTProcessor->expects($this->any())
-                                ->method('transformToXml')
-                                ->with($this->equalTo($this->document))
-                                ->will($this->returnValue(false));
+        $this->baseXsltProcessor->mapCalls(['transformToXml' => false]);
         $this->xslProcessor->toXml();
     }
 
@@ -444,7 +440,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $xslProcessor->usingCallback('foo', $callback)
                      ->registerCallbacks();
         XslProcessor::invokeCallback('foo', 'youCanDoThis');
-        $this->assertTrue($callback->calledYouCanDoThis());
+        assertTrue($callback->calledYouCanDoThis());
     }
 
     /**
@@ -454,9 +450,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $callback     = new XslExampleCallback();
         $xslProcessor = new TestXslProcessor(new XslCallbacks());
-        $xslProcessor->usingCallback('foo', $callback)
-                     ->registerCallbacks();
+        $xslProcessor->usingCallback('foo', $callback)->registerCallbacks();
         XslProcessor::invokeCallback('foo', 'hello', 'mikey');
-        $this->assertEquals('mikey', $callback->getHelloArg());
+        assertEquals('mikey', $callback->getHelloArg());
     }
 }

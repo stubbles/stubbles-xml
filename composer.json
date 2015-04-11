@@ -6,17 +6,23 @@
     "description": "Classes to work with XML",
     "require": {
         "php": ">=5.4.0",
-        "stubbles/core": "~5.3",
+        "stubbles/core": "~5.4",
         "stubbles/date": "~5.2"
     },
     "require-dev": {
-        "mikey179/vfsStream": "~1.4",
-        "phpunit/phpunit": "~4.5"
+        "mikey179/vfsStream": "~1.5",
+        "phpunit/phpunit": "~4.6",
+        "bovigo/callmap": "~0.3"
     },
     "autoload": {
         "psr-4": {
             "stubbles\\xml\\": "src/main/php"
         }
+    },
+    "autoload-dev": {
+        "files": [
+            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
+        ]
     },
     "extra": {
         "branch-alias": {

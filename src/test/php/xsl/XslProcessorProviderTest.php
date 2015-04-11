@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
+use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 use stubbles\lang\reflect;
 /**
@@ -28,9 +29,9 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked injector instance
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockInjector;
+    private $injector;
     /**
      * config directory
      *
@@ -44,11 +45,9 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->root                 = vfsStream::setup();
-        $this->mockInjector         = $this->getMockBuilder('stubbles\ioc\Injector')
-                                           ->disableOriginalConstructor()
-                                           ->getMock();
+        $this->injector             = NewInstance::stub('stubbles\ioc\Injector');
         $this->xslProcessorProvider = new XslProcessorProvider(
-                $this->mockInjector,
+                $this->injector,
                 vfsStream::url('root')
         );
     }
@@ -58,17 +57,12 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $this->assertTrue(
-                reflect\annotationsOfConstructor($this->xslProcessorProvider)
-                        ->contain('Inject')
-        );
-
         $configPathParamAnnotations = reflect\annotationsOfConstructorParameter(
                 'configPath',
                 $this->xslProcessorProvider
         );
-        $this->assertTrue($configPathParamAnnotations->contain('Named'));
-        $this->assertEquals(
+        assertTrue($configPathParamAnnotations->contain('Named'));
+        assertEquals(
                 'stubbles.config.path',
                 $configPathParamAnnotations->firstNamed('Named')->getName()
         );
@@ -79,10 +73,10 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createXslProcessorWithoutCallbacks()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 $this->xslProcessorProvider->get('stubbles.xml.xsl.callbacks.disabled')
-                                           ->getCallbacks()
+                        ->getCallbacks()
         );
     }
 
@@ -91,7 +85,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createWithNonExistingCallbackConfigurationReturnsXslProcessorWithoutCallbacks()
     {
-        $this->assertEquals(
+        assertEquals(
                 [],
                 $this->xslProcessorProvider->get()->getCallbacks()
         );
@@ -117,13 +111,10 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('xsl-callbacks.ini')
                  ->withContent('foo="org\stubbles\example\xsl\ExampleCallback"')
                  ->at($this->root);
-        $mockCallback = $this->getMock('\stubbles\\lang\\Object');
-        $this->mockInjector->expects($this->once())
-                           ->method('getInstance')
-                           ->with($this->equalTo('org\stubbles\example\xsl\ExampleCallback'))
-                           ->will($this->returnValue($mockCallback));
-        $this->assertEquals(
-            ['foo' => $mockCallback],
+        $callback = new \stdClass();
+        $this->injector->mapCalls(['getInstance' => $callback]);
+        assertEquals(
+            ['foo' => $callback],
             $this->xslProcessorProvider->get()->getCallbacks()
         );
     }

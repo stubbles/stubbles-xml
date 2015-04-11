@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use bovigo\callmap\NewInstance;
 use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
@@ -26,26 +27,24 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked xml serializer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlSerializer;
+    private $xmlSerializer;
     /**
      * mocked xml serializer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlStreamWriter;
+    private $xmlStreamWriter;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->rssFeedSerializer   = new RssFeedSerializer();
-        $this->mockXmlSerializer   = $this->getMockBuilder('stubbles\xml\serializer\XmlSerializer')
-                                            ->disableOriginalConstructor()
-                                            ->getMock();
-        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
+        $this->rssFeedSerializer = new RssFeedSerializer();
+        $this->xmlSerializer     = NewInstance::stub('stubbles\xml\serializer\XmlSerializer');
+        $this->xmlStreamWriter   = NewInstance::of('stubbles\xml\XmlStreamWriter');
     }
 
     /**
@@ -53,7 +52,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $this->assertEquals(
+        assertEquals(
                 get_class($this->rssFeedSerializer),
                 reflect\annotationsOf('stubbles\xml\rss\RssFeed')
                         ->firstNamed('XmlSerializer')
@@ -70,8 +69,8 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $this->rssFeedSerializer->serialize(
                 new \stdClass(),
-                $this->mockXmlSerializer,
-                $this->mockXmlStreamWriter,
+                $this->xmlSerializer,
+                $this->xmlStreamWriter,
                 null
         );
     }
@@ -81,21 +80,22 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function noItemsNoStylesheets()
     {
-        $this->mockXmlStreamWriter->expects($this->never())->method('writeProcessingInstruction');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeStartElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeEndElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(4))->method('writeElement');
-        $this->mockXmlSerializer->expects($this->never())->method('serializeObject');
-        $this->assertSame(
-                $this->mockXmlStreamWriter,
-                $this->rssFeedSerializer->setGenerator('Another generator')
-                                        ->serialize(
-                                                new RssFeed('title', 'link', 'description'),
-                                                $this->mockXmlSerializer,
-                                                $this->mockXmlStreamWriter,
-                                                null
-                                        )
+        assertSame(
+                $this->xmlStreamWriter,
+                $this->rssFeedSerializer
+                        ->setGenerator('Another generator')
+                        ->serialize(
+                                new RssFeed('title', 'link', 'description'),
+                                $this->xmlSerializer,
+                                $this->xmlStreamWriter,
+                                null
+                        )
         );
+        assertEquals(0, $this->xmlSerializer->callsReceivedFor('serializeObject'));
+        assertEquals(0, $this->xmlStreamWriter->callsReceivedFor('writeProcessingInstruction'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeStartElement'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeEndElement'));
+        assertEquals(4, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 
     /**
@@ -105,21 +105,20 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
-        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
-        $this->mockXmlStreamWriter->expects($this->once())->method('writeProcessingInstruction');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeStartElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeEndElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(4))->method('writeElement');
-        $this->mockXmlSerializer->expects($this->never())->method('serializeObject');
-        $this->assertSame(
-                $this->mockXmlStreamWriter,
+        assertSame(
+                $this->xmlStreamWriter,
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
-                        $this->mockXmlSerializer,
-                        $this->mockXmlStreamWriter,
+                        $this->xmlSerializer,
+                        $this->xmlStreamWriter,
                         null
                 )
         );
+        assertEquals(0, $this->xmlSerializer->callsReceivedFor('serializeObject'));
+        assertEquals(1, $this->xmlStreamWriter->callsReceivedFor('writeProcessingInstruction'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeStartElement'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeEndElement'));
+        assertEquals(4, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 
     /**
@@ -129,21 +128,20 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
-        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
-        $this->mockXmlStreamWriter->expects($this->never())->method('writeProcessingInstruction');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeStartElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(2))->method('writeEndElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(4))->method('writeElement');
-        $this->mockXmlSerializer->expects($this->once())->method('serializeObject');
-        $this->assertSame(
-                $this->mockXmlStreamWriter,
+        assertSame(
+                $this->xmlStreamWriter,
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
-                        $this->mockXmlSerializer,
-                        $this->mockXmlStreamWriter,
+                        $this->xmlSerializer,
+                        $this->xmlStreamWriter,
                         null
                 )
         );
+        assertEquals(1, $this->xmlSerializer->callsReceivedFor('serializeObject'));
+        assertEquals(0, $this->xmlStreamWriter->callsReceivedFor('writeProcessingInstruction'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeStartElement'));
+        assertEquals(2, $this->xmlStreamWriter->callsReceivedFor('writeEndElement'));
+        assertEquals(4, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 
     /**
@@ -159,20 +157,18 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 ->setLastBuildDate(50)
                 ->setTimeToLive(60)
                 ->setImage('http://example.org/example.gif', 'foo');
-
-        $this->mockXmlStreamWriter = $this->getMock('stubbles\xml\XmlStreamWriter');
-        $this->mockXmlStreamWriter->expects($this->never())->method('writeProcessingInstruction');
-        $this->mockXmlStreamWriter->expects($this->exactly(3))->method('writeStartElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(3))->method('writeEndElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(16))->method('writeElement');
-        $this->assertSame(
-                $this->mockXmlStreamWriter,
+        assertSame(
+                $this->xmlStreamWriter,
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
-                        $this->mockXmlSerializer,
-                        $this->mockXmlStreamWriter,
+                        $this->xmlSerializer,
+                        $this->xmlStreamWriter,
                         null
                 )
         );
+        assertEquals(0, $this->xmlStreamWriter->callsReceivedFor('writeProcessingInstruction'));
+        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeStartElement'));
+        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeEndElement'));
+        assertEquals(16, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 }

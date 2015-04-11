@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use bovigo\callmap\NewInstance;
 use stubbles\date\Date;
 use stubbles\lang\reflect;
 /**
@@ -27,15 +28,15 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
     /**
      * mocked xml serializer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlSerializer;
+    private $xmlSerializer;
     /**
      * mocked xml serializer
      *
-     * @type  \PHPUnit_Framework_MockObject_MockObject
+     * @type  \bovigo\callmap\Proxy
      */
-    private $mockXmlStreamWriter;
+    private $xmlStreamWriter;
 
     /**
      * set up test environment
@@ -43,10 +44,8 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedItemSerializer = new RssFeedItemSerializer();
-        $this->mockXmlSerializer     = $this->getMockBuilder('stubbles\xml\serializer\XmlSerializer')
-                                            ->disableOriginalConstructor()
-                                            ->getMock();
-        $this->mockXmlStreamWriter   = $this->getMock('stubbles\xml\XmlStreamWriter');
+        $this->xmlSerializer   = NewInstance::stub('stubbles\xml\serializer\XmlSerializer');
+        $this->xmlStreamWriter = NewInstance::of('stubbles\xml\XmlStreamWriter');
     }
 
     /**
@@ -54,7 +53,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        $this->assertEquals(
+        assertEquals(
                 get_class($this->rssFeedItemSerializer),
                 reflect\annotationsOf('stubbles\xml\rss\RssFeedItem')
                         ->firstNamed('XmlSerializer')
@@ -71,8 +70,8 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $this->rssFeedItemSerializer->serialize(
                 new \stdClass(),
-                $this->mockXmlSerializer,
-                $this->mockXmlStreamWriter,
+                $this->xmlSerializer,
+                $this->xmlStreamWriter,
                 null
         );
     }
@@ -82,17 +81,17 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeEmptyItem()
     {
-        $this->mockXmlStreamWriter->expects($this->once())
-                                  ->method('writeStartElement')
-                                  ->with($this->equalTo('item'));
-        $this->mockXmlStreamWriter->expects($this->exactly(3))
-                                  ->method('writeElement');
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description'),
-                $this->mockXmlSerializer,
-                $this->mockXmlStreamWriter,
+                $this->xmlSerializer,
+                $this->xmlStreamWriter,
                 null
         );
+        assertEquals(
+                ['item'],
+                $this->xmlStreamWriter->argumentsReceivedFor('writeStartElement')
+        );
+        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 
     /**
@@ -100,17 +99,17 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function usesGivenTagNameInsteadOfDefault()
     {
-        $this->mockXmlStreamWriter->expects($this->once())
-                                  ->method('writeStartElement')
-                                  ->with($this->equalTo('other'));
-        $this->mockXmlStreamWriter->expects($this->exactly(3))
-                                  ->method('writeElement');
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description'),
-                $this->mockXmlSerializer,
-                $this->mockXmlStreamWriter,
+                $this->xmlSerializer,
+                $this->xmlStreamWriter,
                 'other'
         );
+        assertEquals(
+                ['other'],
+                $this->xmlStreamWriter->argumentsReceivedFor('writeStartElement')
+        );
+        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 
     /**
@@ -118,10 +117,6 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function serializeCompleteItem()
     {
-        $this->mockXmlStreamWriter->expects($this->once())
-                                  ->method('writeStartElement');
-        $this->mockXmlStreamWriter->expects($this->exactly(12))
-                                  ->method('writeElement');
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description')
                         ->byAuthor('mikey')
@@ -140,9 +135,10 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                                 'http://stubbles.net/source/'
                         )
                         ->withContent('<foo>bar</foo><baz/>'),
-                $this->mockXmlSerializer,
-                $this->mockXmlStreamWriter,
+                $this->xmlSerializer,
+                $this->xmlStreamWriter,
                 null
         );
+        assertEquals(12, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
     }
 }

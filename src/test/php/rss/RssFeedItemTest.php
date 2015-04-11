@@ -41,7 +41,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenTitleByDefault()
     {
-        $this->assertEquals('test', $this->rssFeedItem->getTitle());
+        assertEquals('test', $this->rssFeedItem->getTitle());
     }
 
     /**
@@ -49,7 +49,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenLinkByDefault()
     {
-        $this->assertEquals('http://stubbles.net/', $this->rssFeedItem->getLink());
+        assertEquals('http://stubbles.net/', $this->rssFeedItem->getLink());
     }
 
     /**
@@ -57,7 +57,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenDescriptionByDefault()
     {
-        $this->assertEquals('description', $this->rssFeedItem->getDescription());
+        assertEquals('description', $this->rssFeedItem->getDescription());
     }
 
     /**
@@ -65,7 +65,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoAuthorByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->hasAuthor());
+        assertFalse($this->rssFeedItem->hasAuthor());
     }
 
     /**
@@ -73,7 +73,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function initialAuthorIsNull()
     {
-        $this->assertNull($this->rssFeedItem->getAuthor());
+        assertNull($this->rssFeedItem->getAuthor());
     }
 
     /**
@@ -81,9 +81,9 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function setAuthorWithoutMailAddressUsesExampleMailAddress()
     {
-        $this->assertEquals('nospam@example.com (mikey)',
-                            $this->rssFeedItem->byAuthor('mikey')
-                                              ->getAuthor()
+        assertEquals(
+                'nospam@example.com (mikey)',
+                $this->rssFeedItem->byAuthor('mikey')->getAuthor()
         );
     }
 
@@ -92,9 +92,10 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetAuthorWithMailAddress()
     {
-        $this->assertEquals('test@example.net (mikey)',
-                            $this->rssFeedItem->byAuthor('test@example.net (mikey)')
-                                              ->getAuthor()
+        assertEquals(
+                'test@example.net (mikey)',
+                $this->rssFeedItem->byAuthor('test@example.net (mikey)')
+                        ->getAuthor()
         );
     }
 
@@ -103,7 +104,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoCategoriesByDefault()
     {
-        $this->assertEquals([], $this->rssFeedItem->getCategories());
+        assertEquals([], $this->rssFeedItem->getCategories());
     }
 
     /**
@@ -111,16 +112,13 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetCategories()
     {
-        $this->assertEquals([['category' => 'cat1',
-                              'domain'   => ''
-                             ],
-                             ['category' => 'cat2',
-                              'domain'   => 'domain'
-                             ]
-                            ],
-                            $this->rssFeedItem->inCategory('cat1')
-                                              ->inCategory('cat2', 'domain')
-                                              ->getCategories()
+        assertEquals(
+                [['category' => 'cat1', 'domain'   => ''],
+                 ['category' => 'cat2', 'domain'   => 'domain']
+                ],
+                $this->rssFeedItem->inCategory('cat1')
+                        ->inCategory('cat2', 'domain')
+                        ->getCategories()
         );
     }
 
@@ -129,15 +127,12 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetListOfCategories()
     {
-        $this->assertEquals([['category' => 'cat1',
-                              'domain'   => ''
-                             ],
-                             ['category' => 'cat2',
-                              'domain'   => ''
-                             ]
-                            ],
-                            $this->rssFeedItem->inCategories(['cat1', 'cat2'])
-                                              ->getCategories()
+        assertEquals(
+                [['category' => 'cat1', 'domain'   => ''],
+                 ['category' => 'cat2', 'domain'   => '']
+                ],
+                $this->rssFeedItem->inCategories(['cat1', 'cat2'])
+                        ->getCategories()
         );
     }
 
@@ -146,7 +141,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoCommentsUrlByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->hasComments());
+        assertFalse($this->rssFeedItem->hasComments());
     }
 
     /**
@@ -154,7 +149,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function initialCommentUrlIsNull()
     {
-        $this->assertNull($this->rssFeedItem->getComments());
+        assertNull($this->rssFeedItem->getComments());
     }
 
     /**
@@ -162,9 +157,10 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetCommentsUrl()
     {
-        $this->assertEquals('http://stubbles.net/comments/',
-                            $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
-                                              ->getComments()
+        assertEquals(
+                'http://stubbles.net/comments/',
+                $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
+                        ->getComments()
         );
     }
 
@@ -173,7 +169,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoEnclosuresByDefault()
     {
-        $this->assertEquals([], $this->rssFeedItem->getEnclosures());
+        assertEquals([], $this->rssFeedItem->getEnclosures());
     }
 
     /**
@@ -181,16 +177,17 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetEnclosures()
     {
-        $this->assertEquals([['url'    => 'http://stubbles.net/enclosure.mp3',
-                              'length' => 50,
-                              'type' => 'audio/mpeg'
-                             ]
-                            ],
-                            $this->rssFeedItem->deliveringEnclosure('http://stubbles.net/enclosure.mp3',
-                                                                    50,
-                                                                    'audio/mpeg'
-                                                )
-                                              ->getEnclosures()
+        assertEquals(
+                [['url'    => 'http://stubbles.net/enclosure.mp3',
+                  'length' => 50,
+                  'type' => 'audio/mpeg'
+                 ]
+                ],
+                $this->rssFeedItem->deliveringEnclosure(
+                        'http://stubbles.net/enclosure.mp3',
+                        50,
+                        'audio/mpeg'
+                )->getEnclosures()
         );
     }
 
@@ -199,7 +196,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoGuidByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->hasGuid());
+        assertFalse($this->rssFeedItem->hasGuid());
     }
 
     /**
@@ -207,7 +204,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function initialGuidIsNull()
     {
-        $this->assertNull($this->rssFeedItem->getGuid());
+        assertNull($this->rssFeedItem->getGuid());
     }
 
     /**
@@ -215,7 +212,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function guidIsNotPermalinkByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->isGuidPermaLink());
+        assertFalse($this->rssFeedItem->isGuidPermaLink());
     }
 
     /**
@@ -223,9 +220,9 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetGuid()
     {
-        $this->assertEquals('dummy',
-                            $this->rssFeedItem->withGuid('dummy')
-                                              ->getGuid()
+        assertEquals(
+                'dummy',
+                $this->rssFeedItem->withGuid('dummy')->getGuid()
         );
     }
 
@@ -234,8 +231,8 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function settingGuidEnablesGuidAsPermalink()
     {
-        $this->assertTrue($this->rssFeedItem->withGuid('dummy')
-                                            ->isGuidPermaLink()
+        assertTrue(
+                $this->rssFeedItem->withGuid('dummy')->isGuidPermaLink()
         );
     }
 
@@ -244,9 +241,10 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function settingGuidAndDisablingPermalink()
     {
-        $this->assertFalse($this->rssFeedItem->withGuid('dummy')
-                                             ->andGuidIsNotPermaLink()
-                                             ->isGuidPermaLink()
+        assertFalse(
+                $this->rssFeedItem->withGuid('dummy')
+                        ->andGuidIsNotPermaLink()
+                        ->isGuidPermaLink()
         );
     }
 
@@ -255,7 +253,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoPublishingDateByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->hasPubDate());
+        assertFalse($this->rssFeedItem->hasPubDate());
     }
 
     /**
@@ -263,7 +261,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function initialPublishingDateIsNull()
     {
-        $this->assertNull($this->rssFeedItem->getPubDate());
+        assertNull($this->rssFeedItem->getPubDate());
     }
 
     /**
@@ -272,9 +270,9 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
     public function publishingDateCanBePassedAsDateInstance()
     {
         $date = new Date('2008-05-24');
-        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->offset(),
-                            $this->rssFeedItem->publishedOn($date)
-                                              ->getPubDate()
+        assertEquals(
+                'Sat 24 May 2008 00:00:00 ' . $date->offset(),
+                $this->rssFeedItem->publishedOn($date)->getPubDate()
         );
     }
 
@@ -284,9 +282,9 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
     public function alternativePublishingDate()
     {
         $date = new Date('2008-05-24');
-        $this->assertEquals('Sat 24 May 2008 00:00:00 ' . $date->offset(),
-                            $this->rssFeedItem->publishedOn('2008-05-24')
-                                              ->getPubDate()
+        assertEquals(
+                'Sat 24 May 2008 00:00:00 ' . $date->offset(),
+                $this->rssFeedItem->publishedOn('2008-05-24')->getPubDate()
         );
     }
 
@@ -304,7 +302,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoSourcesByDefault()
     {
-        $this->assertEquals([], $this->rssFeedItem->getSources());
+        assertEquals([], $this->rssFeedItem->getSources());
     }
 
     /**
@@ -312,14 +310,12 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetSources()
     {
-        $this->assertEquals([['name' => 'stubbles',
-                              'url'  => 'http://stubbles.net/source/'
-                             ]
-                            ],
-                            $this->rssFeedItem->inspiredBySource('stubbles',
-                                                                 'http://stubbles.net/source/'
-                                                )
-                                              ->getSources()
+        assertEquals(
+                [['name' => 'stubbles', 'url'  => 'http://stubbles.net/source/']],
+                $this->rssFeedItem->inspiredBySource(
+                        'stubbles',
+                        'http://stubbles.net/source/'
+                )->getSources()
         );
     }
 
@@ -328,7 +324,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasNoContentByDefault()
     {
-        $this->assertFalse($this->rssFeedItem->hasContent());
+        assertFalse($this->rssFeedItem->hasContent());
     }
 
     /**
@@ -336,7 +332,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function initialContentIsEmpty()
     {
-        $this->assertEquals('', $this->rssFeedItem->getContent());
+        assertEquals('', $this->rssFeedItem->getContent());
     }
 
     /**
@@ -344,9 +340,10 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetContent()
     {
-        $this->assertEquals('<foo>bar</foo><baz/>',
-                            $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
-                                              ->getContent()
+        assertEquals(
+                '<foo>bar</foo><baz/>',
+                $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
+                        ->getContent()
         );
     }
 }

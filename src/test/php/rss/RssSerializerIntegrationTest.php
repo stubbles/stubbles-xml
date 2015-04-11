@@ -29,7 +29,8 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
                            ->getInstance('stubbles\xml\serializer\XmlSerializerFacade')
                            ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
-        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>
+        assertEquals(
+                '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Example rss feed</title>
@@ -65,7 +66,7 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
   </channel>
 </rss>
 ',
-                            $dom->saveXML()
+                $dom->saveXML()
         );
     }
 

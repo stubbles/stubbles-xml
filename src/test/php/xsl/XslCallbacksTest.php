@@ -46,8 +46,9 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfCallbacks()
     {
-        $this->assertEquals(['test' => $this->callback],
-                            $this->xslCallbacks->getCallbacks()
+        assertEquals(
+                ['test' => $this->callback],
+                $this->xslCallbacks->getCallbacks()
         );
     }
 
@@ -101,8 +102,9 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromCallbackMethod()
     {
-        $this->assertEquals('hello world!',
-                            $this->xslCallbacks->invoke('test', 'hello', ['world!'])
+        assertEquals(
+                'hello world!',
+                $this->xslCallbacks->invoke('test', 'hello', ['world!'])
         );
     }
 
@@ -111,8 +113,9 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromStaticCallbackMethod()
     {
-        $this->assertEquals('A static method was called.',
-                            $this->xslCallbacks->invoke('test', 'youCanDoThis')
+        assertEquals(
+                'A static method was called.',
+                $this->xslCallbacks->invoke('test', 'youCanDoThis')
         );
     }
 }
