@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 require_once __DIR__ . '/XslExampleCallback.php';
@@ -129,10 +130,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
                 $this->xslProcessor,
                 $this->xslProcessor->enableProfiling(vfsStream::url('root/profile.txt'))
         );
-        assertEquals(
-                [vfsStream::url('root/profile.txt')],
-                $this->baseXsltProcessor->argumentsReceivedFor('setProfiling')
-        );
+        callmap\verify($this->baseXsltProcessor, 'setProfiling')
+                ->received(vfsStream::url('root/profile.txt'));
     }
 
     /**
@@ -229,14 +228,10 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $this->baseXsltProcessor->mapCalls(['setParameter' => true]);
         $this->xslProcessor->withParameter('foo', 'bar', 'baz')
                 ->withParameter('foo', 'foo', 'bar');
-        assertEquals(
-                ['foo', 'bar', 'baz'],
-                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 1)
-        );
-        assertEquals(
-                ['foo', 'foo', 'bar'],
-                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 2)
-        );
+        callmap\verify($this->baseXsltProcessor, 'setParameter')
+                ->receivedOn(1, 'foo', 'bar', 'baz');
+        callmap\verify($this->baseXsltProcessor, 'setParameter')
+                ->receivedOn(2, 'foo', 'foo', 'bar');
     }
 
     /**
@@ -257,14 +252,10 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $this->baseXsltProcessor->mapCalls(['setParameter' => true]);
         $this->xslProcessor->withParameters('baz', ['baz' => 'bar'])
                 ->withParameters('baz', ['foo' => 'bar']);
-        assertEquals(
-                ['baz', ['baz' => 'bar']],
-                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 1)
-        );
-        assertEquals(
-                ['baz', ['foo' => 'bar']],
-                $this->baseXsltProcessor->argumentsReceivedFor('setParameter', 2)
-        );
+        callmap\verify($this->baseXsltProcessor, 'setParameter')
+                ->receivedOn(1, 'baz', ['baz' => 'bar']);
+        callmap\verify($this->baseXsltProcessor, 'setParameter')
+                ->receivedOn(2, 'baz', ['foo' => 'bar']);
     }
 
     /**
@@ -289,10 +280,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $anotherBaseXsltProcessor->mapCalls(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet(new \DOMDocument());
         $clonedXSLProcessor = clone $this->xslProcessor;
-        assertEquals(
-                ['foo', ['bar' => 'baz']],
-                $anotherBaseXsltProcessor->argumentsReceivedFor('setParameter')
-        );
+        callmap\verify($anotherBaseXsltProcessor, 'setParameter')
+                ->received('foo', ['bar' => 'baz']);
     }
 
     /**
@@ -308,10 +297,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
         $anotherBaseXsltProcessor->mapCalls(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet($stylesheet);
         $clonedXSLProcessor = clone $this->xslProcessor;
-        assertEquals(
-                [$stylesheet],
-                $anotherBaseXsltProcessor->argumentsReceivedFor('importStylesheet')
-        );
+        callmap\verify($anotherBaseXsltProcessor, 'importStylesheet')
+                ->received($stylesheet);
     }
 
     /**

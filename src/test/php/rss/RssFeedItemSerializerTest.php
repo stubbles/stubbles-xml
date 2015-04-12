@@ -8,6 +8,7 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\date\Date;
 use stubbles\lang\reflect;
@@ -87,11 +88,10 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 null
         );
-        assertEquals(
-                ['item'],
-                $this->xmlStreamWriter->argumentsReceivedFor('writeStartElement')
-        );
-        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
+        callmap\verify($this->xmlStreamWriter, 'writeStartElement')
+                ->received('item');
+        callmap\verify($this->xmlStreamWriter, 'writeElement')
+                ->wasCalled(3);
     }
 
     /**
@@ -105,11 +105,10 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 'other'
         );
-        assertEquals(
-                ['other'],
-                $this->xmlStreamWriter->argumentsReceivedFor('writeStartElement')
-        );
-        assertEquals(3, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
+        callmap\verify($this->xmlStreamWriter, 'writeStartElement')
+                ->received('other');
+        callmap\verify($this->xmlStreamWriter, 'writeElement')
+                ->wasCalled(3);
     }
 
     /**
@@ -139,6 +138,6 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 null
         );
-        assertEquals(12, $this->xmlStreamWriter->callsReceivedFor('writeElement'));
+        callmap\verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12);
     }
 }
