@@ -1,3 +1,9 @@
+4.2.1 (2015-05-07)
+------------------
+
+  * added possibility to annotate instances of `\Traversable` with `@XmlNonTraversable` to retain old behaviour
+
+
 4.2.0 (2015-03-09)
 ------------------
 

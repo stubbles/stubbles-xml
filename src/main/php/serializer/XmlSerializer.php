@@ -65,7 +65,7 @@ class XmlSerializer
                 break;
 
             case 'object':
-                if ($value instanceof \Traversable) {
+                if ($value instanceof \Traversable && !reflect\annotationsOf($value)->contain('XmlNonTraversable')) {
                     $this->serializeArray($value, $xmlWriter, $tagName, $elementTagName);
                 } else {
                     $this->serializeObject($value, $xmlWriter, $tagName);
