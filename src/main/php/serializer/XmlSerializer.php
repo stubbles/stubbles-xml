@@ -66,6 +66,12 @@ class XmlSerializer
 
             case 'object':
                 if ($value instanceof \Traversable && !reflect\annotationsOf($value)->contain('XmlNonTraversable')) {
+                    if (null === $tagName && $value instanceof \Traversable && reflect\annotationsOf($value)->contain('XmlTag')) {
+                        $annotation = reflect\annotationsOf($value)->firstNamed('XmlTag');
+                        $tagName = $annotation->getTagName();
+                        $elementTagName = $annotation->getElementTagName();
+                    }
+
                     $this->serializeArray($value, $xmlWriter, $tagName, $elementTagName);
                 } else {
                     $this->serializeObject($value, $xmlWriter, $tagName);

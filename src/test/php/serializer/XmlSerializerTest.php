@@ -22,6 +22,7 @@ require_once __DIR__ . '/examples/ExampleObjectWithUmlauts.php';
 require_once __DIR__ . '/examples/ExampleObjectWithXmlFragments.php';
 require_once __DIR__ . '/examples/ExampleStaticClass.php';
 require_once __DIR__ . '/examples/TraversableNonTraversable.php';
+require_once __DIR__ . '/examples/TraversableTraversable.php';
 use org\stubbles\test\xml\serializer\ContainerWithArrayListTagName;
 use org\stubbles\test\xml\serializer\ContainerWithArrayListWithoutTagName;
 use org\stubbles\test\xml\serializer\ContainerWithIterator;
@@ -35,6 +36,7 @@ use org\stubbles\test\xml\serializer\ExampleObjectWithUmlauts;
 use org\stubbles\test\xml\serializer\ExampleObjectWithXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleStaticClass;
 use org\stubbles\test\xml\serializer\TraversableNonTraversable;
+use org\stubbles\test\xml\serializer\TraversableTraversable;
 use stubbles\lang\Sequence;
 use stubbles\xml\DomXmlStreamWriter;
 /**
@@ -741,6 +743,18 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
         assertEquals(
                 $this->prefixXml('<TraversableNonTraversable><baz>dummy</baz></TraversableNonTraversable>'),
                 $this->serialize(new TraversableNonTraversable())
+        );
+    }
+
+    /**
+     * @test
+     * @since  4.2.2
+     */
+    public function serializeObjectOfTraversableWithXmlTagh()
+    {
+        assertEquals(
+                $this->prefixXml('<foo><example>bar</example></foo>'),
+                $this->serialize(new TraversableTraversable())
         );
     }
 

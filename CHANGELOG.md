@@ -1,3 +1,9 @@
+4.2.2 (2015-05-12)
+------------------
+
+  * fixed bug: respect `@XmlTag` on instances of `\Traversable`
+
+
 4.2.1 (2015-05-07)
 ------------------
 
