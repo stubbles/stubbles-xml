@@ -34,7 +34,6 @@ class XmlSerializerFacade
      *
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer
      * @param  \stubbles\xml\XmlStreamWriter           $xmlStreamWriter
-     * @Inject
      */
     public function __construct(XmlSerializer $xmlSerializer, XmlStreamWriter $xmlStreamWriter)
     {

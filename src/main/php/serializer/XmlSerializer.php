@@ -27,7 +27,6 @@ class XmlSerializer
      * constructor
      *
      * @param  \stubbles\ioc\Injector  $injector
-     * @Inject
      */
     public function  __construct(Injector $injector)
     {

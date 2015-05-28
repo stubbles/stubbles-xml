@@ -47,7 +47,6 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @param  array   $types     optional  map of available streamwriter types
      * @param  string  $version   optional  xml version
      * @param  string  $encoding  optional  xml encoding
-     * @Inject
      * @Named{types}('stubbles.xml.types')
      * @Named{version}('stubbles.xml.version')
      * @Named{encoding}('stubbles.xml.encoding')

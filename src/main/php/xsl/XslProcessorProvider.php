@@ -41,8 +41,7 @@ class XslProcessorProvider implements InjectionProvider
      * constructor
      *
      * @param  \stubbles\ioc\Injector  $injector
-     * @param  string    $configPath
-     * @Inject
+     * @param  string                  $configPath
      * @Named{configPath}('stubbles.config.path')
      */
     public function  __construct(Injector $injector, $configPath)

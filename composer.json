@@ -6,13 +6,13 @@
     "description": "Classes to work with XML",
     "require": {
         "php": ">=5.4.0",
-        "stubbles/core": "~5.4",
-        "stubbles/date": "~5.2"
+        "stubbles/core": "^6.0",
+        "stubbles/date": "^5.3"
     },
     "require-dev": {
-        "mikey179/vfsStream": "~1.5",
-        "phpunit/phpunit": "~4.6",
-        "bovigo/callmap": "~0.5"
+        "mikey179/vfsStream": "^1.5",
+        "phpunit/phpunit": "^4.6",
+        "bovigo/callmap": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,7 +26,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.2.x-dev"
+            "dev-master": "4.3.x-dev"
         }
     },
     "minimum-stability": "dev",
