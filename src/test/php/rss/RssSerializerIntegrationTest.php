@@ -11,6 +11,7 @@ namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\date\TimeZone;
 use stubbles\ioc\Binder;
+use stubbles\xml\serializer\XmlSerializerFacade;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
  *
@@ -26,7 +27,7 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
     {
         $binder = new Binder();
         $dom      = $binder->getInjector()
-                           ->getInstance('stubbles\xml\serializer\XmlSerializerFacade')
+                           ->getInstance(XmlSerializerFacade::class)
                            ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
         assertEquals(

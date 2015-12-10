@@ -89,7 +89,7 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->baseXsltProcessor = NewInstance::of('\XSLTProcessor');
+        $this->baseXsltProcessor = NewInstance::of(\XSLTProcessor::class);
         TestXslProcessor::$xsltProcessor = $this->baseXsltProcessor;
         $this->xslProcessor = new TestXslProcessor(new XslCallbacks());
         $this->document     = new \DOMDocument();
@@ -111,8 +111,8 @@ class XslProcessorTest extends \PHPUnit_Framework_TestCase
     public function providedByXslProcessorProvider()
     {
         assertEquals(
-                'stubbles\xml\xsl\XslProcessorProvider',
-                reflect\annotationsOf(__NAMESPACE__ . '\XslProcessor')
+                XslProcessorProvider::class,
+                reflect\annotationsOf(XslProcessor::class)
                         ->firstNamed('ProvidedBy')
                         ->getProviderClass()
                         ->getName()

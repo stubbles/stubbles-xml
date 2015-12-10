@@ -72,8 +72,8 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function isDefaultProviderForXmlStreamWriter()
     {
         assertEquals(
-                'stubbles\xml\XmlStreamWriterProvider',
-                reflect\annotationsOf('stubbles\xml\XmlStreamWriter')
+                XmlStreamWriterProvider::class,
+                reflect\annotationsOf(XmlStreamWriter::class)
                         ->firstNamed('ProvidedBy')
                         ->getProviderClass()
                         ->getName()
@@ -87,12 +87,12 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         if (extension_loaded('dom')) {
             assertInstanceOf(
-                    'stubbles\xml\DomXmlStreamWriter',
+                    DomXmlStreamWriter::class,
                     $this->xmlStreamWriterProvider->get()
             );
         } elseif (extension_loaded('xmlwriter')) {
             assertInstanceOf(
-                    'stubbles\xml\LibXmlStreamWriter',
+                    LibXmlStreamWriter::class,
                     $this->xmlStreamWriterProvider->get()
             );
         }
@@ -114,7 +114,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function createDomTypeIfRequested()
     {
         assertInstanceOf(
-                'stubbles\xml\DomXMLStreamWriter',
+                DomXMLStreamWriter::class,
                 $this->xmlStreamWriterProvider->get('dom')
         );
     }
@@ -125,7 +125,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function createXmlWriterTypeIfRequested()
     {
         assertInstanceOf(
-                'stubbles\xml\LibXmlStreamWriter',
+                LibXmlStreamWriter::class,
                 $this->xmlStreamWriterProvider->get('xmlwriter')
         );
     }

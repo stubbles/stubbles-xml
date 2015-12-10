@@ -10,6 +10,7 @@
 namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
+use stubbles\ioc\Injector;
 use stubbles\lang\reflect;
 /**
  * Test for stubbles\xml\xsl\XslProcessorProvider.
@@ -45,7 +46,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->root                 = vfsStream::setup();
-        $this->injector             = NewInstance::stub('stubbles\ioc\Injector');
+        $this->injector             = NewInstance::stub(Injector::class);
         $this->xslProcessorProvider = new XslProcessorProvider(
                 $this->injector,
                 vfsStream::url('root')

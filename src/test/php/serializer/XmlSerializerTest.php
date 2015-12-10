@@ -37,6 +37,7 @@ use org\stubbles\test\xml\serializer\ExampleObjectWithXmlFragments;
 use org\stubbles\test\xml\serializer\ExampleStaticClass;
 use org\stubbles\test\xml\serializer\TraversableNonTraversable;
 use org\stubbles\test\xml\serializer\TraversableTraversable;
+use stubbles\ioc\Injector;
 use stubbles\lang\Sequence;
 use stubbles\xml\DomXmlStreamWriter;
 /**
@@ -66,7 +67,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->injector   = NewInstance::stub('stubbles\ioc\Injector');
+        $this->injector   = NewInstance::stub(Injector::class);
         $this->serializer = new XmlSerializer($this->injector);
     }
 

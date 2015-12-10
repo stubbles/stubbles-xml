@@ -11,6 +11,8 @@ namespace stubbles\xml\rss;
 use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\lang\reflect;
+use stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\XmlSerializer;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
  *
@@ -44,8 +46,8 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedSerializer = new RssFeedSerializer();
-        $this->xmlSerializer     = NewInstance::stub('stubbles\xml\serializer\XmlSerializer');
-        $this->xmlStreamWriter   = NewInstance::of('stubbles\xml\XmlStreamWriter');
+        $this->xmlSerializer     = NewInstance::stub(XmlSerializer::class);
+        $this->xmlStreamWriter   = NewInstance::of(XmlStreamWriter::class);
     }
 
     /**
@@ -55,7 +57,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 get_class($this->rssFeedSerializer),
-                reflect\annotationsOf('stubbles\xml\rss\RssFeed')
+                reflect\annotationsOf(RssFeed::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
                         ->getName()

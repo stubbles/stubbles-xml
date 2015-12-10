@@ -9,6 +9,8 @@
  */
 namespace stubbles\xml;
 use stubbles\ioc\InjectionProvider;
+use stubbles\xml\DomXmlStreamWriter;
+use stubbles\xml\LibXmlStreamWriter;
 /**
  * Provider to create a xml stream writer instances.
  *
@@ -25,9 +27,10 @@ class XmlStreamWriterProvider implements InjectionProvider
      *
      * @type  array
      */
-    private $types    = ['dom'       => 'stubbles\xml\DomXmlStreamWriter',
-                         'xmlwriter' => 'stubbles\xml\LibXmlStreamWriter'
-                        ];
+    private $types    = [
+            'dom'       => DomXmlStreamWriter::class,
+            'xmlwriter' => LibXmlStreamWriter::class
+    ];
     /**
      * default version of xml stream writers to create
      *

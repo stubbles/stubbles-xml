@@ -9,7 +9,8 @@
  */
 namespace stubbles\xml\serializer;
 use bovigo\callmap\NewInstance;
-use stubbles\lang\reflect;
+use stubbles\xml\XmlStreamWriter;
+use stubbles\xml\serializer\XmlSerializer;
 /**
  * Test for stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -44,8 +45,8 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         libxml_clear_errors();
-        $this->xmlSerializer   = NewInstance::stub('stubbles\xml\serializer\XmlSerializer');
-        $this->xmlStreamWriter = NewInstance::of('stubbles\xml\XmlStreamWriter');
+        $this->xmlSerializer   = NewInstance::stub(XmlSerializer::class);
+        $this->xmlStreamWriter = NewInstance::of(XmlStreamWriter::class);
         $this->xmlSerializerFacade = new XmlSerializerFacade(
                 $this->xmlSerializer,
                 $this->xmlStreamWriter
