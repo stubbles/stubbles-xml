@@ -5,14 +5,14 @@
     "license": "BSD-3-Clause",
     "description": "Classes to work with XML",
     "require": {
-        "php": ">=5.4.0",
-        "stubbles/core": "^6.0",
-        "stubbles/date": "^5.3"
+        "php": ">=5.5.0",
+        "stubbles/core": "^7.0",
+        "stubbles/date": "^5.5"
     },
     "require-dev": {
-        "mikey179/vfsStream": "^1.5",
-        "phpunit/phpunit": "^4.6",
-        "bovigo/callmap": "^1.0"
+        "mikey179/vfsStream": "^1.6",
+        "phpunit/phpunit": "^4.8",
+        "bovigo/callmap": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -26,7 +26,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.3.x-dev"
+            "dev-master": "5.0.x-dev"
         }
     },
     "minimum-stability": "dev",
