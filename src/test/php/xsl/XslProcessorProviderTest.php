@@ -11,7 +11,8 @@ namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 use stubbles\ioc\Injector;
-use stubbles\lang\reflect;
+
+use function stubbles\lang\reflect\annotationsOfConstructorParameter;
 /**
  * Test for stubbles\xml\xsl\XslProcessorProvider.
  *
@@ -58,7 +59,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $configPathParamAnnotations = reflect\annotationsOfConstructorParameter(
+        $configPathParamAnnotations = annotationsOfConstructorParameter(
                 'configPath',
                 $this->xslProcessorProvider
         );

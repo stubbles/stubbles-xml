@@ -9,8 +9,10 @@
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
-use stubbles\lang;
 use stubbles\xml\XmlException;
+
+use function stubbles\lang\reflect;
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Class for a rss 2.0 feed item.
  *
@@ -134,12 +136,12 @@ class RssFeedItem
             throw new \InvalidArgumentException('Given entity must be an object.');
         }
 
-        $annotations = lang\reflect\annotationsOf($entity);
+        $annotations = annotationsOf($entity);
         if (!$annotations->contain('RssFeedItem')) {
             throw new XmlException('Class ' . get_class($entity) . ' is not annotated with @RssFeedItem.');
         }
 
-        $entityClass           = lang\reflect($entity);
+        $entityClass           = reflect($entity);
         $rssFeedItemAnnotation = $annotations->firstNamed('RssFeedItem');
         $self    = new self(
                 self::getRequiredAttribute(

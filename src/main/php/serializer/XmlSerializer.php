@@ -9,8 +9,9 @@
  */
 namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
-use stubbles\lang\reflect;
 use stubbles\xml\XmlStreamWriter;
+
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Serializes arbitrary data except resources to xml.
  */
@@ -64,9 +65,9 @@ class XmlSerializer
                 break;
 
             case 'object':
-                if ($value instanceof \Traversable && !reflect\annotationsOf($value)->contain('XmlNonTraversable')) {
-                    if (null === $tagName && $value instanceof \Traversable && reflect\annotationsOf($value)->contain('XmlTag')) {
-                        $annotation = reflect\annotationsOf($value)->firstNamed('XmlTag');
+                if ($value instanceof \Traversable && !annotationsOf($value)->contain('XmlNonTraversable')) {
+                    if (null === $tagName && $value instanceof \Traversable && annotationsOf($value)->contain('XmlTag')) {
+                        $annotation = annotationsOf($value)->firstNamed('XmlTag');
                         $tagName = $annotation->getTagName();
                         $elementTagName = $annotation->getElementTagName();
                     }
@@ -258,12 +259,12 @@ class XmlSerializer
      */
     protected function serializerFor($object)
     {
-        if (!reflect\annotationsOf($object)->contain('XmlSerializer')) {
+        if (!annotationsOf($object)->contain('XmlSerializer')) {
             return AnnotationBasedObjectXmlSerializer::fromObject($object);
         }
 
         return $this->injector->getInstance(
-                reflect\annotationsOf($object)
+                annotationsOf($object)
                         ->firstNamed('XmlSerializer')
                         ->getValue()
                         ->getName()

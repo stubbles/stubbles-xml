@@ -8,8 +8,8 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
-use stubbles\lang;
-use stubbles\lang\reflect;
+use function stubbles\lang\reflect;
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */
@@ -91,11 +91,11 @@ class XslCallbacks
             throw new XslCallbackException('Callback with name ' . $name . ' does not have a method named ' . $methodName);
         }
 
-        if (!reflect\annotationsOf($callback, $methodName)->contain('XslMethod')) {
+        if (!annotationsOf($callback, $methodName)->contain('XslMethod')) {
             throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not annotated as XslMethod.');
         }
 
-        $method = lang\reflect($callback, $methodName);
+        $method = reflect($callback, $methodName);
         if (!$method->isPublic()) {
             throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not a public method.');
         }

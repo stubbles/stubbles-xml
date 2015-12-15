@@ -8,12 +8,15 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\serializer;
-use stubbles\lang\reflect;
 use stubbles\lang\reflect\annotation\Annotations;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\delegate\Attribute;
 use stubbles\xml\serializer\delegate\Fragment;
 use stubbles\xml\serializer\delegate\Tag;
+
+use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\lang\reflect\methodsOf;
+use function stubbles\lang\reflect\propertiesOf;
 /**
  * Container for extracting informations on how to serialize a class.
  */
@@ -57,7 +60,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     {
         $this->extractProperties($objectClass);
         $this->extractMethods($objectClass);
-        $annotations = reflect\annotationsOf($objectClass);
+        $annotations = annotationsOf($objectClass);
         if ($annotations->contain('XmlTag')) {
             $this->classTagName = $annotations->firstNamed('XmlTag')->tagName();
         } else {
@@ -124,16 +127,16 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     private function extractProperties(\ReflectionClass $objectClass)
     {
-        $properties = reflect\propertiesOf($objectClass, \ReflectionProperty::IS_PUBLIC)
+        $properties = propertiesOf($objectClass, \ReflectionProperty::IS_PUBLIC)
                 ->filter(
                         function(\ReflectionProperty $property)
                         {
-                            return !$property->isStatic() && !reflect\annotationsOf($property)->contain('XmlIgnore');
+                            return !$property->isStatic() && !annotationsOf($property)->contain('XmlIgnore');
                         }
         );
         foreach ($properties as $property) {
             $this->properties[$property->getName()] = $this->createSerializerDelegate(
-                    reflect\annotationsOf($property),
+                    annotationsOf($property),
                     $property->getName()
             );
         }
@@ -146,7 +149,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     private function extractMethods(\ReflectionClass $objectClass)
     {
-        $methods = reflect\methodsOf($objectClass, \ReflectionMethod::IS_PUBLIC)
+        $methods = methodsOf($objectClass, \ReflectionMethod::IS_PUBLIC)
                 ->filter(
                         function(\ReflectionMethod $method)
                         {
@@ -158,12 +161,12 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
                                 return false;
                             }
 
-                            return !reflect\annotationsOf($method)->contain('XmlIgnore');
+                            return !annotationsOf($method)->contain('XmlIgnore');
                         }
         );
         foreach ($methods as $method) {
             $this->methods[$method->getName()] = $this->createSerializerDelegate(
-                    reflect\annotationsOf($method),
+                    annotationsOf($method),
                     $method->getName()
             );
         }

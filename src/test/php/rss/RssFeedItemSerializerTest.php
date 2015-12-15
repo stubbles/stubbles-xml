@@ -8,12 +8,13 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
-use bovigo\callmap;
 use bovigo\callmap\NewInstance;
 use stubbles\date\Date;
-use stubbles\lang\reflect;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
+
+use function bovigo\callmap\verify;
+use function stubbles\lang\reflect\annotationsOf;
 /**
  * Test for stubbles\xml\rss\RssFeedItemSerializer.
  *
@@ -58,7 +59,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 get_class($this->rssFeedItemSerializer),
-                reflect\annotationsOf(RssFeedItem::class)
+                annotationsOf(RssFeedItem::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
                         ->getName()
@@ -90,10 +91,8 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 null
         );
-        callmap\verify($this->xmlStreamWriter, 'writeStartElement')
-                ->received('item');
-        callmap\verify($this->xmlStreamWriter, 'writeElement')
-                ->wasCalled(3);
+        verify($this->xmlStreamWriter, 'writeStartElement')->received('item');
+        verify($this->xmlStreamWriter, 'writeElement')->wasCalled(3);
     }
 
     /**
@@ -107,10 +106,8 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 'other'
         );
-        callmap\verify($this->xmlStreamWriter, 'writeStartElement')
-                ->received('other');
-        callmap\verify($this->xmlStreamWriter, 'writeElement')
-                ->wasCalled(3);
+        verify($this->xmlStreamWriter, 'writeStartElement')->received('other');
+        verify($this->xmlStreamWriter, 'writeElement')->wasCalled(3);
     }
 
     /**
@@ -140,6 +137,6 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriter,
                 null
         );
-        callmap\verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12);
+        verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12);
     }
 }

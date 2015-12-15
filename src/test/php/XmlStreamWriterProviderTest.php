@@ -8,7 +8,8 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml;
-use stubbles\lang\reflect;
+use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\lang\reflect\annotationsOfConstructorParameter;
 /**
  * Test for stubbles\xml\XmlStreamWriterProvider.
  *
@@ -37,7 +38,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function annotationsPresentOnConstructor()
     {
-        $typesParamAnnotations = reflect\annotationsOfConstructorParameter(
+        $typesParamAnnotations = annotationsOfConstructorParameter(
                 'types',
                 $this->xmlStreamWriterProvider
         );
@@ -46,7 +47,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
                 'stubbles.xml.types',
                 $typesParamAnnotations->firstNamed('Named')->getName()
         );
-        $versionParamAnnotations = reflect\annotationsOfConstructorParameter(
+        $versionParamAnnotations = annotationsOfConstructorParameter(
                 'version',
                 $this->xmlStreamWriterProvider
         );
@@ -55,7 +56,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
                 'stubbles.xml.version',
                 $versionParamAnnotations->firstNamed('Named')->getName()
         );
-        $encodingParamAnnotations = reflect\annotationsOfConstructorParameter(
+        $encodingParamAnnotations = annotationsOfConstructorParameter(
                 'encoding',
                 $this->xmlStreamWriterProvider
         );
@@ -73,7 +74,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         assertEquals(
                 XmlStreamWriterProvider::class,
-                reflect\annotationsOf(XmlStreamWriter::class)
+                annotationsOf(XmlStreamWriter::class)
                         ->firstNamed('ProvidedBy')
                         ->getProviderClass()
                         ->getName()
