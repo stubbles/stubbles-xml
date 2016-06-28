@@ -8,15 +8,15 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\serializer;
-use stubbles\lang\reflect\annotation\Annotations;
+use stubbles\reflect\annotation\Annotations;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\delegate\Attribute;
 use stubbles\xml\serializer\delegate\Fragment;
 use stubbles\xml\serializer\delegate\Tag;
 
-use function stubbles\lang\reflect\annotationsOf;
-use function stubbles\lang\reflect\methodsOf;
-use function stubbles\lang\reflect\propertiesOf;
+use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\methodsOf;
+use function stubbles\reflect\propertiesOf;
 /**
  * Container for extracting informations on how to serialize a class.
  */

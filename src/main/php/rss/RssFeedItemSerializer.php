@@ -8,9 +8,9 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\ObjectXmlSerializer;
 use stubbles\xml\serializer\XmlSerializer;
-use stubbles\xml\XmlStreamWriter;
 /**
  * Class for a rss 2.0 feed item.
  *

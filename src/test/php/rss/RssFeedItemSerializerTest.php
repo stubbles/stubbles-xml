@@ -13,8 +13,11 @@ use stubbles\date\Date;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOf;
 /**
  * Test for stubbles\xml\rss\RssFeedItemSerializer.
  *
@@ -57,27 +60,28 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        assertEquals(
-                get_class($this->rssFeedItemSerializer),
+        assert(
                 annotationsOf(RssFeedItem::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
-                        ->getName()
+                        ->getName(),
+                equals(get_class($this->rssFeedItemSerializer))
         );
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeedItem()
     {
-        $this->rssFeedItemSerializer->serialize(
-                new \stdClass(),
-                $this->xmlSerializer,
-                $this->xmlStreamWriter,
-                null
-        );
+        expect(function() {
+                $this->rssFeedItemSerializer->serialize(
+                        new \stdClass(),
+                        $this->xmlSerializer,
+                        $this->xmlStreamWriter,
+                        null
+                );
+        })->throws(\InvalidArgumentException::class);
     }
 
     /**

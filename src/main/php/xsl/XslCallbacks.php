@@ -8,8 +8,8 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
-use function stubbles\lang\reflect;
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\reflect;
+use function stubbles\reflect\annotationsOf;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */

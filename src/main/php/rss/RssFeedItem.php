@@ -11,8 +11,8 @@ namespace stubbles\xml\rss;
 use stubbles\date\Date;
 use stubbles\xml\XmlException;
 
-use function stubbles\lang\reflect;
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\reflect;
+use function stubbles\reflect\annotationsOf;
 /**
  * Class for a rss 2.0 feed item.
  *
@@ -101,7 +101,7 @@ class RssFeedItem
      * @param  string  $link         URL of the item
      * @param  string  $description  item synopsis
      */
-    private function __construct($title, $link, $description)
+    public function __construct($title, $link, $description)
     {
         $this->title       = $title;
         $this->link        = $link;

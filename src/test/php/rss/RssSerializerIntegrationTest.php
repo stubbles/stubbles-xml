@@ -12,6 +12,9 @@ use stubbles\date\Date;
 use stubbles\date\TimeZone;
 use stubbles\ioc\Binder;
 use stubbles\xml\serializer\XmlSerializerFacade;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
  *
@@ -26,12 +29,13 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
     public function writeFeed()
     {
         $binder = new Binder();
-        $dom      = $binder->getInjector()
-                           ->getInstance(XmlSerializerFacade::class)
-                           ->serializeToDom($this->createFeed());
+        $dom    = $binder->getInjector()
+                ->getInstance(XmlSerializerFacade::class)
+                ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
-        assertEquals(
-                '<?xml version="1.0" encoding="UTF-8"?>
+        assert(
+                $dom->saveXML(),
+                equals('<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Example rss feed</title>
@@ -66,8 +70,7 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
     </item>
   </channel>
 </rss>
-',
-                $dom->saveXML()
+')
         );
     }
 

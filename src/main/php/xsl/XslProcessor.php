@@ -8,7 +8,6 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
-use stubbles\lang\exception\IOException;
 /**
  * Class to transform xml via xsl.
  *
@@ -127,13 +126,13 @@ class XslProcessor
      * @param   string  $xmlFile   name of the xml file containing the document to transform
      * @param   bool    $xinclude  whether to resolve xincludes or not, defaults to true
      * @return  \stubbles\xml\xsl\XslProcessor
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function onXmlFile($xmlFile, $xinclude = true)
     {
         $doc = new \DOMDocument();
         if (false === @$doc->load($xmlFile)) {
-            throw new IOException('Can not read xml document file ' . $xmlFile);
+            throw new XslProcessorException('Can not read xml document file ' . $xmlFile);
         }
 
         if (true === $xinclude) {
@@ -161,13 +160,13 @@ class XslProcessor
      *
      * @param   string  $stylesheetFile
      * @return  \stubbles\xml\xsl\XslProcessor
-     * @throws  \stubbles\lang\exception\IOException
+     * @throws  \stubbles\xml\xsl\XslProcessorException
      */
     public function applyStylesheetFromFile($stylesheetFile)
     {
         $stylesheet = new \DOMDocument();
         if (false === @$stylesheet->load($stylesheetFile)) {
-            throw new IOException('Can not read stylesheet file ' . $stylesheetFile);
+            throw new XslProcessorException('Can not read stylesheet file ' . $stylesheetFile);
         }
 
         return $this->applyStylesheet($stylesheet);

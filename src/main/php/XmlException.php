@@ -8,11 +8,19 @@
  * @package  stubbles\xml
  */
 namespace stubbles\xml;
-use stubbles\lang\exception\Exception;
 /**
  * XML Exception
  */
-class XmlException extends Exception
+class XmlException extends \Exception
 {
-    // intentionally empty
+    /**
+     * constructor
+     *
+     * @param  string      $message  failure message
+     * @param  \Exception  $cause    optional  cause for this exception
+     */
+    public function __construct($message, \Exception $cause = null)
+    {
+        parent::__construct($message, 0, $cause);
+    }
 }

@@ -102,7 +102,7 @@ class XslProcessorProvider implements InjectionProvider
      * reads list of callbacks from configuration
      *
      * @return  array
-     * @throws  \stubbles\lang\exception\ConfigurationException
+     * @throws  \stubbles\xml\xsl\XslCallbackException
      */
     protected function getCallbackList()
     {
@@ -112,7 +112,7 @@ class XslProcessorProvider implements InjectionProvider
             } else {
                 $this->callbackList = @parse_ini_file($this->configPath . '/xsl-callbacks.ini');
                 if (false === $this->callbackList) {
-                    throw new ConfigurationException('XSL callback in ' . $this->configPath . '/xsl-callbacks.ini contains errors and can not be parsed.');
+                    throw new XslCallbackException('XSL callback in ' . $this->configPath . '/xsl-callbacks.ini contains errors and can not be parsed.');
                 }
             }
         }

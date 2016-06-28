@@ -12,7 +12,12 @@ use bovigo\callmap\NewInstance;
 use org\bovigo\vfs\vfsStream;
 use stubbles\ioc\Injector;
 
-use function stubbles\lang\reflect\annotationsOfConstructorParameter;
+use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
+use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
+use function stubbles\reflect\annotationsOfConstructorParameter;
 /**
  * Test for stubbles\xml\xsl\XslProcessorProvider.
  *
@@ -64,9 +69,9 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
                 $this->xslProcessorProvider
         );
         assertTrue($configPathParamAnnotations->contain('Named'));
-        assertEquals(
-                'stubbles.config.path',
-                $configPathParamAnnotations->firstNamed('Named')->getName()
+        assert(
+                $configPathParamAnnotations->firstNamed('Named')->getName(),
+                equals('stubbles.config.path')
         );
     }
 
@@ -75,8 +80,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createXslProcessorWithoutCallbacks()
     {
-        assertEquals(
-                [],
+        assertEmptyArray(
                 $this->xslProcessorProvider->get('stubbles.xml.xsl.callbacks.disabled')
                         ->getCallbacks()
         );
@@ -87,22 +91,19 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createWithNonExistingCallbackConfigurationReturnsXslProcessorWithoutCallbacks()
     {
-        assertEquals(
-                [],
-                $this->xslProcessorProvider->get()->getCallbacks()
-        );
+        assertEmptyArray($this->xslProcessorProvider->get()->getCallbacks());
     }
 
     /**
      * @test
-     * @expectedException  stubbles\lang\exception\ConfigurationException
      */
     public function createWithInvalidCallbackConfigurationThrowsConfigurationException()
     {
         vfsStream::newFile('xsl-callbacks.ini')
                  ->withContent('!')
                  ->at($this->root);
-        $this->xslProcessorProvider->get();
+        expect(function() { $this->xslProcessorProvider->get(); })
+                ->throws(XslCallbackException::class);
     }
 
     /**
@@ -115,9 +116,9 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
                  ->at($this->root);
         $callback = new \stdClass();
         $this->injector->mapCalls(['getInstance' => $callback]);
-        assertEquals(
-            ['foo' => $callback],
-            $this->xslProcessorProvider->get()->getCallbacks()
+        assert(
+            $this->xslProcessorProvider->get()->getCallbacks(),
+            equals(['foo' => $callback])
         );
     }
 }

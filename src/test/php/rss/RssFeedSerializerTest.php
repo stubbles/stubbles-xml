@@ -12,8 +12,12 @@ use bovigo\callmap\NewInstance;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOf;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
  *
@@ -56,27 +60,28 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        assertEquals(
-                get_class($this->rssFeedSerializer),
+        assert(
                 annotationsOf(RssFeed::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
-                        ->getName()
+                        ->getName(),
+                equals(get_class($this->rssFeedSerializer))
         );
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeed()
     {
-        $this->rssFeedSerializer->serialize(
-                new \stdClass(),
-                $this->xmlSerializer,
-                $this->xmlStreamWriter,
-                null
-        );
+        expect(function() {
+                $this->rssFeedSerializer->serialize(
+                        new \stdClass(),
+                        $this->xmlSerializer,
+                        $this->xmlStreamWriter,
+                        null
+                );
+        })->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -84,8 +89,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function noItemsNoStylesheets()
     {
-        assertSame(
-                $this->xmlStreamWriter,
+        assert(
                 $this->rssFeedSerializer
                         ->setGenerator('Another generator')
                         ->serialize(
@@ -93,7 +97,8 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                                 $this->xmlSerializer,
                                 $this->xmlStreamWriter,
                                 null
-                        )
+                        ),
+                isSameAs($this->xmlStreamWriter)
         );
         verify($this->xmlSerializer, 'serializeObject')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
@@ -109,14 +114,14 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
-        assertSame(
-                $this->xmlStreamWriter,
+        assert(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
                         $this->xmlStreamWriter,
                         null
-                )
+                ),
+                isSameAs($this->xmlStreamWriter)
         );
         verify($this->xmlSerializer, 'serializeObject')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasCalledOnce();
@@ -132,14 +137,14 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
-        assertSame(
-                $this->xmlStreamWriter,
+        assert(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
                         $this->xmlStreamWriter,
                         null
-                )
+                ),
+                isSameAs($this->xmlStreamWriter)
         );
         verify($this->xmlSerializer, 'serializeObject')->wasCalledOnce();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
@@ -161,14 +166,14 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 ->setLastBuildDate(50)
                 ->setTimeToLive(60)
                 ->setImage('http://example.org/example.gif', 'foo');
-        assertSame(
-                $this->xmlStreamWriter,
+        assert(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
                         $this->xmlStreamWriter,
                         null
-                )
+                ),
+                isSameAs($this->xmlStreamWriter)
         );
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeStartElement')->wasCalled(3);

@@ -9,6 +9,14 @@
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
+use stubbles\xml\XmlException;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\assertEmptyArray;
+use function bovigo\assert\assertFalse;
+use function bovigo\assert\assertNull;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
  *
@@ -93,10 +101,10 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      */
     public function getCategories()
     {
-        return [['category' => 'extendedCategories',
-                 'domain'   => 'extendedDomain'
-                ]
-               ];
+        return [[
+                'category' => 'extendedCategories',
+                'domain'   => 'extendedDomain'
+        ]];
     }
 
     /**
@@ -116,11 +124,11 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      */
     public function getEnclosures()
     {
-        return [['url'    => 'extendedEnclosureUrl',
-                 'length' => 'extendedEnclosureLength',
-                 'type'   => 'extendedEnclosureType'
-                ]
-               ];
+        return [[
+                'url'    => 'extendedEnclosureUrl',
+                'length' => 'extendedEnclosureLength',
+                'type'   => 'extendedEnclosureType'
+        ]];
     }
 
     /**
@@ -239,10 +247,7 @@ class RssItemWithDifferentMethods
      */
     public function getTags()
     {
-        return [['category' => 'tag1',
-                 'domain'   => 'other'
-                ]
-               ];
+        return [['category' => 'tag1', 'domain'   => 'other']];
     }
 
     /**
@@ -262,11 +267,11 @@ class RssItemWithDifferentMethods
      */
     public function getImages()
     {
-        return [['url'    => 'imagesUrl',
-                 'length' => 'imagesLength',
-                 'type'   => 'imagesType'
-                ]
-               ];
+        return [[
+                'url'    => 'imagesUrl',
+                'length' => 'imagesLength',
+                'type'   => 'imagesType'
+        ]];
     }
 
     /**
@@ -344,74 +349,61 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function noObjectThrowsIllegalArgumentException()
     {
-        $this->rssFeed->addEntity(313);
+        expect(function() { $this->rssFeed->addEntity(313); })
+                ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\XmlException
      */
     public function missingAnnotationThrowsXmlException()
     {
-        $this->rssFeed->addEntity(new \stdClass());
+        expect(function() { $this->rssFeed->addEntity(new \stdClass()); })
+                ->throws(XmlException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\XmlException
      */
     public function missingTitleThrowsXmlException()
     {
-        $this->rssFeed->addEntity(new MissingAllRssItemEntity());
+        expect(function() { $this->rssFeed->addEntity(new MissingAllRssItemEntity());})
+                ->throws(XmlException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\XmlException
      */
     public function missingLinkThrowsXmlException()
     {
-        $this->rssFeed->addEntity(new MissingLinkAndDescriptionRssItemEntity());
+        expect(function() { $this->rssFeed->addEntity(new MissingLinkAndDescriptionRssItemEntity());})
+                ->throws(XmlException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\XmlException
      */
     public function missingDescriptionThrowsXmlException()
     {
-        $this->rssFeed->addEntity(new MissingDescriptionRssItemEntity());
+        expect(function() { $this->rssFeed->addEntity(new MissingDescriptionRssItemEntity());})
+                ->throws(XmlException::class);
     }
 
     /**
-     * simple entity is transformed into rss item
-     *
      * @test
      */
-    public function simpleEntity()
+    public function simpleEntityIsTransformedIntoRssItemWithMinimalProperties()
     {
-        $rssFeedItem = $this->rssFeed->addEntity(new SimpleRssItemEntity());
-        assertEquals('simpleTitle', $rssFeedItem->getTitle());
-        assertEquals('simpleLink', $rssFeedItem->getLink());
-        assertEquals('simpleDescription', $rssFeedItem->getDescription());
-        assertNull($rssFeedItem->getAuthor());
-        assertEquals([], $rssFeedItem->getCategories());
-        assertNull($rssFeedItem->getComments());
-        assertEquals([], $rssFeedItem->getEnclosures());
-        assertNull($rssFeedItem->getGuid());
-        assertFalse($rssFeedItem->isGuidPermaLink());
-        assertNull($rssFeedItem->getPubDate());
-        assertEquals([], $rssFeedItem->getSources());
-        assertNull($rssFeedItem->getContent());
+        assert(
+                $this->rssFeed->addEntity(new SimpleRssItemEntity()),
+                equals(new RssFeedItem('simpleTitle', 'simpleLink', 'simpleDescription'))
+        );
     }
 
     /**
-     * simple entity is transformed into rss item using overrides
-     *
      * @test
      */
     public function simpleEntityWithOverrides()
@@ -442,118 +434,93 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
                  'withContent'           => 'overrideContent'
                 ]
         );
-        assertEquals('overrideTitle', $rssFeedItem->getTitle());
-        assertEquals('overrideLink', $rssFeedItem->getLink());
-        assertEquals('overrideDescription', $rssFeedItem->getDescription());
-        assertEquals('nospam@example.com (overrideAuthor)', $rssFeedItem->getAuthor());
-        assertEquals(
-                [['category' => 'overrideCategories',
-                  'domain'   => 'overrideDomain'
-                ]
-                ],
-                $rssFeedItem->getCategories()
-        );
-        assertEquals('overrideCommentsUrl', $rssFeedItem->getComments());
-        assertEquals(
-                [['url'    => 'overrideEnclosureUrl',
-                  'length' => 'overrideEnclosureLength',
-                  'type'   => 'overrideEnclosureType'
-                 ]
-                ],
-                $rssFeedItem->getEnclosures()
-        );
-        assertEquals('overrideGuid', $rssFeedItem->getGuid());
-        assertFalse($rssFeedItem->isGuidPermaLink());
-        $date = new Date(1221598221);
-        assertEquals(
-                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
-                $rssFeedItem->getPubDate()
-        );
-        assertEquals(
-                [['name' => 'overrideSourceName', 'url' => 'overrideSourceUrl']],
-                $rssFeedItem->getSources()
-        );
-        assertEquals('overrideContent', $rssFeedItem->getContent());
+
+        $expectedRssFeedItem = (new RssFeedItem(
+                'overrideTitle',
+                'overrideLink',
+                'overrideDescription'
+        ))->byAuthor('nospam@example.com (overrideAuthor)')
+            ->inCategories([[
+                    'category' => 'overrideCategories',
+                    'domain'   => 'overrideDomain'
+            ]])
+            ->addCommentsAt('overrideCommentsUrl')
+            ->deliveringEnclosures([[
+                    'url'    => 'overrideEnclosureUrl',
+                    'length' => 'overrideEnclosureLength',
+                    'type'   => 'overrideEnclosureType'
+            ]])
+            ->withGuid('overrideGuid')
+            ->andGuidIsNotPermaLink()
+            ->publishedOn(new Date(1221598221))
+            ->inspiredBySources([[
+                    'name' => 'overrideSourceName', 'url' => 'overrideSourceUrl'
+            ]])
+            ->withContent('overrideContent');
+
+        assert($rssFeedItem, equals($expectedRssFeedItem));
     }
 
     /**
-     * extended entity is transformed into rss item
-     *
      * @test
      */
     public function extendedEntity()
     {
-        $rssFeedItem = $this->rssFeed->addEntity(new ExtendedRSSItemEntity());
-        assertEquals('simpleTitle', $rssFeedItem->getTitle());
-        assertEquals('simpleLink', $rssFeedItem->getLink());
-        assertEquals('simpleDescription', $rssFeedItem->getDescription());
-        assertEquals('nospam@example.com (extendedAuthor)', $rssFeedItem->getAuthor());
-        assertEquals(
-                [['category' => 'extendedCategories',
-                  'domain'   => 'extendedDomain'
-                 ]
-                ],
-                $rssFeedItem->getCategories()
+        $expectedRssFeedItem = (new RssFeedItem(
+                'simpleTitle',
+                'simpleLink',
+                'simpleDescription'
+        ))->byAuthor('nospam@example.com (extendedAuthor)')
+            ->inCategories([[
+                    'category' => 'extendedCategories',
+                    'domain'   => 'extendedDomain'
+            ]])
+            ->addCommentsAt('extendedCommentsUrl')
+            ->deliveringEnclosures([[
+                    'url'    => 'extendedEnclosureUrl',
+                    'length' => 'extendedEnclosureLength',
+                    'type'   => 'extendedEnclosureType'
+            ]])
+            ->withGuid('extendedGuid')
+            ->andGuidIsNotPermaLink()
+            ->publishedOn(new Date(1221598221))
+            ->inspiredBySources([[
+                    'name' => 'extendedSourceName', 'url' => 'extendedSourceUrl'
+            ]])
+            ->withContent('extendedContent');
+        assert(
+                $this->rssFeed->addEntity(new ExtendedRSSItemEntity()),
+                equals($expectedRssFeedItem)
         );
-        assertEquals('extendedCommentsUrl', $rssFeedItem->getComments());
-        assertEquals(
-                [['url'    => 'extendedEnclosureUrl',
-                  'length' => 'extendedEnclosureLength',
-                  'type'   => 'extendedEnclosureType'
-                 ]
-                ],
-                $rssFeedItem->getEnclosures()
-        );
-        assertEquals('extendedGuid', $rssFeedItem->getGuid());
-        assertFalse($rssFeedItem->isGuidPermaLink());
-        $date = new Date(1221598221);
-        assertEquals(
-                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
-                $rssFeedItem->getPubDate()
-        );
-        assertEquals(
-                [['name' => 'extendedSourceName', 'url' => 'extendedSourceUrl']],
-                $rssFeedItem->getSources()
-        );
-        assertEquals('extendedContent', $rssFeedItem->getContent());
     }
 
     /**
-     * different entity is transformed into rss item
-     *
      * @test
      */
     public function differentEntity()
     {
-        $rssFeedItem = $this->rssFeed->addEntity(new RssItemWithDifferentMethods());
-        assertEquals('headline', $rssFeedItem->getTitle());
-        assertEquals('url', $rssFeedItem->getLink());
-        assertEquals('teaser', $rssFeedItem->getDescription());
-        assertEquals('creator@example.com (creator)', $rssFeedItem->getAuthor());
-        assertEquals(
-                [['category' => 'tag1', 'domain'   => 'other']],
-                $rssFeedItem->getCategories()
+        $expectedRssFeedItem = (new RssFeedItem('headline', 'url', 'teaser'))
+            ->byAuthor('creator@example.com (creator)')
+            ->inCategories([[
+                    'category' => 'tag1',
+                    'domain'   => 'other'
+            ]])
+            ->addCommentsAt('remarks')
+            ->deliveringEnclosures([[
+                    'url'    => 'imagesUrl',
+                    'length' => 'imagesLength',
+                    'type'   => 'imagesType'
+            ]])
+            ->withGuid('id')
+            ->andGuidIsNotPermaLink()
+            ->publishedOn(new Date(1221598221))
+            ->inspiredBySources([[
+                    'name' => 'originName', 'url' => 'originUrl'
+            ]])
+            ->withContent('text');
+        assert(
+                $this->rssFeed->addEntity(new RssItemWithDifferentMethods()),
+                equals($expectedRssFeedItem)
         );
-        assertEquals('remarks', $rssFeedItem->getComments());
-        assertEquals(
-                [['url'    => 'imagesUrl',
-                  'length' => 'imagesLength',
-                  'type'   => 'imagesType'
-                 ]
-                ],
-                $rssFeedItem->getEnclosures()
-        );
-        assertEquals('id', $rssFeedItem->getGuid());
-        assertFalse($rssFeedItem->isGuidPermaLink());
-        $date = new Date(1221598221);
-        assertEquals(
-                'Tue 16 Sep 2008 ' . $date->hours() . ':50:21 ' . $date->offset(),
-                $rssFeedItem->getPubDate()
-        );
-        assertEquals(
-                [['name' => 'originName', 'url' => 'originUrl']],
-                $rssFeedItem->getSources()
-        );
-        assertEquals('text', $rssFeedItem->getContent());
     }
 }

@@ -11,7 +11,7 @@ namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
 use stubbles\xml\XmlStreamWriter;
 
-use function stubbles\lang\reflect\annotationsOf;
+use function stubbles\reflect\annotationsOf;
 /**
  * Serializes arbitrary data except resources to xml.
  */

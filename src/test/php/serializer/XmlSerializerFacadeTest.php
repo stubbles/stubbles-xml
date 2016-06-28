@@ -11,6 +11,10 @@ namespace stubbles\xml\serializer;
 use bovigo\callmap\NewInstance;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\predicate\equals;
+use function bovigo\assert\predicate\isSameAs;
 /**
  * Test for stubbles\xml\serializer\XmlSerializerFacade.
  *
@@ -70,9 +74,9 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
         $this->xmlStreamWriter->mapCalls(
                 ['asXml' => '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>']
         );
-        assertEquals(
-                '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>',
-                $this->xmlSerializerFacade->serializeToXml('foo')
+        assert(
+                $this->xmlSerializerFacade->serializeToXml('foo'),
+                equals('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>')
         );
     }
 
@@ -84,9 +88,9 @@ class XmlSerializerFacadeTest extends \PHPUnit_Framework_TestCase
         $domDocument = new \DOMDocument();
         $this->xmlSerializer->mapCalls(['serialize' => $this->xmlStreamWriter]);
         $this->xmlStreamWriter->mapCalls(['asDom' => $domDocument]);
-        assertSame(
-                $domDocument,
-                $this->xmlSerializerFacade->serializeToDom('foo')
+        assert(
+                $this->xmlSerializerFacade->serializeToDom('foo'),
+                isSameAs($domDocument)
         );
     }
 }

@@ -10,6 +10,10 @@
 namespace stubbles\xml\xsl;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
+
+use function bovigo\assert\assert;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\xsl\XslCallbacks.
  *
@@ -46,55 +50,55 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfCallbacks()
     {
-        assertEquals(
-                ['test' => $this->callback],
-                $this->xslCallbacks->getCallbacks()
+        assert(
+                $this->xslCallbacks->getCallbacks(),
+                equals(['test' => $this->callback])
         );
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callbackDoesNotExistThrowsCallbackException()
     {
-        $this->xslCallbacks->invoke('foo', 'hello');
+        expect(function() { $this->xslCallbacks->invoke('foo', 'hello'); })
+                ->throws(XslCallbackException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callbackNonExistingMethodThrowsCallbackException()
     {
-        $this->xslCallbacks->invoke('test', 'doesNotExist');
+        expect(function() { $this->xslCallbacks->invoke('test', 'doesNotExist'); })
+                ->throws(XslCallbackException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingNonAnnotatedMethodThrowsCallbackException()
     {
-       $this->xslCallbacks->invoke('test', 'youCanNotCallMe');
+       expect(function() { $this->xslCallbacks->invoke('test', 'youCanNotCallMe'); })
+               ->throws(XslCallbackException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingProtectedCallbackMethodThrowsCallbackException()
     {
-        $this->xslCallbacks->invoke('test', 'doNotCallMe');
+        expect(function() { $this->xslCallbacks->invoke('test', 'doNotCallMe'); })
+                ->throws(XslCallbackException::class);
     }
 
     /**
      * @test
-     * @expectedException  stubbles\xml\xsl\XslCallbackException
      */
     public function callingPrivateCallbackMethodThrowsCallbackException()
     {
-        $this->xslCallbacks->invoke('test', 'doNotCallMeToo');
+        expect(function() { $this->xslCallbacks->invoke('test', 'doNotCallMeToo'); })
+                ->throws(XslCallbackException::class);
     }
 
     /**
@@ -102,9 +106,9 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromCallbackMethod()
     {
-        assertEquals(
-                'hello world!',
-                $this->xslCallbacks->invoke('test', 'hello', ['world!'])
+        assert(
+                $this->xslCallbacks->invoke('test', 'hello', ['world!']),
+                equals('hello world!')
         );
     }
 
@@ -113,9 +117,9 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromStaticCallbackMethod()
     {
-        assertEquals(
-                'A static method was called.',
-                $this->xslCallbacks->invoke('test', 'youCanDoThis')
+        assert(
+                $this->xslCallbacks->invoke('test', 'youCanDoThis'),
+                equals('A static method was called.')
         );
     }
 }
