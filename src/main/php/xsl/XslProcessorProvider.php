@@ -63,7 +63,7 @@ class XslProcessorProvider implements InjectionProvider
      * @param   string  $name
      * @return  mixed
      */
-    public function get($name = null)
+    public function get(string $name = null)
     {
         if ($this->shouldHaveCallbacks($name)) {
             return new XslProcessor($this->createXslCallbacks());
