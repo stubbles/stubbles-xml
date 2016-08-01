@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ class ExampleObjectWithInvalidXmlFragments
      * @return  string
      * @XmlFragment(tagName=false);
      */
-    public function noXml()
+    public function noXml(): string
     {
         return '';
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -25,7 +26,7 @@ class ExampleStaticClass
      *
      * @return  string
      */
-    public static function getBar()
+    public static function getBar(): string
     {
         return 'bar';
     }

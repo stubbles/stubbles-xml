@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -37,7 +38,7 @@ abstract class AbstractXmlStreamWriter
      *
      * @return  string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->xmlVersion;
     }
@@ -47,7 +48,7 @@ abstract class AbstractXmlStreamWriter
      *
      * @return  string
      */
-    public function getEncoding()
+    public function getEncoding(): string
     {
         return $this->encoding;
     }
@@ -58,7 +59,7 @@ abstract class AbstractXmlStreamWriter
      * @param   int   $feature
      * @return  bool
      */
-    public function hasFeature($feature)
+    public function hasFeature(int $feature): bool
     {
         return in_array($feature, $this->getFeatures());
     }
@@ -68,7 +69,7 @@ abstract class AbstractXmlStreamWriter
      *
      * @return  int[]
      */
-    protected abstract function getFeatures();
+    protected abstract function getFeatures(): array;
 
     /**
      * Write an opening tag
@@ -76,7 +77,7 @@ abstract class AbstractXmlStreamWriter
      * @param   string  $elementName
      * @return  XmlStreamWriter
      */
-    public function writeStartElement($elementName)
+    public function writeStartElement(string $elementName): XmlStreamWriter
     {
         $this->doWriteStartElement($elementName);
         $this->depth++;
@@ -88,14 +89,14 @@ abstract class AbstractXmlStreamWriter
      *
      * @param  string  $elementName
      */
-    protected abstract function doWriteStartElement($elementName);
+    protected abstract function doWriteStartElement(string $elementName);
 
     /**
      * Write an end element
      *
      * @return  XmlStreamWriter
      */
-    public function writeEndElement()
+    public function writeEndElement(): XmlStreamWriter
     {
         $this->doWriteEndElement();
         $this->depth--;
@@ -112,7 +113,7 @@ abstract class AbstractXmlStreamWriter
      *
      * @return  bool
      */
-    public function isFinished()
+    public function isFinished(): bool
     {
         return 0 === $this->depth;
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -15,7 +16,7 @@ namespace org\stubbles\test\xml\serializer;
  */
 class TraversableTraversable implements \IteratorAggregate
 {
-    public function baz()
+    public function baz(): string
     {
         return 'dummy';
     }
@@ -25,7 +26,7 @@ class TraversableTraversable implements \IteratorAggregate
      * @return \ArrayIterator
      * @XmlIgnore
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator(['bar']);
     }

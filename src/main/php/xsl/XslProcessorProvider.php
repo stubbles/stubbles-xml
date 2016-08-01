@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -44,7 +45,7 @@ class XslProcessorProvider implements InjectionProvider
      * @param  string                  $configPath
      * @Named{configPath}('stubbles.config.path')
      */
-    public function  __construct(Injector $injector, $configPath)
+    public function  __construct(Injector $injector, string $configPath)
     {
         $this->injector   = $injector;
         $this->configPath = $configPath;
@@ -78,7 +79,7 @@ class XslProcessorProvider implements InjectionProvider
      * @param   string  $name
      * @return  bool
      */
-    protected function shouldHaveCallbacks($name)
+    protected function shouldHaveCallbacks(string $name = null): bool
     {
         return ('stubbles.xml.xsl.callbacks.disabled' !== $name);
     }
@@ -88,7 +89,7 @@ class XslProcessorProvider implements InjectionProvider
      *
      * @return  \stubbles\xml\xsl\XslCallbacks
      */
-    protected function createXslCallbacks()
+    protected function createXslCallbacks(): XslCallbacks
     {
         $callbacks = new XslCallbacks();
         foreach ($this->getCallbackList() as $callbackName => $callbackClass) {
@@ -104,7 +105,7 @@ class XslProcessorProvider implements InjectionProvider
      * @return  array
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
-    protected function getCallbackList()
+    protected function getCallbackList(): array
     {
         if (!is_array($this->callbackList)) {
             if (!file_exists($this->configPath . '/xsl-callbacks.ini')) {

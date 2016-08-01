@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -83,14 +84,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
         libxml_clear_errors();
     }
 
-    /**
-     *
-     * @param   mixed   $value
-     * @param   string  $tagName         optional  name of the surrounding xml tag
-     * @param   string  $elementTagName  optional  recurring element tag name for lists
-     * @return  string
-     */
-    protected function serialize($value, $tagName = null, $elementTagName = null)
+    protected function serialize($value, string $tagName = null, string $elementTagName = null): string
     {
         return $this->serializer->serialize(
                 $value,
@@ -100,13 +94,7 @@ class XmlSerializerTest extends \PHPUnit_Framework_TestCase
         )->asXml();
     }
 
-    /**
-     * adds prefix to given xml string
-     *
-     * @param   string  $xml
-     * @return  string
-     */
-    protected function prefixXml($xml)
+    protected function prefixXml(string $xml): string
     {
         return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
     }

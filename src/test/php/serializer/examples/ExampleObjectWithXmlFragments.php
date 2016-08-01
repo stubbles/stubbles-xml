@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ class ExampleObjectWithXmlFragments
      * @return  string
      * @XmlFragment(tagName='description', transformNewLineToBr=true);
      */
-    public function getSomeXml()
+    public function getSomeXml(): string
     {
         return "foo\nb&ar\n\nbaz";
     }

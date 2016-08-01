@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -29,7 +30,7 @@ class XslCallbacks
      * @param   object  $callback
      * @throws  \InvalidArgumentException
      */
-    public function addCallback($name, $callback)
+    public function addCallback(string $name, $callback)
     {
         if (!is_object($callback)) {
             throw new \InvalidArgumentException('Given callback must be an object');
@@ -43,7 +44,7 @@ class XslCallbacks
      *
      * @return  object[]
      */
-    public function getCallbacks()
+    public function getCallbacks(): array
     {
         return $this->callbacks;
     }
@@ -54,7 +55,7 @@ class XslCallbacks
      * @param   string  $name
      * @return  bool
      */
-    private function hasCallback($name)
+    private function hasCallback(string $name): bool
     {
         return isset($this->callbacks[$name]);
     }
@@ -66,7 +67,7 @@ class XslCallbacks
      * @return  object
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
-    private function getCallback($name)
+    private function getCallback(string $name)
     {
         if (!$this->hasCallback($name)) {
             throw new XslCallbackException('A callback with the name ' . $name . ' does not exist.');
@@ -84,7 +85,7 @@ class XslCallbacks
      * @return  mixed
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
-    public function invoke($name, $methodName, array $arguments = [])
+    public function invoke(string $name, string $methodName, array $arguments = [])
     {
         $callback = $this->getCallback($name);
         if (!method_exists($callback, $methodName)) {

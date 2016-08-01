@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -48,7 +49,7 @@ class XmlSerializerFacade
      * @param   array  $tagName  name for root tag
      * @return  string
      */
-    public function serializeToXml($data, $tagName = null)
+    public function serializeToXml($data, string $tagName = null): string
     {
         return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
                                    ->asXml();
@@ -61,7 +62,7 @@ class XmlSerializerFacade
      * @param   array  $tagName  name for root tag
      * @return  \DOMDocument
      */
-    public function serializeToDom($data, $tagName = null)
+    public function serializeToDom($data, string $tagName = null): \DOMDocument
     {
         return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
                                    ->asDOM();

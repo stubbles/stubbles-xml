@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -10,9 +11,12 @@
 namespace stubbles\xml\serializer;
 use stubbles\reflect\annotation\Annotations;
 use stubbles\xml\XmlStreamWriter;
-use stubbles\xml\serializer\delegate\Attribute;
-use stubbles\xml\serializer\delegate\Fragment;
-use stubbles\xml\serializer\delegate\Tag;
+use stubbles\xml\serializer\delegate\{
+    Attribute,
+    Fragment,
+    Tag,
+    XmlSerializerDelegate
+};
 
 use function stubbles\reflect\annotationsOf;
 use function stubbles\reflect\methodsOf;
@@ -79,7 +83,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * @param   object  $object
      * @return  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer
      */
-    public static function fromObject($object)
+    public static function fromObject($object): self
     {
         $className = get_class($object);
         if (isset(self::$cache[$className])) {
@@ -98,9 +102,9 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param  string                                  $tagName        name of the surrounding xml tag
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
+    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
     {
-        $xmlWriter->writeStartElement($tagName != null ? $tagName : $this->classTagName);
+        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : $this->classTagName);
         foreach ($this->properties as $propertyName => $xmlSerializerDelegate) {
             $xmlSerializerDelegate->serialize(
                     $object->$propertyName,
@@ -179,7 +183,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * @param   string                                         $defaultTagName  default tag name in case element is not annotated
      * @return  \stubbles\xml\serializer\delegate\XmlSerializerDelegate
      */
-    private function createSerializerDelegate(Annotations $annotations, $defaultTagName)
+    private function createSerializerDelegate(Annotations $annotations, string $defaultTagName): XmlSerializerDelegate
     {
         if ($annotations->contain('XmlAttribute')) {
             $xmlAttribute = $annotations->firstNamed('XmlAttribute');
@@ -190,13 +194,13 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
         } elseif ($annotations->contain('XmlFragment')) {
             $xmlFragment = $annotations->firstNamed('XmlFragment');
             return new Fragment(
-                    $xmlFragment->tagName(),
+                    false !== $xmlFragment->tagName() ? $xmlFragment->tagName() : null,
                     $xmlFragment->getValueByName('transformNewLineToBr', false)
             );
         } elseif ($annotations->contain('XmlTag')) {
             $xmlTag = $annotations->firstNamed('XmlTag');
             return new Tag(
-                    $xmlTag->tagName(),
+                    false !== $xmlTag->tagName() ? $xmlTag->tagName() : '',
                     $xmlTag->getValueByName('elementTagName')
             );
         }

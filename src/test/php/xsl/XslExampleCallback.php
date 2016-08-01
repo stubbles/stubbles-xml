@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -33,7 +34,7 @@ class XslExampleCallback
      * @return  string
      * @XslMethod
      */
-    public function hello($world)
+    public function hello(string $world): string
     {
         $this->helloArg = $world;
         return 'hello ' . $world;
@@ -54,7 +55,7 @@ class XslExampleCallback
      *
      * @return  string
      */
-    public function youCanNotCallMe()
+    public function youCanNotCallMe(): string
     {
         return 'bye world!';
     }
@@ -65,7 +66,7 @@ class XslExampleCallback
      * @return  string
      * @XslMethod
      */
-    protected function doNotCallMe()
+    protected function doNotCallMe(): string
     {
         return 'A protected method was called!';
     }
@@ -76,7 +77,7 @@ class XslExampleCallback
      * @return  string
      * @XslMethod
      */
-    private function doNotCallMeToo()
+    private function doNotCallMeToo(): string
     {
         return 'A private method was called.';
     }
@@ -87,7 +88,7 @@ class XslExampleCallback
      * @return  string
      * @XslMethod
      */
-    public static function youCanDoThis()
+    public static function youCanDoThis(): string
     {
         self::$calledYouCanDoThis = true;
         return 'A static method was called.';
@@ -98,7 +99,7 @@ class XslExampleCallback
      *
      * @return  bool
      */
-    public static function calledYouCanDoThis()
+    public static function calledYouCanDoThis(): bool
     {
         return self::$calledYouCanDoThis;
     }

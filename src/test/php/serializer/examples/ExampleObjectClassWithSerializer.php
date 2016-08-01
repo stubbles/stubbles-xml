@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -33,7 +34,7 @@ class ExampleObjectClassWithSerializer
      *
      * @return  string
      */
-    public function getSomething()
+    public function getSomething(): string
     {
         return 'something';
     }

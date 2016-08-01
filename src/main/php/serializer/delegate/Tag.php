@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ class Tag implements XmlSerializerDelegate
      * @param  string  $tagName         name of tag
      * @param  string  $elementTagName  recurring element tag name for lists
      */
-    public function  __construct($tagName, $elementTagName = null)
+    public function  __construct(string $tagName = null, string $elementTagName = null)
     {
         $this->tagName        = $tagName;
         $this->elementTagName = $elementTagName;

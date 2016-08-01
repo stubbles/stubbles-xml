@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -27,13 +28,13 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
      * @param   string                                  $tagName        name of the surrounding xml tag
      * @throws  \InvalidArgumentException  in case $object is not an instance of stubbles\xml\rss\RssFeedItem
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
+    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
     {
         if (!($object instanceof RssFeedItem)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeedItem');
         }
 
-        $xmlWriter->writeStartElement(((null == $tagName) ? ('item') : ($tagName)));
+        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'item');
         $xmlWriter->writeElement('title', [], $object->getTitle());
         $xmlWriter->writeElement('link', [], $object->getLink());
         $xmlWriter->writeElement('description', [], $object->getDescription());

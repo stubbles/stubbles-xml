@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -51,8 +52,10 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedSerializer = new RssFeedSerializer();
-        $this->xmlSerializer     = NewInstance::stub(XmlSerializer::class);
         $this->xmlStreamWriter   = NewInstance::of(XmlStreamWriter::class);
+        $this->xmlSerializer     = NewInstance::stub(XmlSerializer::class)
+                ->mapCalls(['serializeObject' => $this->xmlStreamWriter]);
+
     }
 
     /**
@@ -78,8 +81,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->rssFeedSerializer->serialize(
                         new \stdClass(),
                         $this->xmlSerializer,
-                        $this->xmlStreamWriter,
-                        null
+                        $this->xmlStreamWriter
                 );
         })->throws(\InvalidArgumentException::class);
     }
@@ -95,8 +97,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                         ->serialize(
                                 new RssFeed('title', 'link', 'description'),
                                 $this->xmlSerializer,
-                                $this->xmlStreamWriter,
-                                null
+                                $this->xmlStreamWriter
                         ),
                 isSameAs($this->xmlStreamWriter)
         );
@@ -118,8 +119,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
-                        $this->xmlStreamWriter,
-                        null
+                        $this->xmlStreamWriter
                 ),
                 isSameAs($this->xmlStreamWriter)
         );
@@ -141,8 +141,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
-                        $this->xmlStreamWriter,
-                        null
+                        $this->xmlStreamWriter
                 ),
                 isSameAs($this->xmlStreamWriter)
         );
@@ -170,8 +169,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
-                        $this->xmlStreamWriter,
-                        null
+                        $this->xmlStreamWriter
                 ),
                 isSameAs($this->xmlStreamWriter)
         );

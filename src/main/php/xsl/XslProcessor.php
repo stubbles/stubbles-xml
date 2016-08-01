@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -102,7 +103,7 @@ class XslProcessor
      * @return  \stubbles\xml\xsl\XslProcessor
      * @since   2.0.0
      */
-    public function enableProfiling($profileOutputFile)
+    public function enableProfiling(string $profileOutputFile): self
     {
         $this->xsltProcessor->setProfiling($profileOutputFile);
         return $this;
@@ -114,7 +115,7 @@ class XslProcessor
      * @param   \DOMDocument  $doc
      * @return  \stubbles\xml\xsl\XslProcessor
      */
-    public function onDocument(\DOMDocument $doc)
+    public function onDocument(\DOMDocument $doc): self
     {
         $this->document = $doc;
         return $this;
@@ -128,7 +129,7 @@ class XslProcessor
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function onXmlFile($xmlFile, $xinclude = true)
+    public function onXmlFile(string $xmlFile, bool $xinclude = true): self
     {
         $doc = new \DOMDocument();
         if (false === @$doc->load($xmlFile)) {
@@ -148,7 +149,7 @@ class XslProcessor
      * @param   \DOMDocument  $stylesheet
      * @return  \stubbles\xml\xsl\XslProcessor
      */
-    public function applyStylesheet(\DOMDocument $stylesheet)
+    public function applyStylesheet(\DOMDocument $stylesheet): self
     {
         $this->stylesheets[] = $stylesheet;
         $this->xsltProcessor->importStylesheet($stylesheet);
@@ -162,7 +163,7 @@ class XslProcessor
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function applyStylesheetFromFile($stylesheetFile)
+    public function applyStylesheetFromFile(string $stylesheetFile): self
     {
         $stylesheet = new \DOMDocument();
         if (false === @$stylesheet->load($stylesheetFile)) {
@@ -177,7 +178,7 @@ class XslProcessor
      *
      * @return  \DOMDocument[]
      */
-    public function getStylesheets()
+    public function getStylesheets(): array
     {
         return $this->stylesheets;
     }
@@ -189,7 +190,7 @@ class XslProcessor
      * @param   object  $instance  the instance to register as callback
      * @return  \stubbles\xml\xsl\XslProcessor
      */
-    public function usingCallback($name, $instance)
+    public function usingCallback(string $name, $instance): self
     {
         $this->xslCallbacks->addCallback($name, $instance);
         return $this;
@@ -200,7 +201,7 @@ class XslProcessor
      *
      * @return  object[]
      */
-    public function getCallbacks()
+    public function getCallbacks(): array
     {
         return $this->xslCallbacks->getCallbacks();
     }
@@ -248,7 +249,7 @@ class XslProcessor
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function withParameter($nameSpace, $paramName, $paramValue)
+    public function withParameter(string $nameSpace, string $paramName, string $paramValue): self
     {
         if (false === $this->xsltProcessor->setParameter($nameSpace, $paramName, $paramValue)) {
             throw new XslProcessorException('Could not set parameter ' . $nameSpace . ':' . $paramName . ' with value ' . $paramValue);
@@ -270,7 +271,7 @@ class XslProcessor
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function withParameters($nameSpace, array $params)
+    public function withParameters(string $nameSpace, array $params): self
     {
         if (false === $this->xsltProcessor->setParameter($nameSpace, $params)) {
             throw new XslProcessorException('Could not set parameters in ' . $nameSpace);
@@ -290,7 +291,7 @@ class XslProcessor
      * @return  \DOMDocument
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function toDoc()
+    public function toDoc(): \DOMDocument
     {
         if (null === $this->document) {
             throw new XslProcessorException('Can not transform, set document or xml file to transform first');
@@ -313,7 +314,7 @@ class XslProcessor
      * @return  int
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function toUri($uri)
+    public function toUri(string $uri): int
     {
         if (null === $this->document) {
             throw new XslProcessorException('Can not transform, set document or xml file to transform first');
@@ -334,7 +335,7 @@ class XslProcessor
      * @return  string
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
-    public function toXml()
+    public function toXml(): string
     {
         if (null === $this->document) {
             throw new XslProcessorException('Can not transform, set document or xml file to transform first');
@@ -354,7 +355,7 @@ class XslProcessor
      *
      * @return  string
      */
-    private function createMessage()
+    private function createMessage(): string
     {
         $message = '';
         foreach (libxml_get_errors() as $error) {

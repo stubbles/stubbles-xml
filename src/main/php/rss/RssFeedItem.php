@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -101,7 +102,7 @@ class RssFeedItem
      * @param  string  $link         URL of the item
      * @param  string  $description  item synopsis
      */
-    public function __construct($title, $link, $description)
+    public function __construct(string $title, string $link, string $description)
     {
         $this->title       = $title;
         $this->link        = $link;
@@ -116,7 +117,7 @@ class RssFeedItem
      * @param   string  $description  item synopsis
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public static function create($title, $link, $description)
+    public static function create(string $title, string $link, string $description): self
     {
         return new self($title, $link, $description);
     }
@@ -130,7 +131,7 @@ class RssFeedItem
      * @throws  \InvalidArgumentException
      * @throws  \stubbles\xml\XmlException
      */
-    public static function fromEntity($entity, array $overrides = [])
+    public static function fromEntity($entity, array $overrides = []): self
     {
         if (!is_object($entity)) {
             throw new \InvalidArgumentException('Given entity must be an object.');
@@ -208,14 +209,23 @@ class RssFeedItem
      * @return  string
      * @throws  \stubbles\xml\XmlException
      */
-    private static function getRequiredAttribute($entity, \ReflectionClass $entityClass, $name, $method, array $overrides)
-    {
+    private static function getRequiredAttribute(
+            $entity,
+            \ReflectionClass $entityClass,
+            string $name,
+            string $method,
+            array $overrides
+    ) {
         if (isset($overrides[$name])) {
             return $overrides[$name];
         }
 
         if (!$entityClass->hasMethod($method)) {
-            throw new XmlException('RSSFeedItem ' . $entityClass->getName() . ' does not offer a method to return the ' . $name . ', but ' . $name . ' is required.');
+            throw new XmlException(
+                    'RSSFeedItem ' . $entityClass->getName()
+                    . ' does not offer a method to return the ' . $name
+                    . ', but ' . $name . ' is required.'
+            );
         }
 
         return $entity->$method();
@@ -226,7 +236,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -236,7 +246,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }
@@ -246,7 +256,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -257,7 +267,7 @@ class RssFeedItem
      * @param   string  $author  author of rss feed item
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function byAuthor($author)
+    public function byAuthor(string $author): self
     {
         if (!strstr($author, '@')) {
             $this->author = 'nospam@example.com (' . $author . ')';
@@ -273,7 +283,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function hasAuthor()
+    public function hasAuthor(): bool
     {
         return null !== $this->author;
     }
@@ -295,7 +305,7 @@ class RssFeedItem
      * @param   string  $domain    categorization taxonomy
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function inCategory($category, $domain = '')
+    public function inCategory(string $category, string $domain = ''): self
     {
         $this->categories[] = ['category' => $category,
                                'domain'   => $domain
@@ -311,7 +321,7 @@ class RssFeedItem
      * @param   string[]  $categories
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function inCategories(array $categories)
+    public function inCategories(array $categories): self
     {
         foreach ($categories as $category) {
             if (is_array($category)) {
@@ -329,7 +339,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         return $this->categories;
     }
@@ -340,7 +350,7 @@ class RssFeedItem
      * @param   string  $comments
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function addCommentsAt($comments)
+    public function addCommentsAt(string $comments): self
     {
         $this->comments = $comments;
         return $this;
@@ -351,7 +361,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function hasComments()
+    public function hasComments(): bool
     {
         return null !== $this->comments;
     }
@@ -374,7 +384,7 @@ class RssFeedItem
      * @param   string  $type    MIME type of enclosure
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function deliveringEnclosure($url, $length, $type)
+    public function deliveringEnclosure(string $url, int $length, string $type): self
     {
         $this->enclosures[] = ['url'    => $url,
                                'length' => $length,
@@ -389,7 +399,7 @@ class RssFeedItem
      * @param   array  $enclosures
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function deliveringEnclosures(array $enclosures)
+    public function deliveringEnclosures(array $enclosures): self
     {
         $this->enclosures = $enclosures;
         return $this;
@@ -400,7 +410,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getEnclosures()
+    public function getEnclosures(): array
     {
         return $this->enclosures;
     }
@@ -411,7 +421,7 @@ class RssFeedItem
      * @param   string  $guid         the id of the item
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function withGuid($guid)
+    public function withGuid(string $guid): self
     {
         $this->guid        = $guid;
         $this->isPermaLink = true;
@@ -423,7 +433,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function hasGuid()
+    public function hasGuid(): bool
     {
         return null !== $this->guid;
     }
@@ -443,7 +453,7 @@ class RssFeedItem
      *
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function andGuidIsNotPermaLink()
+    public function andGuidIsNotPermaLink(): self
     {
         $this->isPermaLink = false;
         return $this;
@@ -454,7 +464,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function isGuidPermaLink()
+    public function isGuidPermaLink(): bool
     {
         return $this->isPermaLink;
     }
@@ -465,7 +475,7 @@ class RssFeedItem
      * @param   string|int|\stubbles\date\Date  $pubDate  publishing date of rss feed item
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function publishedOn($pubDate)
+    public function publishedOn($pubDate): self
     {
         $this->pubDate = Date::castFrom($pubDate, 'pubDate');
         return $this;
@@ -476,7 +486,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function hasPubDate()
+    public function hasPubDate(): bool
     {
         return null !== $this->pubDate;
     }
@@ -502,7 +512,7 @@ class RssFeedItem
      * @param   string  $url   url of the source
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function inspiredBySource($name, $url)
+    public function inspiredBySource(string $name, string $url): self
     {
         $this->sources[] = ['name' => $name, 'url' => $url];
         return $this;
@@ -514,7 +524,7 @@ class RssFeedItem
      * @param   array  $sources
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function inspiredBySources(array $sources)
+    public function inspiredBySources(array $sources): self
     {
         $this->sources = $sources;
         return $this;
@@ -525,7 +535,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getSources()
+    public function getSources(): array
     {
         return $this->sources;
     }
@@ -536,7 +546,7 @@ class RssFeedItem
      * @param   string  $content  content of rss feed item
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function withContent($content)
+    public function withContent(string $content): self
     {
         $this->content = $content;
         return $this;
@@ -547,7 +557,7 @@ class RssFeedItem
      *
      * @return  bool
      */
-    public function hasContent()
+    public function hasContent(): bool
     {
         return (empty($this->content) === false);
     }

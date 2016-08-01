@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -43,8 +44,12 @@ class XmlSerializer
      * @param   string                         $elementTagName  recurring element tag name for lists
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function serialize($value, XmlStreamWriter $xmlWriter, $tagName = null, $elementTagName = null)
-    {
+    public function serialize(
+            $value,
+            XmlStreamWriter $xmlWriter,
+            string $tagName = null,
+            string $elementTagName = null
+    ): XmlStreamWriter {
         switch (gettype($value)) {
             case 'NULL':
                 $this->serializeNull($xmlWriter, $tagName);
@@ -93,7 +98,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeNull(XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeNull(XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         if (null === $tagName) {
             $tagName = 'null';
@@ -114,7 +119,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmltreamWriter
      * @since   1.6.0
      */
-    public function serializeBool($value, XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeBool($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         if (null === $tagName) {
             $tagName = 'boolean';
@@ -130,7 +135,7 @@ class XmlSerializer
      * @return  string
      * @since   2.0.0
      */
-    public function convertBoolToString($value)
+    public function convertBoolToString(bool $value): string
     {
         if (true === $value) {
             return 'true';
@@ -148,7 +153,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeString($value, XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeString($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
@@ -162,7 +167,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeInt($value, XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeInt($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
@@ -176,7 +181,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeFloat($value, XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeFloat($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
@@ -189,7 +194,7 @@ class XmlSerializer
      * @param   string                         $tagName    name of the surrounding xml tag
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    protected function serializeScalarValue($value, XmlStreamWriter $xmlWriter, $tagName = null)
+    protected function serializeScalarValue($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         if (null === $tagName) {
             $tagName = gettype($value);
@@ -211,13 +216,17 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeArray($array, XmlStreamWriter $xmlWriter, $tagName = null, $elementTagName = null)
-    {
+    public function serializeArray(
+            $array,
+            XmlStreamWriter $xmlWriter,
+            string $tagName = null,
+            string $elementTagName = null
+    ): XmlStreamWriter {
         if (null === $tagName) {
             $tagName = 'array';
         }
 
-        if (false !== $tagName) {
+        if (!empty($tagName)) {
             $xmlWriter->writeStartElement($tagName);
         }
 
@@ -229,7 +238,7 @@ class XmlSerializer
             }
         }
 
-        if (false !== $tagName) {
+        if (!empty($tagName)) {
             $xmlWriter->writeEndElement();
         }
 
@@ -245,7 +254,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
       */
-    public function serializeObject($object, XmlStreamWriter $xmlWriter, $tagName = null)
+    public function serializeObject($object, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         $this->serializerFor($object)->serialize($object, $this, $xmlWriter, $tagName);
         return $xmlWriter;
@@ -255,9 +264,9 @@ class XmlSerializer
      * returns serializer for given object
      *
      * @param   object  $object
-     * @return  \stubbles\xml\serializer\XmlObjectSerializer
+     * @return  \stubbles\xml\serializer\ObjectXmlSerializer
      */
-    protected function serializerFor($object)
+    protected function serializerFor($object): ObjectXmlSerializer
     {
         if (!annotationsOf($object)->contain('XmlSerializer')) {
             return AnnotationBasedObjectXmlSerializer::fromObject($object);

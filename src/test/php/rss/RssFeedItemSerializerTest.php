@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -51,7 +52,8 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->rssFeedItemSerializer = new RssFeedItemSerializer();
-        $this->xmlSerializer   = NewInstance::stub(XmlSerializer::class);
+        $this->xmlSerializer   = NewInstance::stub(XmlSerializer::class)
+                ->mapCalls(['convertBoolToString' => false]);
         $this->xmlStreamWriter = NewInstance::of(XmlStreamWriter::class);
     }
 
@@ -78,8 +80,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->rssFeedItemSerializer->serialize(
                         new \stdClass(),
                         $this->xmlSerializer,
-                        $this->xmlStreamWriter,
-                        null
+                        $this->xmlStreamWriter
                 );
         })->throws(\InvalidArgumentException::class);
     }
@@ -92,8 +93,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description'),
                 $this->xmlSerializer,
-                $this->xmlStreamWriter,
-                null
+                $this->xmlStreamWriter
         );
         verify($this->xmlStreamWriter, 'writeStartElement')->received('item');
         verify($this->xmlStreamWriter, 'writeElement')->wasCalled(3);
@@ -138,8 +138,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                         )
                         ->withContent('<foo>bar</foo><baz/>'),
                 $this->xmlSerializer,
-                $this->xmlStreamWriter,
-                null
+                $this->xmlStreamWriter
         );
         verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12);
     }

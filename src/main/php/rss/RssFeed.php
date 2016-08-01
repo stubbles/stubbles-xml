@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -101,7 +102,7 @@ class RssFeed
      * @param  string  $link         source of rss feed
      * @param  string  $description  source description
      */
-    public function __construct($title, $link, $description)
+    public function __construct(string $title, string $link, string $description)
     {
         $this->title       = $title;
         $this->link        = $link;
@@ -113,7 +114,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -123,7 +124,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->link;
     }
@@ -133,7 +134,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -144,7 +145,7 @@ class RssFeed
      * @param   string  $locale
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): self
     {
         $this->locale = $locale;
         return $this;
@@ -155,7 +156,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasLocale()
+    public function hasLocale(): bool
     {
         return (null !== $this->locale);
     }
@@ -176,7 +177,7 @@ class RssFeed
      * @param   string  $copyright
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setCopyright($copyright)
+    public function setCopyright(string $copyright): self
     {
         $this->copyright = $copyright;
         return $this;
@@ -187,7 +188,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasCopyright()
+    public function hasCopyright(): bool
     {
         return (null !== $this->copyright);
     }
@@ -210,7 +211,7 @@ class RssFeed
      * @param   string  $description  item synopsis
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function addItem($title, $link, $description)
+    public function addItem(string $title, string $link, string $description): RssFeedItem
     {
         return ($this->items[] = RssFeedItem::create($title, $link, $description));
     }
@@ -224,7 +225,7 @@ class RssFeed
      * @param   array   $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function addEntity($entity, array $overrides = [])
+    public function addEntity($entity, array $overrides = []): RssFeedItem
     {
         $rssFeedItem = RssFeedItem::fromEntity($entity, $overrides);
         array_push($this->items, $rssFeedItem);
@@ -237,7 +238,7 @@ class RssFeed
      * @param   int   $pos
      * @return  bool
      */
-    public function hasItem($pos)
+    public function hasItem(int $pos): bool
     {
         return isset($this->items[$pos]);
     }
@@ -248,13 +249,9 @@ class RssFeed
      * @param   int  $pos
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function getItem($pos)
+    public function getItem(int $pos)
     {
-        if ($this->hasItem($pos)) {
-            return $this->items[$pos];
-        }
-
-        return null;
+        return $this->items[$pos] ?? null;
     }
 
     /**
@@ -262,7 +259,7 @@ class RssFeed
      *
      * @return  \stubbles\xml\rss\RssFeedItem[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -272,7 +269,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function countItems()
+    public function countItems(): int
     {
         return count($this->items);
     }
@@ -283,7 +280,7 @@ class RssFeed
      * @param   string  $stylesheet  the stylesheet to append
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function appendStylesheet($stylesheet)
+    public function appendStylesheet(string $stylesheet): self
     {
         $this->stylesheets[] = $stylesheet;
         return $this;
@@ -294,7 +291,7 @@ class RssFeed
      *
      * @return  string[]
      */
-    public function getStylesheets()
+    public function getStylesheets(): array
     {
         return $this->stylesheets;
     }
@@ -305,7 +302,7 @@ class RssFeed
      * @param   string  $managingEditor
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setManagingEditor($managingEditor)
+    public function setManagingEditor(string $managingEditor): self
     {
         if (!strstr($managingEditor, '@')) {
             $this->managingEditor = 'nospam@example.com (' . $managingEditor . ')';
@@ -321,7 +318,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasManagingEditor()
+    public function hasManagingEditor(): bool
     {
         return (null !== $this->managingEditor);
     }
@@ -342,7 +339,7 @@ class RssFeed
      * @param   string  $webMaster
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setWebMaster($webMaster)
+    public function setWebMaster(string $webMaster): self
     {
         if (!strstr($webMaster, '@')) {
             $this->webMaster = 'nospam@example.com (' . $webMaster . ')';
@@ -358,7 +355,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasWebMaster()
+    public function hasWebMaster(): bool
     {
         return (null !== $this->webMaster);
     }
@@ -379,7 +376,7 @@ class RssFeed
      * @param   string|int|\stubbles\date\Date   $lastBuildDate  last time the content of the channel changed
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setLastBuildDate($lastBuildDate)
+    public function setLastBuildDate($lastBuildDate): self
     {
         $this->lastBuildDate = Date::castFrom($lastBuildDate, 'lastBuildDate');
         return $this;
@@ -390,7 +387,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasLastBuildDate()
+    public function hasLastBuildDate(): bool
     {
         return (null !== $this->lastBuildDate);
     }
@@ -416,7 +413,7 @@ class RssFeed
      * @param   int  $ttl
      * @return  \stubbles\xml\rss\RssFeed
      */
-    public function setTimeToLive($ttl)
+    public function setTimeToLive(int $ttl): self
     {
         $this->ttl = $ttl;
         return $this;
@@ -427,7 +424,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasTimeToLive()
+    public function hasTimeToLive(): bool
     {
         return (null !== $this->ttl);
     }
@@ -453,7 +450,7 @@ class RssFeed
      * @return  \stubbles\xml\rss\RssFeed
      * @throws  \InvalidArgumentException  in case $width or $height have invalid values
      */
-    public function setImage($url, $description, $width = 88, $height = 31)
+    public function setImage(string $url, string $description, int $width = 88, int $height = 31): self
     {
         if (144 < $width || 0 > $width) {
             throw new \InvalidArgumentException('Width must be a value between 0 and 144.');
@@ -476,7 +473,7 @@ class RssFeed
      *
      * @return  bool
      */
-    public function hasImage()
+    public function hasImage(): bool
     {
         return (strlen($this->image['url']) > 0);
     }
@@ -486,7 +483,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getImageUrl()
+    public function getImageUrl(): string
     {
         return $this->image['url'];
     }
@@ -496,7 +493,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getImageDescription()
+    public function getImageDescription(): string
     {
         return $this->image['description'];
     }
@@ -506,7 +503,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function getImageWidth()
+    public function getImageWidth(): int
     {
         return $this->image['width'];
     }
@@ -516,7 +513,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function getImageHeight()
+    public function getImageHeight(): int
     {
         return $this->image['height'];
     }

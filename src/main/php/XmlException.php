@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -19,7 +20,7 @@ class XmlException extends \Exception
      * @param  string      $message  failure message
      * @param  \Exception  $cause    optional  cause for this exception
      */
-    public function __construct($message, \Exception $cause = null)
+    public function __construct(string $message, \Exception $cause = null)
     {
         parent::__construct($message, 0, $cause);
     }

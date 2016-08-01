@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -38,7 +39,7 @@ class MissingLinkAndDescriptionRssItemEntity
      *
      * @return  string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return 'simpleTitle';
     }
@@ -55,7 +56,7 @@ class MissingDescriptionRssItemEntity extends MissingLinkAndDescriptionRssItemEn
      *
      * @return  string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return 'simpleLink';
     }
@@ -72,7 +73,7 @@ class SimpleRssItemEntity extends MissingDescriptionRssItemEntity
      *
      * @return  string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'simpleDescription';
     }
@@ -89,7 +90,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  string
      */
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return 'extendedAuthor';
     }
@@ -99,7 +100,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  array
      */
-    public function getCategories()
+    public function getCategories(): array
     {
         return [[
                 'category' => 'extendedCategories',
@@ -112,7 +113,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  string
      */
-    public function getCommentsUrl()
+    public function getCommentsUrl(): string
     {
         return 'extendedCommentsUrl';
     }
@@ -122,7 +123,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  array
      */
-    public function getEnclosures()
+    public function getEnclosures(): array
     {
         return [[
                 'url'    => 'extendedEnclosureUrl',
@@ -136,7 +137,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  string
      */
-    public function getGuid()
+    public function getGuid(): string
     {
         return 'extendedGuid';
     }
@@ -144,9 +145,9 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
     /**
      * returns whether guid is perma link or not
      *
-     * @return  string
+     * @return  bool
      */
-    public function isPermaLink()
+    public function isPermaLink(): bool
     {
         return false;
     }
@@ -154,9 +155,9 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
     /**
      * returns the publishing date
      *
-     * @return  string
+     * @return  int
      */
-    public function getPubDate()
+    public function getPubDate(): int
     {
         return 1221598221;
     }
@@ -166,7 +167,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  array
      */
-    public function getSources()
+    public function getSources(): array
     {
         return [['name' => 'extendedSourceName', 'url' => 'extendedSourceUrl']];
     }
@@ -176,7 +177,7 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
      *
      * @return  string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return 'extendedContent';
     }
@@ -205,7 +206,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getHeadline()
+    public function getHeadline(): string
     {
         return 'headline';
     }
@@ -215,7 +216,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return 'url';
     }
@@ -225,7 +226,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getTeaser()
+    public function getTeaser(): string
     {
         return 'teaser';
     }
@@ -235,7 +236,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getCreator()
+    public function getCreator(): string
     {
         return 'creator@example.com (creator)';
     }
@@ -245,7 +246,7 @@ class RssItemWithDifferentMethods
      *
      * @return  array
      */
-    public function getTags()
+    public function getTags(): array
     {
         return [['category' => 'tag1', 'domain'   => 'other']];
     }
@@ -255,7 +256,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getRemarks()
+    public function getRemarks(): string
     {
         return 'remarks';
     }
@@ -265,7 +266,7 @@ class RssItemWithDifferentMethods
      *
      * @return  array
      */
-    public function getImages()
+    public function getImages(): array
     {
         return [[
                 'url'    => 'imagesUrl',
@@ -279,7 +280,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getId()
+    public function getId(): string
     {
         return 'id';
     }
@@ -287,9 +288,9 @@ class RssItemWithDifferentMethods
     /**
      * returns whether guid is perma link or not
      *
-     * @return  string
+     * @return  bool
      */
-    public function isPermanent()
+    public function isPermanent(): bool
     {
         return false;
     }
@@ -297,9 +298,9 @@ class RssItemWithDifferentMethods
     /**
      * returns the publishing date
      *
-     * @return  string
+     * @return  int
      */
-    public function getDate()
+    public function getDate(): int
     {
         return 1221598221;
     }
@@ -309,7 +310,7 @@ class RssItemWithDifferentMethods
      *
      * @return  array
      */
-    public function getOrigin()
+    public function getOrigin(): array
     {
         return [['name' => 'originName', 'url' => 'originUrl']];
     }
@@ -319,7 +320,7 @@ class RssItemWithDifferentMethods
      *
      * @return  string
      */
-    public function getText()
+    public function getText(): string
     {
         return 'text';
     }

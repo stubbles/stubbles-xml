@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -24,11 +25,11 @@ class ExampleObjectSerializer implements ObjectXmlSerializer
      * @param  XmlStreamWriter  $xmlWriter      xml writer to write serialized object into
      * @param  string           $tagName        name of the surrounding xml tag
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
+    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
     {
         if ($object instanceof ExampleObjectClassWithSerializer) {
             $xmlWriter->writeStartElement('example');
-            $xmlWriter->writeAttribute('sound', $object->bar);
+            $xmlWriter->writeAttribute('sound', (string) $object->bar);
             $xmlWriter->writeElement('anything', array(), $object->getSomething());
         }
     }

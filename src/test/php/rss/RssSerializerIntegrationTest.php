@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -74,12 +75,7 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /*+
-     * helper method to create an rss feed
-     *
-     * @return  RssFeed
-     */
-    private function createFeed()
+    private function createFeed(): RssFeed
     {
         $rssFeed = new RssFeed('Example rss feed', 'http://example.net/rss/', 'An example RSS feed');
         $rssFeed->setCopyright('(c) 2012 example.net')

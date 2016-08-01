@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -47,7 +48,7 @@ class ExampleObjectClassWithMethods
      * @return string
      * @XmlAttribute(attributeName='method')
      */
-    public function getValue() {
+    public function getValue(): string {
         return "returned";
     }
 
@@ -57,7 +58,7 @@ class ExampleObjectClassWithMethods
      * @return  bool
      * @XmlAttribute(attributeName='isFoo')
      */
-    public function isFoo()
+    public function isFoo(): bool
     {
         return true;
     }
@@ -68,7 +69,7 @@ class ExampleObjectClassWithMethods
      * @return  bool
      * @XmlAttribute(attributeName='isBar')
      */
-    public function isBar()
+    public function isBar(): bool
     {
         return false;
     }
@@ -76,7 +77,7 @@ class ExampleObjectClassWithMethods
     /**
      * @return  string
      */
-    public function getBaz()
+    public function getBaz(): string
     {
         return 'baz';
     }
@@ -87,7 +88,7 @@ class ExampleObjectClassWithMethods
      * @param   string  $arg
      * @return  string
      */
-    public function withArguments($arg)
+    public function withArguments(string $arg): string
     {
         return 'not serialized: ' . $arg;
     }

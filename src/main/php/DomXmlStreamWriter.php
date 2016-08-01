@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -32,7 +33,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param  string  $xmlVersion
      * @param  string  $encoding
      */
-    public function __construct($xmlVersion = '1.0', $encoding = 'UTF-8')
+    public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
     {
         $this->xmlVersion = $xmlVersion;
         $this->encoding   = $encoding;
@@ -44,7 +45,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function clear()
+    public function clear(): XmlStreamWriter
     {
         $this->doc          = new \DOMDocument($this->xmlVersion, $this->encoding);
         $this->elementStack = [];
@@ -56,7 +57,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  int[]
      */
-    protected function getFeatures()
+    protected function getFeatures(): array
     {
         return [XmlStreamWriter::FEATURE_AS_DOM,
                 XmlStreamWriter::FEATURE_IMPORT_WRITER
@@ -68,22 +69,23 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @param   string  $elementName
      */
-    protected function doWriteStartElement($elementName)
+    protected function doWriteStartElement(string $elementName)
     {
-        $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
-                                 {
-                                     $element = $doc->createElement($payload);
-                                     if (count($elementStack) === 0) {
-                                         $doc->appendChild($element);
-                                     } else {
-                                         $parent = end($elementStack);
-                                         $parent->appendChild($element);
-                                     }
+        $this->wrapStackHandling(
+                function(\DOMDocument $doc, array &$elementStack, $payload)
+                {
+                    $element = $doc->createElement($payload);
+                    if (count($elementStack) === 0) {
+                        $doc->appendChild($element);
+                    } else {
+                        $parent = end($elementStack);
+                        $parent->appendChild($element);
+                    }
 
-                                     array_push($elementStack, $element);
-                                 },
-                                 $elementName,
-                                 'start element: "' . $elementName . '"'
+                    array_push($elementStack, $element);
+                },
+                $elementName,
+                'start element: "' . $elementName . '"'
         );
     }
 
@@ -93,14 +95,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeText($data)
+    public function writeText(string $data): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                return $doc->createTextNode($payload);
-                                            },
-                                            $this->encode($data),
-                                            'text'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    return $doc->createTextNode($payload);
+                },
+                $this->encode($data),
+                'text'
         );
     }
 
@@ -110,14 +113,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeCData($cdata)
+    public function writeCData(string $cdata): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                return $doc->createCDATASection($payload);
-                                            },
-                                            $this->encode($cdata),
-                                            'cdata'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    return $doc->createCDATASection($payload);
+                },
+                $this->encode($cdata),
+                'cdata'
         );
     }
 
@@ -127,14 +131,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $comment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeComment($comment)
+    public function writeComment(string $comment): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                return $doc->createComment($payload);
-                                            },
-                                            $this->encode($comment),
-                                            'comment'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    return $doc->createComment($payload);
+                },
+                $this->encode($comment),
+                'comment'
         );
     }
 
@@ -145,16 +150,17 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeProcessingInstruction($target, $data = '')
+    public function writeProcessingInstruction(string $target, string $data = ''): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                return $doc->createProcessingInstruction($payload['target'], $payload['data']);
-                                            },
-                                            ['target' => $target,
-                                                  'data'   => $data
-                                            ],
-                                            'processing instruction'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    return $doc->createProcessingInstruction($payload['target'], $payload['data']);
+                },
+                ['target' => $target,
+                      'data'   => $data
+                ],
+                'processing instruction'
         );
     }
 
@@ -164,16 +170,17 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $fragment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeXmlFragment($fragment)
+    public function writeXmlFragment(string $fragment): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                $fragmentNode = $doc->createDocumentFragment();
-                                                $fragmentNode->appendXML($payload);
-                                                return $fragmentNode;
-                                            },
-                                            $fragment,
-                                            'document fragment'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    $fragmentNode = $doc->createDocumentFragment();
+                    $fragmentNode->appendXML($payload);
+                    return $fragmentNode;
+                },
+                $fragment,
+                'document fragment'
         );
     }
 
@@ -184,17 +191,18 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $attributeValue
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeAttribute($attributeName, $attributeValue)
+    public function writeAttribute(string $attributeName, string $attributeValue): XmlStreamWriter
     {
-        return $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
-                                        {
-                                            $currentElement = end($elementStack);
-                                            $currentElement->setAttribute($payload['name'], $payload['value']);
-                                        },
-                                        ['name'  => $attributeName,
-                                                'value' => $this->encode($attributeValue)
-                                        ],
-                                        'attributet: "' . $attributeName . ':' . $attributeValue . '"'
+        return $this->wrapStackHandling(
+                function(\DOMDocument $doc, array &$elementStack, $payload)
+                {
+                    $currentElement = end($elementStack);
+                    $currentElement->setAttribute($payload['name'], $payload['value']);
+                },
+                ['name'  => $attributeName,
+                        'value' => $this->encode($attributeValue)
+                ],
+                'attributet: "' . $attributeName . ':' . $attributeValue . '"'
         );
     }
 
@@ -221,36 +229,37 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    public function writeElement($elementName, array $attributes = [], $cdata = null)
+    public function writeElement(string $elementName, array $attributes = [], string $cdata = null): XmlStreamWriter
     {
         $atts = [];
         foreach ($attributes as $name => $value) {
             $atts[$name] = $this->encode($value);
         }
 
-        return $this->wrapStackHandling(function(\DOMDocument $doc, array &$elementStack, $payload)
-                                        {
-                                            $element = $doc->createElement($payload['elementName']);
-                                            foreach ($payload['attributes'] as $attName => $attValue) {
-                                                $element->setAttribute($attName, $attValue);
-                                            }
+        return $this->wrapStackHandling(
+                function(\DOMDocument $doc, array &$elementStack, $payload)
+                {
+                    $element = $doc->createElement($payload['elementName']);
+                    foreach ($payload['attributes'] as $attName => $attValue) {
+                        $element->setAttribute($attName, $attValue);
+                    }
 
-                                            if (null !== $payload['cdata']) {
-                                                $element->appendChild($doc->createTextNode($payload['cdata']));
-                                            }
+                    if (null !== $payload['cdata']) {
+                        $element->appendChild($doc->createTextNode($payload['cdata']));
+                    }
 
-                                            if (count($elementStack) === 0) {
-                                                $doc->appendChild($element);
-                                            } else {
-                                                $parent = end($elementStack);
-                                                $parent->appendChild($element);
-                                            }
-                                        },
-                                        ['elementName' => $elementName,
-                                         'attributes'  => $atts,
-                                         'cdata'       => $this->encode($cdata)
-                                        ],
-                                        'element: "' . $elementName . '"'
+                    if (count($elementStack) === 0) {
+                        $doc->appendChild($element);
+                    } else {
+                        $parent = end($elementStack);
+                        $parent->appendChild($element);
+                    }
+                },
+                ['elementName' => $elementName,
+                 'attributes'  => $atts,
+                 'cdata'       => null !== $cdata ? $this->encode($cdata) : null
+                ],
+                'element: "' . $elementName . '"'
         );
     }
 
@@ -261,14 +270,15 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    public function importStreamWriter(XmlStreamWriter $writer)
+    public function importStreamWriter(XmlStreamWriter $writer): XmlStreamWriter
     {
-        return $this->handleElementCreation(function(\DOMDocument $doc, $payload)
-                                            {
-                                                return $doc->importNode($payload, true);
-                                            },
-                                            $writer->asDom()->documentElement,
-                                            'imported nodes'
+        return $this->handleElementCreation(
+                function(\DOMDocument $doc, $payload)
+                {
+                    return $doc->importNode($payload, true);
+                },
+                $writer->asDom()->documentElement,
+                'imported nodes'
         );
     }
 
@@ -277,7 +287,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  \DOMDocument
      */
-    public function asDom()
+    public function asDom(): \DOMDocument
     {
         return $this->doc;
     }
@@ -287,7 +297,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  string
      */
-    public function asXml()
+    public function asXml(): string
     {
         return rtrim($this->doc->saveXML());
     }
@@ -301,7 +311,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    protected function wrapStackHandling(\Closure $stackHandling, $payload, $type)
+    protected function wrapStackHandling(\Closure $stackHandling, $payload, string $type): XmlStreamWriter
     {
         try {
             libxml_use_internal_errors(true);
@@ -327,7 +337,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    protected function handleElementCreation(\Closure $createElement, $payload, $type)
+    protected function handleElementCreation(\Closure $createElement, $payload, string $type): XmlStreamWriter
     {
         if (count($this->elementStack) < 1) {
             throw new XmlException('No tag is currently open, you need to call writeStartElement() first.');
@@ -355,7 +365,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   array   $errors  list of errors to convert
      * @return  string
      */
-    protected function convertLibXmlErrorsToString($errors)
+    protected function convertLibXmlErrorsToString(array $errors): string
     {
         $messages = [];
         foreach ($errors as $error) {
@@ -374,7 +384,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  string
      * @see     http://php.net/manual/en/function.dom-domdocument-save.php#67952
      */
-    protected function encode($data)
+    protected function encode(string $data): string
     {
         if (mb_detect_encoding($data, 'UTF-8, ISO-8859-1') === 'UTF-8') {
             return $data;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -54,7 +55,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @Named{version}('stubbles.xml.version')
      * @Named{encoding}('stubbles.xml.encoding')
      */
-    public function __construct(array $types = null, $version = '1.0', $encoding = 'UTF-8')
+    public function __construct(array $types = null, string $version = '1.0', string $encoding = 'UTF-8')
     {
         if (null !== $types) {
             $this->types = $types;
@@ -85,7 +86,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @param   string  $xmlExtension  concrete type to create
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    protected function createStreamWriter($xmlExtension)
+    protected function createStreamWriter(string $xmlExtension): XmlStreamWriter
     {
         $className = $this->types[$xmlExtension];
         return new $className($this->version, $this->encoding);
@@ -97,7 +98,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XMLException
      */
-    protected function createAsAvailable()
+    protected function createAsAvailable(): XmlStreamWriter
     {
         foreach (array_keys($this->types) as $xmlExtension) {
             if (extension_loaded($xmlExtension)) {

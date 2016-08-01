@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -42,7 +43,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
      * @param   string  $generator  name of the generator to use
      * @return  \stubbles\xml\rss\RssFeedSerializer
      */
-    public function setGenerator($generator)
+    public function setGenerator(string $generator): self
     {
         $this->generator = $generator;
         return $this;
@@ -57,7 +58,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
      * @param   string                                  $tagName        name of the surrounding xml tag
      * @throws  \InvalidArgumentException  in case $object is not an instance of stubbles\xml\rss\RssFeed
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, $tagName)
+    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
     {
         if (!($object instanceof RssFeed)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
@@ -67,7 +68,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
             $xmlWriter->writeProcessingInstruction('xml-stylesheet', 'href="' . $stylesheet . '" type="text/xsl"');
         }
 
-        $xmlWriter->writeStartElement(((null == $tagName) ? ('rss') : ($tagName)));
+        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'rss');
         $xmlWriter->writeAttribute('version', '2.0');
         $xmlWriter->writeAttribute('xmlns:rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
         $xmlWriter->writeAttribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
@@ -99,7 +100,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
         }
 
         if ($object->hasTimeToLive()) {
-            $xmlWriter->writeElement('ttl', [], $object->getTimeToLive());
+            $xmlWriter->writeElement('ttl', [], (string) $object->getTimeToLive());
         }
 
         if ($object->hasImage()) {
@@ -107,8 +108,8 @@ class RssFeedSerializer implements ObjectXmlSerializer
             $xmlWriter->writeElement('url', [], $object->getImageUrl());
             $xmlWriter->writeElement('title', [], $object->getTitle());
             $xmlWriter->writeElement('link', [], $object->getLink());
-            $xmlWriter->writeElement('width', [], $object->getImageWidth());
-            $xmlWriter->writeElement('height', [], $object->getImageHeight());
+            $xmlWriter->writeElement('width', [], (string) $object->getImageWidth());
+            $xmlWriter->writeElement('height', [], (string) $object->getImageHeight());
             $xmlWriter->writeElement('description', [], $object->getImageDescription());
             $xmlWriter->writeEndElement();
         }

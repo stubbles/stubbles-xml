@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -33,14 +34,14 @@ interface XmlStreamWriter
      *
      * @return  string
      */
-    public function getVersion();
+    public function getVersion(): string;
 
     /**
      * returns the encoding used by the writer
      *
      * @return  string
      */
-    public function getEncoding();
+    public function getEncoding(): string;
 
     /**
      * Checks, whether the implementation has a desired feature
@@ -48,14 +49,14 @@ interface XmlStreamWriter
      * @param   int  $feature
      * @return  bool
      */
-    public function hasFeature($feature);
+    public function hasFeature(int $feature): bool;
 
     /**
      * Clears all previously written elements so that the document starts fresh.
      *
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function clear();
+    public function clear(): self;
 
     /**
      * Write an opening tag
@@ -63,7 +64,7 @@ interface XmlStreamWriter
      * @param   string  $elementName
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeStartElement($elementName);
+    public function writeStartElement(string $elementName): self;
 
     /**
      * Write a text node
@@ -71,7 +72,7 @@ interface XmlStreamWriter
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeText($data);
+    public function writeText(string $data): self;
 
     /**
      * Write a cdata section
@@ -79,7 +80,7 @@ interface XmlStreamWriter
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeCData($cdata);
+    public function writeCData(string $cdata): self;
 
     /**
      * Write a comment
@@ -87,7 +88,7 @@ interface XmlStreamWriter
      * @param   string  $comment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeComment($comment);
+    public function writeComment(string $comment): self;
 
     /**
      * Write a processing instruction
@@ -96,7 +97,7 @@ interface XmlStreamWriter
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeProcessingInstruction($target, $data = '');
+    public function writeProcessingInstruction(string $target, string $data = ''): self;
 
     /**
      * Write an xml fragment
@@ -104,7 +105,7 @@ interface XmlStreamWriter
      * @param   string  $fragment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeXmlFragment($fragment);
+    public function writeXmlFragment(string $fragment): self;
 
     /**
      * Write an attribute
@@ -113,14 +114,14 @@ interface XmlStreamWriter
      * @param   string  $attributeValue
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeAttribute($attributeName, $attributeValue);
+    public function writeAttribute(string $attributeName, string $attributeValue): self;
 
     /**
      * Write an end element
      *
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeEndElement();
+    public function writeEndElement(): self;
 
     /**
      * Write a full element
@@ -130,7 +131,7 @@ interface XmlStreamWriter
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeElement($elementName, array $attributes = [], $cdata = null);
+    public function writeElement(string $elementName, array $attributes = [], string $cdata = null): self;
 
     /**
      * Import another stream
@@ -138,26 +139,26 @@ interface XmlStreamWriter
      * @param   \stubbles\xml\XmlStreamWriter  $writer
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function importStreamWriter(XmlStreamWriter $writer);
+    public function importStreamWriter(XmlStreamWriter $writer): self;
 
     /**
      * checks whether the document is finished meaning no open tags are left
      *
      * @return  bool
      */
-    public function isFinished();
+    public function isFinished(): bool;
 
     /**
      * Return the XML as a string
      *
      * @return  string
      */
-    public function asXml();
+    public function asXml(): string;
 
     /**
      * Return the XML as a DOM
      *
      * @return  \DOMDocument
      */
-    public function asDom();
+    public function asDom(): \DOMDocument;
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ class Attribute implements XmlSerializerDelegate
      * @param  string  $attributeName  name of attribute
      * @param  bool    $skipEmpty      switch whether to skip serialisation if value is empty
      */
-    public function  __construct($attributeName, $skipEmpty)
+    public function  __construct(string $attributeName, bool $skipEmpty)
     {
         $this->attributeName = $attributeName;
         $this->skipEmpty     = $skipEmpty;

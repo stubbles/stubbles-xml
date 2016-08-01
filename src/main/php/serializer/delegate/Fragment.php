@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ class Fragment implements XmlSerializerDelegate
      * @param  string  $tagName               name of tag
      * @param  bool    $transformNewLineToBr  switch whether to transform line breaks to <br/> or not
      */
-    public function  __construct($tagName, $transformNewLineToBr)
+    public function  __construct(string $tagName = null, bool $transformNewLineToBr = false)
     {
         $this->tagName              = $tagName;
         $this->transformNewLineToBr = $transformNewLineToBr;
