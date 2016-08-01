@@ -62,7 +62,10 @@ class XslProcessor
     public function __construct(XslCallbacks $callbacks)
     {
         if (!extension_loaded('xsl')) {
-            throw new \RuntimeException('Can not create ' . __CLASS__ . ', requires PHP-extension "xsl".');
+            throw new \RuntimeException(
+                    'Can not create ' . __CLASS__
+                    . ', requires PHP-extension "xsl".'
+            );
         }
 
         $this->xslCallbacks  = $callbacks;
@@ -133,7 +136,9 @@ class XslProcessor
     {
         $doc = new \DOMDocument();
         if (false === @$doc->load($xmlFile)) {
-            throw new XslProcessorException('Can not read xml document file ' . $xmlFile);
+            throw new XslProcessorException(
+                    'Can not read xml document file ' . $xmlFile
+            );
         }
 
         if (true === $xinclude) {
@@ -232,7 +237,9 @@ class XslProcessor
     {
         $arguments = func_get_args();
         if (count($arguments) < 2) {
-            throw new XslCallbackException('To less arguments: need at last two arguments to use callbacks.');
+            throw new XslCallbackException(
+                    'To less arguments: need at last two arguments to use callbacks.'
+            );
         }
 
         $name       = array_shift($arguments);
@@ -252,7 +259,10 @@ class XslProcessor
     public function withParameter(string $nameSpace, string $paramName, string $paramValue): self
     {
         if (false === $this->xsltProcessor->setParameter($nameSpace, $paramName, $paramValue)) {
-            throw new XslProcessorException('Could not set parameter ' . $nameSpace . ':' . $paramName . ' with value ' . $paramValue);
+            throw new XslProcessorException(
+                    'Could not set parameter ' . $nameSpace . ':' . $paramName
+                    . ' with value ' . $paramValue
+            );
         }
 
         if (!isset($this->parameters[$nameSpace])) {
@@ -294,7 +304,9 @@ class XslProcessor
     public function toDoc(): \DOMDocument
     {
         if (null === $this->document) {
-            throw new XslProcessorException('Can not transform, set document or xml file to transform first');
+            throw new XslProcessorException(
+                    'Can not transform, set document or xml file to transform first'
+            );
         }
 
         $this->registerCallbacks();
@@ -317,7 +329,9 @@ class XslProcessor
     public function toUri(string $uri): int
     {
         if (null === $this->document) {
-            throw new XslProcessorException('Can not transform, set document or xml file to transform first');
+            throw new XslProcessorException(
+                    'Can not transform, set document or xml file to transform first'
+            );
         }
 
         $this->registerCallbacks();
@@ -338,7 +352,9 @@ class XslProcessor
     public function toXml(): string
     {
         if (null === $this->document) {
-            throw new XslProcessorException('Can not transform, set document or xml file to transform first');
+            throw new XslProcessorException(
+                    'Can not transform, set document or xml file to transform first'
+            );
         }
 
         $this->registerCallbacks();

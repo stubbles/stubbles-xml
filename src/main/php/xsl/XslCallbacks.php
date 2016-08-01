@@ -67,7 +67,7 @@ class XslCallbacks
      * @return  object
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
-    private function getCallback(string $name)
+    private function callback(string $name)
     {
         if (!$this->hasCallback($name)) {
             throw new XslCallbackException('A callback with the name ' . $name . ' does not exist.');
@@ -87,7 +87,7 @@ class XslCallbacks
      */
     public function invoke(string $name, string $methodName, array $arguments = [])
     {
-        $callback = $this->getCallback($name);
+        $callback = $this->callback($name);
         if (!method_exists($callback, $methodName)) {
             throw new XslCallbackException('Callback with name ' . $name . ' does not have a method named ' . $methodName);
         }

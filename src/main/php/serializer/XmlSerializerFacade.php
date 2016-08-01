@@ -22,13 +22,13 @@ class XmlSerializerFacade
      *
      * @type  \stubbles\xml\serializer\XmlSerializer
      */
-    protected $xmlSerializer;
+    private $xmlSerializer;
     /**
      * xml stream writer to write serialization to
      *
      * @type  \stubbles\xml\XmlStreamWriter
      */
-    protected $xmlStreamWriter;
+    private $xmlStreamWriter;
 
     /**
      * constructor
@@ -52,7 +52,7 @@ class XmlSerializerFacade
     public function serializeToXml($data, string $tagName = null): string
     {
         return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
-                                   ->asXml();
+               ->asXml();
     }
 
     /**
@@ -65,6 +65,6 @@ class XmlSerializerFacade
     public function serializeToDom($data, string $tagName = null): \DOMDocument
     {
         return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
-                                   ->asDOM();
+               ->asDOM();
     }
 }

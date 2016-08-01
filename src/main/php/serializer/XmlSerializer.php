@@ -100,14 +100,9 @@ class XmlSerializer
      */
     public function serializeNull(XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
-        if (null === $tagName) {
-            $tagName = 'null';
-        }
-
-        $xmlWriter->writeStartElement($tagName);
-        $xmlWriter->writeElement('null');
-        $xmlWriter->writeEndElement();
-        return $xmlWriter;
+        return $xmlWriter->writeStartElement(null === $tagName ? 'null' : $tagName)
+                ->writeElement('null')
+                ->writeEndElement();
     }
 
     /**
@@ -121,11 +116,11 @@ class XmlSerializer
      */
     public function serializeBool($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
-        if (null === $tagName) {
-            $tagName = 'boolean';
-        }
-
-        return $this->serializeScalarValue($this->convertBoolToString($value), $xmlWriter, $tagName);
+        return $this->serializeScalarValue(
+                $this->convertBoolToString($value),
+                $xmlWriter,
+                null === $tagName ? 'boolean' : $tagName
+        );
     }
 
     /**
@@ -196,14 +191,9 @@ class XmlSerializer
      */
     protected function serializeScalarValue($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
-        if (null === $tagName) {
-            $tagName = gettype($value);
-        }
-
-        $xmlWriter->writeStartElement($tagName);
-        $xmlWriter->writeText(strval($value));
-        $xmlWriter->writeEndElement();
-        return $xmlWriter;
+        return $xmlWriter->writeStartElement(null === $tagName ? gettype($value) : $tagName)
+                ->writeText(strval($value))
+                ->writeEndElement();
     }
 
     /**

@@ -59,7 +59,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     protected function getFeatures(): array
     {
-        return [XmlStreamWriter::FEATURE_AS_DOM,
+        return [
+                XmlStreamWriter::FEATURE_AS_DOM,
                 XmlStreamWriter::FEATURE_IMPORT_WRITER
         ];
     }
@@ -155,11 +156,12 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
         return $this->handleElementCreation(
                 function(\DOMDocument $doc, $payload)
                 {
-                    return $doc->createProcessingInstruction($payload['target'], $payload['data']);
+                    return $doc->createProcessingInstruction(
+                            $payload['target'],
+                            $payload['data']
+                    );
                 },
-                ['target' => $target,
-                      'data'   => $data
-                ],
+                ['target' => $target, 'data' => $data],
                 'processing instruction'
         );
     }
@@ -199,9 +201,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
                     $currentElement = end($elementStack);
                     $currentElement->setAttribute($payload['name'], $payload['value']);
                 },
-                ['name'  => $attributeName,
-                        'value' => $this->encode($attributeValue)
-                ],
+                ['name' => $attributeName, 'value' => $this->encode($attributeValue)],
                 'attributet: "' . $attributeName . ':' . $attributeValue . '"'
         );
     }
@@ -229,8 +229,11 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    public function writeElement(string $elementName, array $attributes = [], string $cdata = null): XmlStreamWriter
-    {
+    public function writeElement(
+            string $elementName,
+            array $attributes = [],
+            string $cdata = null
+    ): XmlStreamWriter {
         $atts = [];
         foreach ($attributes as $name => $value) {
             $atts[$name] = $this->encode($value);

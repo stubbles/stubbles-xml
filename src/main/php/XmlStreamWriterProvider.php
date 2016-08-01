@@ -55,8 +55,11 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @Named{version}('stubbles.xml.version')
      * @Named{encoding}('stubbles.xml.encoding')
      */
-    public function __construct(array $types = null, string $version = '1.0', string $encoding = 'UTF-8')
-    {
+    public function __construct(
+            array $types = null,
+            string $version = '1.0',
+            string $encoding = 'UTF-8'
+    ) {
         if (null !== $types) {
             $this->types = $types;
         }
@@ -106,6 +109,8 @@ class XmlStreamWriterProvider implements InjectionProvider
             }
         }
 
-        throw new XmlException('No supported xml extension available, can not create a xml stream writer!');
+        throw new XmlException(
+                'No supported xml extension available, can not create a xml stream writer!'
+        );
     }
 }

@@ -62,14 +62,13 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      */
     public function __construct(\ReflectionClass $objectClass)
     {
-        $this->extractProperties($objectClass);
-        $this->extractMethods($objectClass);
-        $annotations = annotationsOf($objectClass);
+        $this->properties = $this->extractProperties($objectClass);
+        $this->methods    = $this->extractMethods($objectClass);
+        $annotations      = annotationsOf($objectClass);
         if ($annotations->contain('XmlTag')) {
             $this->classTagName = $annotations->firstNamed('XmlTag')->tagName();
         } else {
-            $className = $objectClass->getName();
-            $this->classTagName = substr($className, strrpos($className, '\\') + 1);
+            $this->classTagName = $objectClass->getShortName();
         }
     }
 
@@ -102,8 +101,12 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param  string                                  $tagName        name of the surrounding xml tag
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
-    {
+    public function serialize(
+            $object,
+            XmlSerializer $xmlSerializer,
+            XmlStreamWriter $xmlWriter,
+            string $tagName = null
+    ) {
         $xmlWriter->writeStartElement(null !== $tagName ? $tagName : $this->classTagName);
         foreach ($this->properties as $propertyName => $xmlSerializerDelegate) {
             $xmlSerializerDelegate->serialize(
@@ -127,35 +130,37 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extract informations about properties
      *
-     * @param  \ReflectionClass  $objectClass
+     * @param   \ReflectionClass  $objectClass
+     * @return  array
      */
-    private function extractProperties(\ReflectionClass $objectClass)
+    private function extractProperties(\ReflectionClass $objectClass): array
     {
-        $properties = propertiesOf($objectClass, \ReflectionProperty::IS_PUBLIC)
-                ->filter(
-                        function(\ReflectionProperty $property)
+        return propertiesOf($objectClass, \ReflectionProperty::IS_PUBLIC)
+                ->filter(function(\ReflectionProperty $property)
                         {
-                            return !$property->isStatic() && !annotationsOf($property)->contain('XmlIgnore');
+                            return !$property->isStatic()
+                                && !annotationsOf($property)->contain('XmlIgnore');
                         }
-        );
-        foreach ($properties as $property) {
-            $this->properties[$property->getName()] = $this->createSerializerDelegate(
-                    annotationsOf($property),
-                    $property->getName()
-            );
-        }
+                )->map(function(\ReflectionProperty $property)
+                        {
+                            return $this->createSerializerDelegate(
+                                    annotationsOf($property),
+                                    $property->getName()
+                            );
+                        }
+                )->data();
     }
 
     /**
      * extract informations about methods
      *
-     * @param  \ReflectionClass  $objectClass
+     * @param   \ReflectionClass  $objectClass
+     * @return  array
      */
-    private function extractMethods(\ReflectionClass $objectClass)
+    private function extractMethods(\ReflectionClass $objectClass): array
     {
-        $methods = methodsOf($objectClass, \ReflectionMethod::IS_PUBLIC)
-                ->filter(
-                        function(\ReflectionMethod $method)
+        return methodsOf($objectClass, \ReflectionMethod::IS_PUBLIC)
+                ->filter(function(\ReflectionMethod $method)
                         {
                             if ($method->getNumberOfParameters() != 0
                                     || $method->isStatic()
@@ -167,13 +172,15 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
 
                             return !annotationsOf($method)->contain('XmlIgnore');
                         }
-        );
-        foreach ($methods as $method) {
-            $this->methods[$method->getName()] = $this->createSerializerDelegate(
-                    annotationsOf($method),
-                    $method->getName()
-            );
-        }
+                )->map(function(\ReflectionMethod $method)
+                        {
+                            return $this->createSerializerDelegate(
+                                    annotationsOf($method),
+                                    $method->getName()
+                            );
+                        }
+
+                )->data();
     }
 
     /**
@@ -183,8 +190,10 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * @param   string                                         $defaultTagName  default tag name in case element is not annotated
      * @return  \stubbles\xml\serializer\delegate\XmlSerializerDelegate
      */
-    private function createSerializerDelegate(Annotations $annotations, string $defaultTagName): XmlSerializerDelegate
-    {
+    private function createSerializerDelegate(
+            Annotations $annotations,
+            string $defaultTagName
+    ): XmlSerializerDelegate {
         if ($annotations->contain('XmlAttribute')) {
             $xmlAttribute = $annotations->firstNamed('XmlAttribute');
             return new Attribute(
