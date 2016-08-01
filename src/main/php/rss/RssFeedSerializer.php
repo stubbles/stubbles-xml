@@ -52,74 +52,80 @@ class RssFeedSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param   mixed                                   $object
+     * @param   mixed                                   $rssFeed
      * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param   string                                  $tagName        name of the surrounding xml tag
-     * @throws  \InvalidArgumentException  in case $object is not an instance of stubbles\xml\rss\RssFeed
+     * @throws  \InvalidArgumentException  in case $rssFeed is not an instance of stubbles\xml\rss\RssFeed
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
-    {
-        if (!($object instanceof RssFeed)) {
+    public function serialize(
+            $rssFeed,
+            XmlSerializer $xmlSerializer,
+            XmlStreamWriter $xmlWriter,
+            string $tagName = null
+    ) {
+        if (!($rssFeed instanceof RssFeed)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
         }
 
-        foreach ($object->getStylesheets() as $stylesheet) {
-            $xmlWriter->writeProcessingInstruction('xml-stylesheet', 'href="' . $stylesheet . '" type="text/xsl"');
+        foreach ($rssFeed->stylesheets() as $stylesheet) {
+            $xmlWriter->writeProcessingInstruction(
+                    'xml-stylesheet',
+                    'href="' . $stylesheet . '" type="text/xsl"'
+            );
         }
 
-        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'rss');
-        $xmlWriter->writeAttribute('version', '2.0');
-        $xmlWriter->writeAttribute('xmlns:rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
-        $xmlWriter->writeAttribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
+        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'rss')
+                ->writeAttribute('version', '2.0')
+                ->writeAttribute('xmlns:rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                ->writeAttribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
 
-        $xmlWriter->writeStartElement('channel');
-        $xmlWriter->writeElement('title', [], $object->getTitle());
-        $xmlWriter->writeElement('link', [], $object->getLink());
-        $xmlWriter->writeElement('description', [], $object->getDescription());
-        $xmlWriter->writeElement('generator', [], $this->generator);
+        $xmlWriter->writeStartElement('channel')
+                ->writeElement('title', [], $rssFeed->title())
+                ->writeElement('link', [], $rssFeed->link())
+                ->writeElement('description', [], $rssFeed->description())
+                ->writeElement('generator', [], $this->generator);
 
-        if ($object->hasLocale()) {
-            $xmlWriter->writeElement('language', [], $object->getLocale());
+        if ($rssFeed->hasLocale()) {
+            $xmlWriter->writeElement('language', [], $rssFeed->locale());
         }
 
-        if ($object->hasCopyright()) {
-            $xmlWriter->writeElement('copyright', [], $object->getCopyright());
+        if ($rssFeed->hasCopyright()) {
+            $xmlWriter->writeElement('copyright', [], $rssFeed->copyright());
         }
 
-        if ($object->hasManagingEditor()) {
-            $xmlWriter->writeElement('managingEditor', [], $object->getManagingEditor());
+        if ($rssFeed->hasManagingEditor()) {
+            $xmlWriter->writeElement('managingEditor', [], $rssFeed->managingEditor());
         }
 
-        if ($object->hasWebMaster()) {
-            $xmlWriter->writeElement('webMaster', [], $object->getWebMaster());
+        if ($rssFeed->hasWebMaster()) {
+            $xmlWriter->writeElement('webMaster', [], $rssFeed->webMaster());
         }
 
-        if ($object->hasLastBuildDate()) {
-            $xmlWriter->writeElement('lastBuildDate', [], $object->getLastBuildDate());
+        if ($rssFeed->hasLastBuildDate()) {
+            $xmlWriter->writeElement('lastBuildDate', [], $rssFeed->lastBuildDate());
         }
 
-        if ($object->hasTimeToLive()) {
-            $xmlWriter->writeElement('ttl', [], (string) $object->getTimeToLive());
+        if ($rssFeed->hasTimeToLive()) {
+            $xmlWriter->writeElement('ttl', [], (string) $rssFeed->timeToLive());
         }
 
-        if ($object->hasImage()) {
-            $xmlWriter->writeStartElement('image');
-            $xmlWriter->writeElement('url', [], $object->getImageUrl());
-            $xmlWriter->writeElement('title', [], $object->getTitle());
-            $xmlWriter->writeElement('link', [], $object->getLink());
-            $xmlWriter->writeElement('width', [], (string) $object->getImageWidth());
-            $xmlWriter->writeElement('height', [], (string) $object->getImageHeight());
-            $xmlWriter->writeElement('description', [], $object->getImageDescription());
-            $xmlWriter->writeEndElement();
+        if ($rssFeed->hasImage()) {
+            $xmlWriter->writeStartElement('image')
+                    ->writeElement('url', [], $rssFeed->imageUrl())
+                    ->writeElement('title', [], $rssFeed->title())
+                    ->writeElement('link', [], $rssFeed->link())
+                    ->writeElement('width', [], (string) $rssFeed->imageWidth())
+                    ->writeElement('height', [], (string) $rssFeed->imageHeight())
+                    ->writeElement('description', [], $rssFeed->imageDescription())
+                    ->writeEndElement();
         }
 
-        foreach ($object->getItems() as $item) {
+        foreach ($rssFeed->items() as $item) {
             $xmlSerializer->serializeObject($item, $xmlWriter);
         }
 
-        $xmlWriter->writeEndElement();
-        $xmlWriter->writeEndElement();
-        return $xmlWriter;
+        return $xmlWriter->writeEndElement() // </channel>
+                ->writeEndElement(); // </rss>
     }
 }

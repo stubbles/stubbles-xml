@@ -22,27 +22,31 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param   mixed                                   $object
+     * @param   mixed                                   $rssFeedItem
      * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param   string                                  $tagName        name of the surrounding xml tag
-     * @throws  \InvalidArgumentException  in case $object is not an instance of stubbles\xml\rss\RssFeedItem
+     * @throws  \InvalidArgumentException  in case $rssFeedItem is not an instance of stubbles\xml\rss\RssFeedItem
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
-    {
-        if (!($object instanceof RssFeedItem)) {
+    public function serialize(
+            $rssFeedItem,
+            XmlSerializer $xmlSerializer,
+            XmlStreamWriter $xmlWriter,
+            string $tagName = null
+    ) {
+        if (!($rssFeedItem instanceof RssFeedItem)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeedItem');
         }
 
-        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'item');
-        $xmlWriter->writeElement('title', [], $object->getTitle());
-        $xmlWriter->writeElement('link', [], $object->getLink());
-        $xmlWriter->writeElement('description', [], $object->getDescription());
-        if ($object->hasAuthor()) {
-            $xmlWriter->writeElement('author', [], $object->getAuthor());
+        $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'item')
+                ->writeElement('title', [], $rssFeedItem->title())
+                ->writeElement('link', [], $rssFeedItem->link())
+                ->writeElement('description', [], $rssFeedItem->description());
+        if ($rssFeedItem->hasAuthor()) {
+            $xmlWriter->writeElement('author', [], $rssFeedItem->author());
         }
 
-        foreach ($object->getCategories() as $category) {
+        foreach ($rssFeedItem->categories() as $category) {
             $attributes = [];
             if (isset($category['domain']) && strlen($category['domain']) > 0) {
                 $attributes['domain'] = $category['domain'];
@@ -51,35 +55,32 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
             $xmlWriter->writeElement('category', $attributes, $category['category']);
         }
 
-        if ($object->hasComments()) {
-            $xmlWriter->writeElement('comments', [], $object->getComments());
+        if ($rssFeedItem->hasComments()) {
+            $xmlWriter->writeElement('comments', [], $rssFeedItem->comments());
         }
 
-        foreach ($object->getEnclosures() as $enclosure) {
-            $xmlWriter->writeElement('enclosure', ['url'    => $enclosure['url'],
-                                                   'length' => $enclosure['length'],
-                                                   'type'   => $enclosure['type']
-                                                  ]
+        foreach ($rssFeedItem->enclosures() as $enclosure) {
+            $xmlWriter->writeElement('enclosure', $enclosure);
+        }
+
+        if ($rssFeedItem->hasGuid()) {
+            $xmlWriter->writeElement(
+                    'guid',
+                    ['isPermaLink' => $xmlSerializer->convertBoolToString($rssFeedItem->isGuidPermaLink())],
+                    $rssFeedItem->guid()
             );
         }
 
-        if ($object->hasGuid()) {
-            $xmlWriter->writeElement('guid',
-                                     ['isPermaLink' => $xmlSerializer->convertBoolToString($object->isGuidPermaLink())],
-                                     $object->getGuid()
-            );
+        if ($rssFeedItem->hasPubDate()) {
+            $xmlWriter->writeElement('pubDate', [], $rssFeedItem->pubDate());
         }
 
-        if ($object->hasPubDate()) {
-            $xmlWriter->writeElement('pubDate', [], $object->getPubDate());
-        }
-
-        foreach ($object->getSources() as $source) {
+        foreach ($rssFeedItem->sources() as $source) {
             $xmlWriter->writeElement('source', ['url' => $source['url']], $source['name']);
         }
 
-        if ($object->hasContent()) {
-            $xmlWriter->writeElement('content:encoded', [], $object->getContent());
+        if ($rssFeedItem->hasContent()) {
+            $xmlWriter->writeElement('content:encoded', [], $rssFeedItem->content());
         }
 
         $xmlWriter->writeEndElement();

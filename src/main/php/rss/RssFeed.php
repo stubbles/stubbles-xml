@@ -22,78 +22,79 @@ class RssFeed
      *
      * @type  string
      */
-    protected $title;
+    private $title;
     /**
      * URL to the HTML website corresponding to the channel
      *
      * @type  string
      */
-    protected $link;
+    private $link;
     /**
      * phrase or sentence describing the channel
      *
      * @type  string
      */
-    protected $description;
+    private $description;
     /**
      * list of items in feed
      *
      * @type  RssFeedItem[]
      */
-    protected $items          = [];
+    private $items          = [];
     /**
      * list of stylesheets to append as processing instructions
      *
      * @type  string[]
      */
-    protected $stylesheets    = [];
+    private $stylesheets    = [];
     /**
      * the locale the channel is written in
      *
      * @type  string
      * @see   http://rssboard.org/rss-language-codes
      */
-    protected $locale         = null;
+    private $locale         = null;
     /**
      * copyright notice for content in the channel
      *
      * @type  string
      */
-    protected $copyright      = null;
+    private $copyright      = null;
     /**
      * email address for person responsible for editorial content
      *
      * @type  string
      */
-    protected $managingEditor = null;
+    private $managingEditor = null;
     /**
      * email address for person responsible for technical issues relating to channel
      *
      * @type  string
      */
-    protected $webMaster      = null;
+    private $webMaster      = null;
     /**
      * last time the content of the channel changed
      *
      * @type  \stubbles\date\Date
      */
-    protected $lastBuildDate  = null;
+    private $lastBuildDate  = null;
     /**
      * number of minutes that indicates how long a channel can be cached before refreshing from the source
      *
      * @type  int
      */
-    protected $ttl            = null;
+    private $ttl            = null;
     /**
      * specifies a GIF, JPEG or PNG image that can be displayed with the channel
      *
      * @type  array
      */
-    protected $image          = ['url'         => '',
-                                 'description' => '',
-                                 'width'       => 88,
-                                 'height'      => 31
-                                ];
+    private $image          = [
+            'url'         => '',
+            'description' => '',
+            'width'       => 88,
+            'height'      => 31
+    ];
 
     /**
      * constructor
@@ -114,7 +115,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getTitle(): string
+    public function title(): string
     {
         return $this->title;
     }
@@ -124,7 +125,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getLink(): string
+    public function link(): string
     {
         return $this->link;
     }
@@ -134,7 +135,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getDescription(): string
+    public function description(): string
     {
         return $this->description;
     }
@@ -166,7 +167,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getLocale()
+    public function locale()
     {
         return $this->locale;
     }
@@ -198,7 +199,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getCopyright()
+    public function copyright()
     {
         return $this->copyright;
     }
@@ -213,7 +214,7 @@ class RssFeed
      */
     public function addItem(string $title, string $link, string $description): RssFeedItem
     {
-        return ($this->items[] = RssFeedItem::create($title, $link, $description));
+        return $this->items[] = RssFeedItem::create($title, $link, $description);
     }
 
     /**
@@ -227,9 +228,7 @@ class RssFeed
      */
     public function addEntity($entity, array $overrides = []): RssFeedItem
     {
-        $rssFeedItem = RssFeedItem::fromEntity($entity, $overrides);
-        array_push($this->items, $rssFeedItem);
-        return $rssFeedItem;
+        return $this->items[] = RssFeedItem::fromEntity($entity, $overrides);
     }
 
     /**
@@ -249,7 +248,7 @@ class RssFeed
      * @param   int  $pos
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function getItem(int $pos)
+    public function item(int $pos)
     {
         return $this->items[$pos] ?? null;
     }
@@ -259,7 +258,7 @@ class RssFeed
      *
      * @return  \stubbles\xml\rss\RssFeedItem[]
      */
-    public function getItems(): array
+    public function items(): array
     {
         return $this->items;
     }
@@ -291,7 +290,7 @@ class RssFeed
      *
      * @return  string[]
      */
-    public function getStylesheets(): array
+    public function stylesheets(): array
     {
         return $this->stylesheets;
     }
@@ -328,7 +327,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getManagingEditor()
+    public function managingEditor()
     {
         return $this->managingEditor;
     }
@@ -365,7 +364,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getWebMaster()
+    public function webMaster()
     {
         return $this->webMaster;
     }
@@ -397,7 +396,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getLastBuildDate()
+    public function lastBuildDate()
     {
         if ($this->hasLastBuildDate()) {
             return $this->lastBuildDate->format('D d M Y H:i:s O');
@@ -435,7 +434,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function getTimeToLive()
+    public function timeToLive()
     {
         return $this->ttl;
     }
@@ -450,8 +449,12 @@ class RssFeed
      * @return  \stubbles\xml\rss\RssFeed
      * @throws  \InvalidArgumentException  in case $width or $height have invalid values
      */
-    public function setImage(string $url, string $description, int $width = 88, int $height = 31): self
-    {
+    public function setImage(
+            string $url,
+            string $description,
+            int $width = 88,
+            int $height = 31
+    ): self {
         if (144 < $width || 0 > $width) {
             throw new \InvalidArgumentException('Width must be a value between 0 and 144.');
         }
@@ -460,11 +463,12 @@ class RssFeed
             throw new \InvalidArgumentException('Height must be a value between 0 and 400.');
         }
 
-        $this->image = ['url'         => $url,
-                        'description' => $description,
-                        'width'       => $width,
-                        'height'      => $height
-                       ];
+        $this->image = [
+                'url'         => $url,
+                'description' => $description,
+                'width'       => $width,
+                'height'      => $height
+        ];
         return $this;
     }
 
@@ -483,7 +487,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getImageUrl(): string
+    public function imageUrl(): string
     {
         return $this->image['url'];
     }
@@ -493,7 +497,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function getImageDescription(): string
+    public function imageDescription(): string
     {
         return $this->image['description'];
     }
@@ -503,7 +507,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function getImageWidth(): int
+    public function imageWidth(): int
     {
         return $this->image['width'];
     }
@@ -513,7 +517,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function getImageHeight(): int
+    public function imageHeight(): int
     {
         return $this->image['height'];
     }

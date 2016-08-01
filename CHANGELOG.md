@@ -5,6 +5,8 @@
 
   * raised minimum required PHP version to 7.0.0
   * introduced scalar type hints and strict type checking
+  * dropped `get` from all getter methods of `stubbles\xml\rss\RssFeed`
+  * dropped `get` from all getter methods of `stubbles\xml\rss\RssFeedItem`
 
 
 5.0.0 (2016-07-05)

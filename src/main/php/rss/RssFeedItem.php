@@ -23,77 +23,91 @@ use function stubbles\reflect\annotationsOf;
 class RssFeedItem
 {
     /**
+     * map of methods to retrieve rss feed item data
+     */
+    const METHODS = [
+            'byAuthor'              => 'getAuthor',
+            'inCategories'          => 'getCategories',
+            'addCommentsAt'         => 'getCommentsUrl',
+            'deliveringEnclosures'  => 'getEnclosures',
+            'withGuid'              => 'getGuid',
+            'andGuidIsNotPermaLink' => 'isPermaLink',
+            'publishedOn'           => 'getPubDate',
+            'inspiredBySources'     => 'getSources',
+            'withContent'           => 'getContent'
+    ];
+    /**
      * title of the item
      *
      * @type  string
      */
-    protected $title       = '';
+    private $title       = '';
     /**
      * URL of the item
      *
      * @type  string
      */
-    protected $link        = '';
+    private $link        = '';
     /**
      * item synopsis
      *
      * @type  string
      */
-    protected $description = '';
+    private $description = '';
     /**
      * email address of the author of the item
      *
      * @type  string
      */
-    protected $author      = null;
+    private $author      = null;
     /**
      * categories where the item is included
      *
      * @type  array
      */
-    protected $categories  = [];
+    private $categories  = [];
     /**
      * URL of a page for comments relating to the item
      *
      * @type  string
      */
-    protected $comments    = null;
+    private $comments    = null;
     /**
      * describes a media object that is attached to the item
      *
      * @type  array
      */
-    protected $enclosures  = [];
+    private $enclosures  = [];
     /**
      * unique identifier for the item
      *
      * @type  string
      */
-    protected $guid        = null;
+    private $guid        = null;
     /**
      * whether the id may be interpreted as a permanent link or not
      *
      * @type  bool
      */
-    protected $isPermaLink = false;
+    private $isPermaLink = false;
     /**
      * indicates when the item was published
      *
      * @type  \stubbles\date\Date
      */
-    protected $pubDate     = null;
+    private $pubDate     = null;
     /**
      * where that the item came from
      *
      * @type  array
      */
-    protected $sources     = [];
+    private $sources     = [];
     /**
      * content of rss feed item
      *
      * @type  string
      */
-    protected $content     = null;
+    private $content     = null;
 
     /**
      * constructor
@@ -139,45 +153,34 @@ class RssFeedItem
 
         $annotations = annotationsOf($entity);
         if (!$annotations->contain('RssFeedItem')) {
-            throw new XmlException('Class ' . get_class($entity) . ' is not annotated with @RssFeedItem.');
+            throw new XmlException(
+                    'Class ' . get_class($entity) . ' is not annotated with @RssFeedItem.'
+            );
         }
 
-        $entityClass           = reflect($entity);
         $rssFeedItemAnnotation = $annotations->firstNamed('RssFeedItem');
-        $self    = new self(
+        $self = new self(
+                $overrides['title'] ??
                 self::getRequiredAttribute(
                         $entity,
-                        $entityClass,
                         'title',
-                        $rssFeedItemAnnotation->getTitleMethod('getTitle'),
-                        $overrides
+                        $rssFeedItemAnnotation->getTitleMethod('getTitle')
                 ),
+                $overrides['link'] ??
                 self::getRequiredAttribute(
                         $entity,
-                        $entityClass,
                         'link',
-                        $rssFeedItemAnnotation->getLinkMethod('getLink'),
-                        $overrides
+                        $rssFeedItemAnnotation->getLinkMethod('getLink')
                 ),
+                $overrides['description'] ??
                 self::getRequiredAttribute(
                         $entity,
-                        $entityClass,
                         'description',
-                        $rssFeedItemAnnotation->getDescriptionMethod('getDescription'),
-                        $overrides
+                        $rssFeedItemAnnotation->getDescriptionMethod('getDescription')
                 )
         );
 
-        foreach (['byAuthor'              => 'getAuthor',
-                  'inCategories'          => 'getCategories',
-                  'addCommentsAt'         => 'getCommentsUrl',
-                  'deliveringEnclosures'  => 'getEnclosures',
-                  'withGuid'              => 'getGuid',
-                  'andGuidIsNotPermaLink' => 'isPermaLink',
-                  'publishedOn'           => 'getPubDate',
-                  'inspiredBySources'     => 'getSources',
-                  'withContent'           => 'getContent'
-                 ] as $itemMethod => $defaultMethod) {
+        foreach (self::METHODS as $itemMethod => $defaultMethod) {
             if (isset($overrides[$itemMethod])) {
                 $self->$itemMethod($overrides[$itemMethod]);
                 continue;
@@ -190,7 +193,7 @@ class RssFeedItem
             }
 
             $entityMethod = $rssFeedItemAnnotation->$annotationMethod($defaultMethod);
-            if ($entityClass->hasMethod($entityMethod)) {
+            if (method_exists($entity, $entityMethod)) {
                 $self->$itemMethod($entity->$entityMethod());
             }
         }
@@ -202,29 +205,22 @@ class RssFeedItem
      * helper method to retrieve a required attribute
      *
      * @param   object            $entity
-     * @param   \ReflectionClass  $entityClass
      * @param   string            $name
      * @param   string            $method
-     * @param   array             $overrides
      * @return  string
      * @throws  \stubbles\xml\XmlException
      */
     private static function getRequiredAttribute(
             $entity,
-            \ReflectionClass $entityClass,
             string $name,
-            string $method,
-            array $overrides
+            string $method
     ) {
-        if (isset($overrides[$name])) {
-            return $overrides[$name];
-        }
-
-        if (!$entityClass->hasMethod($method)) {
+        if (!method_exists($entity, $method)) {
             throw new XmlException(
-                    'RSSFeedItem ' . $entityClass->getName()
-                    . ' does not offer a method to return the ' . $name
-                    . ', but ' . $name . ' is required.'
+                    'RSSFeedItem ' . get_class($entity)
+                    . ' does not offer a method named "' . $method
+                    . '" to return the ' . $name . ', but ' . $name
+                    . ' is required.'
             );
         }
 
@@ -236,7 +232,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getTitle(): string
+    public function title(): string
     {
         return $this->title;
     }
@@ -246,7 +242,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getLink(): string
+    public function link(): string
     {
         return $this->link;
     }
@@ -256,7 +252,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getDescription(): string
+    public function description(): string
     {
         return $this->description;
     }
@@ -293,7 +289,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getAuthor()
+    public function author()
     {
         return $this->author;
     }
@@ -307,9 +303,7 @@ class RssFeedItem
      */
     public function inCategory(string $category, string $domain = ''): self
     {
-        $this->categories[] = ['category' => $category,
-                               'domain'   => $domain
-                              ];
+        $this->categories[] = ['category' => $category, 'domain'   => $domain];
         return $this;
     }
 
@@ -339,7 +333,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getCategories(): array
+    public function categories(): array
     {
         return $this->categories;
     }
@@ -371,7 +365,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getComments()
+    public function comments()
     {
         return $this->comments;
     }
@@ -386,10 +380,11 @@ class RssFeedItem
      */
     public function deliveringEnclosure(string $url, int $length, string $type): self
     {
-        $this->enclosures[] = ['url'    => $url,
-                               'length' => $length,
-                               'type'   => $type
-                              ];
+        $this->enclosures[] = [
+                'url'    => $url,
+                'length' => $length,
+                'type'   => $type
+        ];
         return $this;
     }
 
@@ -410,7 +405,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getEnclosures(): array
+    public function enclosures(): array
     {
         return $this->enclosures;
     }
@@ -443,7 +438,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getGuid()
+    public function guid()
     {
         return $this->guid;
     }
@@ -496,7 +491,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getPubDate()
+    public function pubDate()
     {
         if ($this->hasPubDate()) {
             return $this->pubDate->format('D d M Y H:i:s O');
@@ -535,7 +530,7 @@ class RssFeedItem
      *
      * @return  array
      */
-    public function getSources(): array
+    public function sources(): array
     {
         return $this->sources;
     }
@@ -566,7 +561,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function getContent()
+    public function content()
     {
         return $this->content;
     }
