@@ -1,9 +1,17 @@
+6.0.0 (2016-07-22)
+------------------
+
+### BC breaks
+
+  * raised minimum required PHP version to 7.0.0
+
+
 5.0.0 (2016-07-05)
 ------------------
 
 ### BC breaks
 
-  * Raised minimum required PHP version to 5.6
+  * raised minimum required PHP version to 5.6
 
 
 4.3.0 (2015-05-28)

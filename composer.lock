@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2258ad9e6a7f07708a9cbedc53c119da",
-    "content-hash": "c603c3235802ad197a29b378b7ab8180",
+    "hash": "67b3841594bee7434fdcb40aeda7bf37",
+    "content-hash": "3a1fbc4d3b0b8741a59752b01ccf2392",
     "packages": [
         {
             "name": "stubbles/date",
@@ -1678,7 +1678,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0"
+        "php": "^7.0"
     },
     "platform-dev": []
 }
