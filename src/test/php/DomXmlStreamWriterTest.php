@@ -392,15 +392,6 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function writeProcessingInstructionWithoutPreviousStartElementThrowsXmlException()
-    {
-        expect(function() { $this->writer->writeProcessingInstruction('foo'); })
-                ->throws(XmlException::class);
-    }
-
-    /**
-     * @test
-     */
     public function processingInstructionCanBeAdded()
     {
         assert(
