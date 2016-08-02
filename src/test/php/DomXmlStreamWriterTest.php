@@ -158,10 +158,11 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function writeEndElementBeforeStartElementThrowsXmlException()
+    public function writeEndElementBeforeStartElementThrowsLogicException()
     {
         expect(function() { $this->writer->writeEndElement(); })
-                ->throws(XmlException::class);
+                ->throws(\LogicException::class)
+                ->withMessage('Can not write end elements, no element open.');
     }
 
     /**

@@ -141,6 +141,16 @@ class LibXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function writeEndElementBeforeStartElementThrowsLogicException()
+    {
+        expect(function() { $this->writer->writeEndElement(); })
+                ->throws(\LogicException::class)
+                ->withMessage('Can not write end elements, no element open.');
+    }
+
+    /**
+     * @test
+     */
     public function writeElement()
     {
         assert(

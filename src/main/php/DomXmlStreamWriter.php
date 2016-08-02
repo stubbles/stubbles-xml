@@ -21,11 +21,11 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     private $doc;
     /**
-     * Stores all opened elements
+     * stack of all opened elements
      *
      * @type  array
      */
-    private $elementStack = [];
+    private $openElements = [];
 
     /**
      * Create a new writer
@@ -36,7 +36,8 @@ class DomXmlStreamWriter extends XmlStreamWriter
     public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
     {
         parent::__construct($xmlVersion, $encoding);
-        $this->doc = new \DOMDocument($xmlVersion, $encoding);
+        $this->doc          = new \DOMDocument($xmlVersion, $encoding);
+        $this->openElements = [$this->doc];
     }
 
     /**
@@ -47,7 +48,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
     public function clear(): XmlStreamWriter
     {
         $this->doc          = new \DOMDocument($this->version(), $this->encoding());
-        $this->elementStack = [];
+        $this->openElements = [$this->doc];
         return parent::clear();
     }
 
@@ -71,12 +72,12 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     protected function doWriteStartElement(string $elementName)
     {
-        $this->wrapStackHandling(
+        $this->append(
                 function(\DOMNode $parent) use ($elementName)
                 {
                     $element = $this->doc->createElement($elementName);
                     $parent->appendChild($element);
-                    array_push($this->elementStack, $element);
+                    array_push($this->openElements, $element);
                 },
                 'start element: "' . $elementName . '"'
         );
@@ -90,7 +91,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeText(string $data): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($data)
                 {
                     $parent->appendChild(
@@ -109,7 +110,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeCData(string $cdata): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($cdata)
                 {
                     $parent->appendChild(
@@ -128,10 +129,12 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeComment(string $comment): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($comment)
                 {
-                    $parent->appendChild($this->doc->createComment($this->encode($comment)));
+                    $parent->appendChild(
+                            $this->doc->createComment($this->encode($comment))
+                    );
                 },
                 'comment'
         );
@@ -146,7 +149,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeProcessingInstruction(string $target, string $data = ''): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($target, $data)
                 {
                     $parent->appendChild($this->doc->createProcessingInstruction(
@@ -166,7 +169,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeXmlFragment(string $fragment): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($fragment)
                 {
                     $fragmentNode = $this->doc->createDocumentFragment();
@@ -186,7 +189,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function writeAttribute(string $attributeName, string $attributeValue): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMElement $parent) use ($attributeName, $attributeValue)
                 {
                     $parent->setAttribute(
@@ -194,7 +197,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
                             $this->encode($attributeValue)
                     );
                 },
-                'attributet: "' . $attributeName . ':' . $attributeValue . '"'
+                'attribute: "' . $attributeName . ':' . $attributeValue . '"'
         );
     }
 
@@ -205,11 +208,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     protected function doWriteEndElement()
     {
-        if (count($this->elementStack) === 0) {
-            throw new XmlException('No open element available.');
-        }
-
-        array_pop($this->elementStack);
+        array_pop($this->openElements);
     }
 
     /**
@@ -226,7 +225,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
             array $attributes = [],
             string $cdata     = null
     ): XmlStreamWriter {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($elementName, $attributes, $cdata)
                 {
                     $element = $this->doc->createElement($elementName);
@@ -253,7 +252,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function importStreamWriter(XmlStreamWriter $writer): XmlStreamWriter
     {
-        return $this->wrapStackHandling(
+        return $this->append(
                 function(\DOMNode $parent) use ($writer)
                 {
                     $parent->appendChild($this->doc->importNode(
@@ -293,18 +292,11 @@ class DomXmlStreamWriter extends XmlStreamWriter
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */
-    private function wrapStackHandling(\Closure $appendTo, string $type): XmlStreamWriter
+    private function append(\Closure $appendTo, string $type): XmlStreamWriter
     {
-        if (count($this->elementStack) === 0) {
-            $parent = $this->doc;
-        } else {
-            $parent = end($this->elementStack);
-        }
-
         libxml_use_internal_errors(true);
         try {
-
-            $appendTo($parent);
+            $appendTo(end($this->openElements));
         } catch (\DOMException $e) {
             throw new XmlException('Error writing "' . $type, $e);
         }
@@ -314,26 +306,14 @@ class DomXmlStreamWriter extends XmlStreamWriter
             libxml_clear_errors();
             throw new XmlException(
                     'Error writing "' . $type . '": '
-                    . $this->convertLibXmlErrorsToString($errors)
+                    . implode(', ', array_map(
+                            function($error) { return trim($error->message); },
+                            $errors
+                    ))
             );
         }
+
         return $this;
-    }
-
-    /**
-     * Converts all errors to a string
-     *
-     * @param   array   $errors  list of errors to convert
-     * @return  string
-     */
-    private function convertLibXmlErrorsToString(array $errors): string
-    {
-        $messages = [];
-        foreach ($errors as $error) {
-            $messages[] = trim($error->message);
-        }
-
-        return implode(', ', $messages);
     }
 
     /**

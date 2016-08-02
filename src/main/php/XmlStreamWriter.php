@@ -183,9 +183,14 @@ abstract class XmlStreamWriter
      * Write an end element
      *
      * @return  \stubbles\xml\XmlStreamWriter
+     * @throws  \LogicException  in case no element is open
      */
     public function writeEndElement(): self
     {
+        if ($this->isFinished()) {
+            throw new \LogicException('Can not write end elements, no element open.');
+        }
+
         $this->doWriteEndElement();
         $this->depth--;
         return $this;
