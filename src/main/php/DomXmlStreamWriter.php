@@ -12,20 +12,20 @@ namespace stubbles\xml;
 /**
  * XML Stream Writer based on DOM.
  */
-class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWriter
+class DomXmlStreamWriter extends XmlStreamWriter
 {
     /**
      * DOM Document
      *
      * @type  \DOMDocument
      */
-    protected $doc;
+    private $doc;
     /**
-     * Stores al opened elements
+     * Stores all opened elements
      *
      * @type  array
      */
-    protected $elementStack = [];
+    private $elementStack = [];
 
     /**
      * Create a new writer
@@ -35,9 +35,8 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
     {
-        $this->xmlVersion = $xmlVersion;
-        $this->encoding   = $encoding;
-        $this->doc        = new \DOMDocument($xmlVersion, $encoding);
+        parent::__construct($xmlVersion, $encoding);
+        $this->doc = new \DOMDocument($xmlVersion, $encoding);
     }
 
     /**
@@ -47,9 +46,9 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function clear(): XmlStreamWriter
     {
-        $this->doc          = new \DOMDocument($this->xmlVersion, $this->encoding);
+        $this->doc          = new \DOMDocument($this->version(), $this->encoding());
         $this->elementStack = [];
-        return $this;
+        return parent::clear();
     }
 
     /**
@@ -57,7 +56,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  int[]
      */
-    protected function getFeatures(): array
+    protected function features(): array
     {
         return [
                 XmlStreamWriter::FEATURE_AS_DOM,
@@ -225,7 +224,7 @@ class DomXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     public function writeElement(
             string $elementName,
             array $attributes = [],
-            string $cdata = null
+            string $cdata     = null
     ): XmlStreamWriter {
         return $this->wrapStackHandling(
                 function(\DOMNode $parent) use ($elementName, $attributes, $cdata)

@@ -91,7 +91,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function hasVersion1_0ByDefault()
     {
-        assert($this->writer->getVersion(), equals('1.0'));
+        assert($this->writer->version(), equals('1.0'));
     }
 
     /**
@@ -99,7 +99,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function hasUtf8EncodingByDefault()
     {
-        assert($this->writer->getEncoding(), equals('UTF-8'));
+        assert($this->writer->encoding(), equals('UTF-8'));
     }
 
     /**
@@ -108,7 +108,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function reportsOtherVersion()
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
-        assert($writer->getVersion(), equals('1.1'));
+        assert($writer->version(), equals('1.1'));
     }
 
     /**
@@ -117,7 +117,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function reportsOtherEncoding()
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
-        assert($writer->getEncoding(), equals('ISO-8859-1'));
+        assert($writer->encoding(), equals('ISO-8859-1'));
     }
 
     /**

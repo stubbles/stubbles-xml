@@ -7,6 +7,8 @@
   * introduced scalar type hints and strict type checking
   * dropped `get` from all getter methods of `stubbles\xml\rss\RssFeed`
   * dropped `get` from all getter methods of `stubbles\xml\rss\RssFeedItem`
+  * dropped `get` from all getter methods of `stubbles\xml\XmlStreamWriter`
+  * `stubbles\xml\XmlStreamWriter` is now abstract base class and not an interface any more, removed `stubbles\xml\AbstractXmlStreamWriter`
 
 
 5.0.0 (2016-07-05)

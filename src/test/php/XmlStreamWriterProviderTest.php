@@ -144,7 +144,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function createsWriterForVersion1_0ByDefault()
     {
         assert(
-                $this->xmlStreamWriterProvider->get()->getVersion(),
+                $this->xmlStreamWriterProvider->get()->version(),
                 equals('1.0')
         );
     }
@@ -156,7 +156,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.1');
         assert(
-                $xmlStreamWriterProvider->get()->getVersion(),
+                $xmlStreamWriterProvider->get()->version(),
                 equals('1.1')
         );
     }
@@ -167,7 +167,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function createsWriterWithUTF8EncodingByDefault()
     {
         assert(
-                $this->xmlStreamWriterProvider->get()->getEncoding(),
+                $this->xmlStreamWriterProvider->get()->encoding(),
                 equals('UTF-8')
         );
     }
@@ -179,7 +179,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.0', 'ISO-8859-1');
         assert(
-                $xmlStreamWriterProvider->get()->getEncoding(),
+                $xmlStreamWriterProvider->get()->encoding(),
                 equals('ISO-8859-1')
         );
     }

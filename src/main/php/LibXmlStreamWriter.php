@@ -12,14 +12,14 @@ namespace stubbles\xml;
 /**
  * XML Stream Writer based on libxml
  */
-class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWriter
+class LibXmlStreamWriter extends XmlStreamWriter
 {
     /**
      * Writer
      *
      * @type  \XMLWriter
      */
-    protected $writer;
+    private $writer;
 
     /**
      * Create a new writer
@@ -29,12 +29,17 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      */
     public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
     {
-        $this->xmlVersion = $xmlVersion;
-        $this->encoding   = $encoding;
-        $this->writer     = new \XMLWriter();
-        $this->writer->openMemory();
-        $this->writer->startDocument($xmlVersion, $encoding);
-        $this->writer->setIndent(false);
+        parent::__construct($xmlVersion, $encoding);
+        $this->writer = $this->createWriter($xmlVersion, $encoding);
+    }
+
+    private function createWriter($xmlVersion, $encoding): \XMLWriter
+    {
+        $writer = new \XMLWriter();
+        $writer->openMemory();
+        $writer->startDocument($xmlVersion, $encoding);
+        $writer->setIndent(false);
+        return $writer;
     }
 
     /**
@@ -45,11 +50,8 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
     public function clear(): XmlStreamWriter
     {
         unset($this->writer);
-        $this->writer = new \XMLWriter();
-        $this->writer->openMemory();
-        $this->writer->startDocument($this->xmlVersion, $this->encoding);
-        $this->writer->setIndent(false);
-        return $this;
+        $this->writer = $this->createWriter($this->version(), $this->encoding());
+        return parent::clear();
     }
 
     /**
@@ -57,7 +59,7 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      *
      * @return  int[]
      */
-    protected function getFeatures(): array
+    protected function features(): array
     {
         return [XmlStreamWriter::FEATURE_AS_DOM];
     }
@@ -162,8 +164,11 @@ class LibXmlStreamWriter extends AbstractXmlStreamWriter implements XmlStreamWri
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeElement(string $elementName, array $attributes = [], string $cdata = null): XmlStreamWriter
-    {
+    public function writeElement(
+            string $elementName,
+            array $attributes = [],
+            string $cdata     = null
+    ): XmlStreamWriter {
         $this->writeStartElement($elementName);
         foreach ($attributes as $attName => $attValue) {
             $this->writeAttribute($attName, $attValue);

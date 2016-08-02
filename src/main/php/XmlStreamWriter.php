@@ -14,7 +14,7 @@ namespace stubbles\xml;
  *
  * @ProvidedBy(stubbles\xml\XmlStreamWriterProvider.class)
  */
-interface XmlStreamWriter
+abstract class XmlStreamWriter
 {
     /**
      * Is able to import an XmlStreamWriter
@@ -28,20 +28,56 @@ interface XmlStreamWriter
      * @type int
      */
     const FEATURE_AS_DOM = 2;
+    /**
+     * XML version
+     *
+     * @type  string
+     */
+    private $xmlVersion;
+    /**
+     * encoding used by the writer
+     *
+     * @type  string
+     */
+    private $encoding;
+    /**
+     * depth, i.e. amount of opened tags
+     *
+     * @type  int
+     */
+    private $depth        = 0;
+
+    /**
+     * Create a new writer
+     *
+     * @param  string  $xmlVersion
+     * @param  string  $encoding
+     */
+    public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
+    {
+        $this->xmlVersion = $xmlVersion;
+        $this->encoding   = $encoding;
+    }
 
     /**
      * returns the xml version used by the writer
      *
      * @return  string
      */
-    public function getVersion(): string;
+    public function version(): string
+    {
+        return $this->xmlVersion;
+    }
 
     /**
      * returns the encoding used by the writer
      *
      * @return  string
      */
-    public function getEncoding(): string;
+    public function encoding(): string
+    {
+        return $this->encoding;
+    }
 
     /**
      * Checks, whether the implementation has a desired feature
@@ -49,14 +85,28 @@ interface XmlStreamWriter
      * @param   int  $feature
      * @return  bool
      */
-    public function hasFeature(int $feature): bool;
+    public function hasFeature(int $feature): bool
+    {
+        return in_array($feature, $this->features());
+    }
+
+    /**
+     * returns a list of features the implementation supports
+     *
+     * @return  int[]
+     */
+    protected abstract function features(): array;
 
     /**
      * Clears all previously written elements so that the document starts fresh.
      *
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function clear(): self;
+    public function clear(): self
+    {
+        $this->depth = 0;
+        return $this;
+    }
 
     /**
      * Write an opening tag
@@ -64,7 +114,20 @@ interface XmlStreamWriter
      * @param   string  $elementName
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeStartElement(string $elementName): self;
+    public function writeStartElement(string $elementName): self
+    {
+        $this->doWriteStartElement($elementName);
+        $this->depth++;
+        return $this;
+    }
+
+    /**
+     * really writes an opening tag
+     *
+     * @param  string  $elementName
+     */
+    protected abstract function doWriteStartElement(string $elementName);
+
 
     /**
      * Write a text node
@@ -72,7 +135,7 @@ interface XmlStreamWriter
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeText(string $data): self;
+    public abstract function writeText(string $data): self;
 
     /**
      * Write a cdata section
@@ -80,7 +143,7 @@ interface XmlStreamWriter
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeCData(string $cdata): self;
+    public abstract function writeCData(string $cdata): self;
 
     /**
      * Write a comment
@@ -88,7 +151,7 @@ interface XmlStreamWriter
      * @param   string  $comment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeComment(string $comment): self;
+    public abstract function writeComment(string $comment): self;
 
     /**
      * Write a processing instruction
@@ -97,7 +160,7 @@ interface XmlStreamWriter
      * @param   string  $data
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeProcessingInstruction(string $target, string $data = ''): self;
+    public abstract function writeProcessingInstruction(string $target, string $data = ''): self;
 
     /**
      * Write an xml fragment
@@ -105,7 +168,7 @@ interface XmlStreamWriter
      * @param   string  $fragment
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeXmlFragment(string $fragment): self;
+    public abstract function writeXmlFragment(string $fragment): self;
 
     /**
      * Write an attribute
@@ -114,14 +177,24 @@ interface XmlStreamWriter
      * @param   string  $attributeValue
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeAttribute(string $attributeName, string $attributeValue): self;
+    public abstract function writeAttribute(string $attributeName, string $attributeValue): self;
 
     /**
      * Write an end element
      *
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeEndElement(): self;
+    public function writeEndElement(): self
+    {
+        $this->doWriteEndElement();
+        $this->depth--;
+        return $this;
+    }
+
+    /**
+     *  really writes an end element
+     */
+    protected abstract function doWriteEndElement();
 
     /**
      * Write a full element
@@ -131,7 +204,11 @@ interface XmlStreamWriter
      * @param   string  $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function writeElement(string $elementName, array $attributes = [], string $cdata = null): self;
+    public abstract function writeElement(
+            string $elementName,
+            array $attributes = [],
+            string $cdata     = null
+    ): self;
 
     /**
      * Import another stream
@@ -139,26 +216,29 @@ interface XmlStreamWriter
      * @param   \stubbles\xml\XmlStreamWriter  $writer
      * @return  \stubbles\xml\XmlStreamWriter
      */
-    public function importStreamWriter(XmlStreamWriter $writer): self;
+    public abstract function importStreamWriter(XmlStreamWriter $writer): self;
 
     /**
      * checks whether the document is finished meaning no open tags are left
      *
      * @return  bool
      */
-    public function isFinished(): bool;
+    public function isFinished(): bool
+    {
+        return 0 === $this->depth;
+    }
 
     /**
      * Return the XML as a string
      *
      * @return  string
      */
-    public function asXml(): string;
+    public abstract function asXml(): string;
 
     /**
      * Return the XML as a DOM
      *
      * @return  \DOMDocument
      */
-    public function asDom(): \DOMDocument;
+    public abstract function asDom(): \DOMDocument;
 }
