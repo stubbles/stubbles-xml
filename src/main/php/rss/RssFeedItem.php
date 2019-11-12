@@ -310,7 +310,7 @@ class RssFeedItem
      *
      * Does not consider the domain of the category.
      *
-     * @param   string[]  $categories
+     * @param   array<string|array<string>>  $categories
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inCategories(array $categories): self
