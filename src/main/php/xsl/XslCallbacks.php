@@ -95,6 +95,10 @@ class XslCallbacks
         }
 
         $method = reflect($callback, $methodName);
+        if (!($method instanceof \ReflectionMethod)) {
+          throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not a method of a class.');
+        }
+
         if (!$method->isPublic()) {
             throw new XslCallbackException('The callback\'s ' . $name . ' ' . get_class($callback) . '::' . $methodName . '() is not a public method.');
         }
