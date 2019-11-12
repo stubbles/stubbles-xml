@@ -10,8 +10,8 @@ namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
-require_once __DIR__ . '/XslExampleCallback.php';
-use org\stubbles\test\xml\xsl\XslExampleCallback;
+use stubbles\helper\xsl\TestXslProcessor;
+use stubbles\helper\xsl\XslExampleCallback;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
@@ -22,34 +22,6 @@ use function bovigo\assert\predicate\isOfSize;
 use function bovigo\assert\predicate\isSameAs;
 use function bovigo\callmap\verify;
 use function stubbles\reflect\annotationsOf;
-/**
- * Helper class for the test.
- */
-class TestXslProcessor extends XslProcessor
-{
-    /**
-     * mocked xslt processor
-     *
-     * @type  \bovigo\callmap\Proxy
-     */
-    public static $xsltProcessor;
-
-    /**
-     * overwrite creation method to inject the mock object
-     */
-    protected function createXsltProcessor()
-    {
-        return self::$xsltProcessor;
-    }
-
-    /**
-     * makes sure callbacks are registered
-     */
-    public function registerCallbacks()
-    {
-        parent::registerCallbacks();
-    }
-}
 /**
  * Test for stubbles\xml\xsl\XslProcessor.
  *

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace org\stubbles\test\xml\xsl;
+namespace stubbles\helper\xsl;
 /**
  * Class to register classes and make their methods available as callback in xsl.
  */

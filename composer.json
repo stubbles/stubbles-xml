@@ -24,7 +24,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "stubbles\\xml\\": "src/test/php"
+            "stubbles\\xml\\": "src/test/php",
+            "stubbles\\helper\\": "src/test/helper"
         }
     },
     "extra": {

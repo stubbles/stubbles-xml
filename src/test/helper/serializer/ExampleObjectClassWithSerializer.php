@@ -6,11 +6,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace org\stubbles\test\xml\serializer;
+namespace stubbles\helper\serializer;
 /**
  * Simple example class to test the xml serializer with an annotated serializer class.
  *
- * @XmlSerializer(org\stubbles\test\xml\serializer\ExampleObjectSerializer.class)
+ * @XmlSerializer(stubbles\helper\serializer\ExampleObjectSerializer.class)
  */
 class ExampleObjectClassWithSerializer
 {

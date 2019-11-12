@@ -6,13 +6,13 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace org\stubbles\test\xml\serializer;
+namespace stubbles\helper\serializer;
 /**
  * Simple example class to test the xml serializer with object serialization.
  *
- * @XmlNonTraversable
+ * @XmlTag(tagName='foo', elementTagName='example')
  */
-class TraversableNonTraversable implements \IteratorAggregate
+class TraversableTraversable implements \IteratorAggregate
 {
     public function baz(): string
     {
@@ -26,7 +26,7 @@ class TraversableNonTraversable implements \IteratorAggregate
      */
     public function getIterator(): \Traversable
     {
-        return new \ArrayIterator(['foo' => 'bar']);
+        return new \ArrayIterator(['bar']);
     }
 
 }

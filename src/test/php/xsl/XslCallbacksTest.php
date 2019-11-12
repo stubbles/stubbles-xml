@@ -8,8 +8,7 @@ declare(strict_types=1);
  */
 namespace stubbles\xml\xsl;
 use PHPUnit\Framework\TestCase;
-require_once __DIR__ . '/XslExampleCallback.php';
-use org\stubbles\test\xml\xsl\XslExampleCallback;
+use stubbles\helper\xsl\XslExampleCallback;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
