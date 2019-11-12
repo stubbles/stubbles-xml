@@ -29,6 +29,7 @@ use stubbles\xml\DomXmlStreamWriter;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
+use function bovigo\assert\fail;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\serializer\XmlSerializer.
@@ -736,6 +737,11 @@ class XmlSerializerTest extends TestCase
     public function doesNotSerializeResources()
     {
         $fp = fopen(__FILE__, 'rb');
+        if (false === $fp) {
+            fail('Could not open file for test');
+            return;
+        }
+
         assertThat($this->serialize($fp), equals('<?xml version="1.0" encoding="UTF-8"?>'));
         fclose($fp);
     }

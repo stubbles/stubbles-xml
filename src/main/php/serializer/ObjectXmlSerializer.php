@@ -27,6 +27,6 @@ interface ObjectXmlSerializer
             $object,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
-            string $tagName
+            string $tagName = null
     );
 }
