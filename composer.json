@@ -6,16 +6,16 @@
     "description": "Classes to work with XML",
     "require": {
         "php": "^7.3",
-        "stubbles/ioc": "^8.0",
-        "stubbles/reflect": "^8.0.2",
-        "stubbles/date": "^7.0"
+        "stubbles/ioc": "^9.0",
+        "stubbles/reflect": "^9.0",
+        "stubbles/date": "^8.0"
     },
     "require-dev": {
         "mikey179/vfsstream": "^1.6.7",
         "phpunit/phpunit": "^8.4",
         "bovigo/callmap": "^5.0",
         "bovigo/assert": "^5.0",
-        "stubbles/sequence": "^8.1"
+        "stubbles/sequence": "^9.0"
     },
     "autoload": {
         "psr-4": {
