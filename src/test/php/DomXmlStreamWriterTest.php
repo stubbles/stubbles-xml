@@ -5,12 +5,11 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml;
+use PHPUnit\Framework\TestCase;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
@@ -22,7 +21,7 @@ use function bovigo\assert\predicate\isInstanceOf;
  * @group  xml
  * @group  xml_core
  */
-class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
+class DomXmlStreamWriterTest extends TestCase
 {
     /**
      * instance to test
@@ -31,10 +30,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected $writer;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->writer = new DomXmlStreamWriter();
     }
@@ -44,7 +40,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function emptyDocumentContainsXmlHeader()
     {
-        assert(
+        assertThat(
                 $this->writer->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>')
         );
@@ -56,7 +52,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function canCreateDocumentWithOtherXmlVersion()
     {
         $writer = new DomXmlStreamWriter('1.1');
-        assert(
+        assertThat(
                 $writer->asXml(),
                 equals('<?xml version="1.1" encoding="UTF-8"?>')
         );
@@ -68,7 +64,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function canCreateDocumentWithIso()
     {
         $writer = new DomXmlStreamWriter('1.0', 'ISO-8859-1');
-        assert(
+        assertThat(
                 $writer->asXml(),
                 equals('<?xml version="1.0" encoding="ISO-8859-1"?>')
         );
@@ -80,7 +76,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function canCreateDocumentWithOtherVersionAndIso()
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
-        assert(
+        assertThat(
                 $writer->asXml(),
                 equals('<?xml version="1.1" encoding="ISO-8859-1"?>')
         );
@@ -91,7 +87,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function hasVersion1_0ByDefault()
     {
-        assert($this->writer->version(), equals('1.0'));
+        assertThat($this->writer->version(), equals('1.0'));
     }
 
     /**
@@ -99,7 +95,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function hasUtf8EncodingByDefault()
     {
-        assert($this->writer->encoding(), equals('UTF-8'));
+        assertThat($this->writer->encoding(), equals('UTF-8'));
     }
 
     /**
@@ -108,7 +104,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function reportsOtherVersion()
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
-        assert($writer->version(), equals('1.1'));
+        assertThat($writer->version(), equals('1.1'));
     }
 
     /**
@@ -117,7 +113,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function reportsOtherEncoding()
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
-        assert($writer->encoding(), equals('ISO-8859-1'));
+        assertThat($writer->encoding(), equals('ISO-8859-1'));
     }
 
     /**
@@ -125,7 +121,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function canWriteNestedElements()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeStartElement('foo')
                         ->writeEndElement()
@@ -143,7 +139,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function canWriteNestedCompleteElements()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeStartElement('foo')
                         ->writeEndElement()
@@ -170,7 +166,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeElement()
     {
-        assert(
+        assertThat(
                 $this->writer->writeElement('foo', ['att' => 'value'], 'content')
                         ->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
@@ -183,7 +179,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeElementWithGermanUmlautsInNonUtf8WillEncodeValue()
     {
-        assert(
+        assertThat(
                 $this->writer->writeElement('foo', ['att' => utf8_decode('hääää')], 'content')
                         ->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
@@ -196,7 +192,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeElementWithGermanUmlautsUtf8()
     {
-        assert(
+        assertThat(
                 $this->writer->writeElement('foo', ['att' => 'hääää'], 'content')
                         ->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
@@ -209,7 +205,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeAttributesAddsAtributesToCurrentElement()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeStartElement('foo')
                         ->writeAttribute('bar', '42')
@@ -226,7 +222,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeAttributesWithGermanUmlautsInNonUtf8WillEncodeValue()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeStartElement('foo')
                         ->writeAttribute('bar', utf8_decode('hääää'))
@@ -243,7 +239,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeAttributesWithGermanUmlautsUtf8()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeStartElement('foo')
                         ->writeAttribute('bar', 'hääää')
@@ -260,7 +256,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeTextAddsTextIntoCurrentElement()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeText('This is text.')
                         ->writeEndElement()
@@ -275,7 +271,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeTextWithGermanUmlautsInNonUtf8WillEncodeText()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeText(utf8_decode('This is text containing äöü.'))
                         ->writeEndElement()
@@ -290,7 +286,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeTextWithGermanUmlautsInUtf8()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeText('This is text containing äöü.')
                         ->writeEndElement()
@@ -305,7 +301,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCDataAddsCdata()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeCData('This is text.')
                         ->writeEndElement()
@@ -320,7 +316,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCDataWithGermanUmlautsInNonUtf8WillEncodeCData()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeCData(utf8_decode('This is text containing äöü.'))
                         ->writeEndElement()
@@ -335,7 +331,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCDataWithGermanUmlautsInUtf8()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeCData('This is text containing äöü.')
                         ->writeEndElement()
@@ -350,7 +346,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCommentAddsComment()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeComment('This is a comment.')
                         ->writeEndElement()
@@ -365,7 +361,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function writeCommentWithGermanUmlautsInNonUtf8WillEncodeComment()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeComment(utf8_decode('This is a comment containing äöü.'))
                         ->writeEndElement()
@@ -380,7 +376,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function commentWithGermanUmlautsInUtf8()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeComment('This is a comment containing äöü.')
                         ->writeEndElement()
@@ -395,7 +391,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function processingInstructionCanBeAdded()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeProcessingInstruction('php', 'phpinfo();')
                         ->writeEndElement()
@@ -421,7 +417,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function xmlFragmentCanBeAdded()
     {
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->writeXmlFragment('<foo bar="true"/>')
                         ->writeEndElement()
@@ -451,7 +447,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
                 ->writeStartElement('bar')
                 ->writeEndElement()
                 ->writeEndElement();
-        assert(
+        assertThat(
                 $this->writer->writeStartElement('root')
                         ->importStreamWriter($otherWriter)
                         ->writeEndElement()
@@ -466,7 +462,7 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function clearRemovesAllPreviouslyAddedElements()
     {
-        assert(
+        assertThat(
                 $this->writer->writeElement('foo')->clear()->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>')
         );
@@ -486,8 +482,8 @@ class DomXmlStreamWriterTest extends \PHPUnit_Framework_TestCase
     public function exportAsDom()
     {
         $dom = $this->writer->writeElement('root', ['foo' => 'bar'])->asDom();
-        assert($dom, isInstanceOf(\DOMDocument::class));
-        assert(
+        assertThat($dom, isInstanceOf(\DOMDocument::class));
+        assertThat(
                 $dom->saveXML(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root foo="bar"/>' . "\n")
         );

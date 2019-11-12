@@ -5,13 +5,12 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertEmptyString;
 use function bovigo\assert\assertFalse;
@@ -25,7 +24,7 @@ use function bovigo\assert\predicate\equals;
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedItemTest extends \PHPUnit_Framework_TestCase
+class RssFeedItemTest extends TestCase
 {
     /**
      * instance to test
@@ -34,10 +33,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     private $rssFeedItem;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->rssFeedItem = RssFeedItem::create(
                 'test',
@@ -51,7 +47,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenTitleByDefault()
     {
-        assert($this->rssFeedItem->title(), equals('test'));
+        assertThat($this->rssFeedItem->title(), equals('test'));
     }
 
     /**
@@ -59,7 +55,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenLinkByDefault()
     {
-        assert($this->rssFeedItem->link(), equals('http://stubbles.net/'));
+        assertThat($this->rssFeedItem->link(), equals('http://stubbles.net/'));
     }
 
     /**
@@ -67,7 +63,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function hasGivenDescriptionByDefault()
     {
-        assert($this->rssFeedItem->description(), equals('description'));
+        assertThat($this->rssFeedItem->description(), equals('description'));
     }
 
     /**
@@ -91,7 +87,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function setAuthorWithoutMailAddressUsesExampleMailAddress()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->byAuthor('mikey')->author(),
                 equals('nospam@example.com (mikey)')
         );
@@ -102,7 +98,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetAuthorWithMailAddress()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->byAuthor('test@example.net (mikey)')
                         ->author(),
                 equals('test@example.net (mikey)')
@@ -122,7 +118,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetCategories()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->inCategory('cat1')
                         ->inCategory('cat2', 'domain')
                         ->categories(),
@@ -138,7 +134,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetListOfCategories()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->inCategories(['cat1', 'cat2'])
                         ->categories(),
                 equals([
@@ -169,7 +165,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetCommentsUrl()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
                         ->comments(),
                 equals('http://stubbles.net/comments/')
@@ -189,7 +185,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetEnclosures()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->deliveringEnclosure(
                         'http://stubbles.net/enclosure.mp3',
                         50,
@@ -232,7 +228,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetGuid()
     {
-        assert($this->rssFeedItem->withGuid('dummy')->guid(), equals('dummy'));
+        assertThat($this->rssFeedItem->withGuid('dummy')->guid(), equals('dummy'));
     }
 
     /**
@@ -277,7 +273,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
     public function publishingDateCanBePassedAsDateInstance()
     {
         $date = new Date('2008-05-24');
-        assert(
+        assertThat(
                 $this->rssFeedItem->publishedOn($date)->pubDate(),
                 equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
         );
@@ -289,7 +285,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
     public function alternativePublishingDate()
     {
         $date = new Date('2008-05-24');
-        assert(
+        assertThat(
                 $this->rssFeedItem->publishedOn('2008-05-24')->pubDate(),
                 equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
         );
@@ -317,7 +313,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetSources()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->inspiredBySource(
                         'stubbles',
                         'http://stubbles.net/source/'
@@ -347,7 +343,7 @@ class RssFeedItemTest extends \PHPUnit_Framework_TestCase
      */
     public function canSetContent()
     {
-        assert(
+        assertThat(
                 $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
                         ->content(),
                 equals('<foo>bar</foo><baz/>')

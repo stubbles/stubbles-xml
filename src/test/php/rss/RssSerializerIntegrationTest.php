@@ -5,16 +5,15 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 use stubbles\date\TimeZone;
 use stubbles\ioc\Binder;
 use stubbles\xml\serializer\XmlSerializerFacade;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
@@ -22,7 +21,7 @@ use function bovigo\assert\predicate\equals;
  * @group  xml
  * @group  xml_rss
  */
-class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
+class RssSerializerIntegrationTest extends TestCase
 {
     /**
      * @test
@@ -34,7 +33,7 @@ class RssSerializerIntegrationTest extends \PHPUnit_Framework_TestCase
                 ->getInstance(XmlSerializerFacade::class)
                 ->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
-        assert(
+        assertThat(
                 $dom->saveXML(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">

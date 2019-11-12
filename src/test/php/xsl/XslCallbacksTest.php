@@ -5,14 +5,13 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
+use PHPUnit\Framework\TestCase;
 require_once __DIR__ . '/XslExampleCallback.php';
 use org\stubbles\test\xml\xsl\XslExampleCallback;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
@@ -21,7 +20,7 @@ use function bovigo\assert\predicate\equals;
  * @group  xml
  * @group  xml_xsl
  */
-class XslCallbacksTest extends \PHPUnit_Framework_TestCase
+class XslCallbacksTest extends TestCase
 {
     /**
      * callback class used for tests
@@ -36,10 +35,7 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     private $xslCallbacks;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->callback     = new XslExampleCallback();
         $this->xslCallbacks = new XslCallbacks();
@@ -51,7 +47,7 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsListOfCallbacks()
     {
-        assert(
+        assertThat(
                 $this->xslCallbacks->getCallbacks(),
                 equals(['test' => $this->callback])
         );
@@ -107,7 +103,7 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromCallbackMethod()
     {
-        assert(
+        assertThat(
                 $this->xslCallbacks->invoke('test', 'hello', ['world!']),
                 equals('hello world!')
         );
@@ -118,7 +114,7 @@ class XslCallbacksTest extends \PHPUnit_Framework_TestCase
      */
     public function invokeReturnsValueFromStaticCallbackMethod()
     {
-        assert(
+        assertThat(
                 $this->xslCallbacks->invoke('test', 'youCanDoThis'),
                 equals('A static method was called.')
         );

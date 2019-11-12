@@ -5,15 +5,14 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
+use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
 use stubbles\ioc\Injector;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
@@ -26,7 +25,7 @@ use function stubbles\reflect\annotationsOfConstructorParameter;
  * @group  xml
  * @group  xml_xsl
  */
-class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
+class XslProcessorProviderTest extends TestCase
 {
     /**
      * instance to test
@@ -47,10 +46,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
      */
     private $root;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->root                 = vfsStream::setup();
         $this->injector             = NewInstance::stub(Injector::class);
@@ -70,7 +66,7 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
                 $this->xslProcessorProvider
         );
         assertTrue($configPathParamAnnotations->contain('Named'));
-        assert(
+        assertThat(
                 $configPathParamAnnotations->firstNamed('Named')->getName(),
                 equals('stubbles.config.path')
         );
@@ -116,8 +112,8 @@ class XslProcessorProviderTest extends \PHPUnit_Framework_TestCase
                  ->withContent('foo="org\stubbles\example\xsl\ExampleCallback"')
                  ->at($this->root);
         $callback = new \stdClass();
-        $this->injector->mapCalls(['getInstance' => $callback]);
-        assert(
+        $this->injector->returns(['getInstance' => $callback]);
+        assertThat(
             $this->xslProcessorProvider->get()->getCallbacks(),
             equals(['foo' => $callback])
         );

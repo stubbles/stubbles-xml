@@ -11,15 +11,20 @@
         "stubbles/date": "^7.0"
     },
     "require-dev": {
-        "mikey179/vfsStream": "^1.6",
-        "phpunit/phpunit": "^5.4",
-        "bovigo/callmap": "^3.1",
-        "bovigo/assert": "^2.0",
+        "mikey179/vfsstream": "^1.6.7",
+        "phpunit/phpunit": "^8.4",
+        "bovigo/callmap": "^5.0",
+        "bovigo/assert": "^5.0",
         "stubbles/sequence": "^8.1"
     },
     "autoload": {
         "psr-4": {
             "stubbles\\xml\\": "src/main/php"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "stubbles\\xml\\": "src/test/php"
         }
     },
     "extra": {

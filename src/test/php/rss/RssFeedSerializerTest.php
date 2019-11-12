@@ -5,15 +5,14 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
 use bovigo\callmap\NewInstance;
+use PHPUnit\Framework\TestCase;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
@@ -25,7 +24,7 @@ use function stubbles\reflect\annotationsOf;
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
+class RssFeedSerializerTest extends TestCase
 {
     /**
      * instance to test
@@ -46,15 +45,12 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     private $xmlStreamWriter;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->rssFeedSerializer = new RssFeedSerializer();
         $this->xmlStreamWriter   = NewInstance::of(XmlStreamWriter::class);
         $this->xmlSerializer     = NewInstance::stub(XmlSerializer::class)
-                ->mapCalls(['serializeObject' => $this->xmlStreamWriter]);
+                ->returns(['serializeObject' => $this->xmlStreamWriter]);
 
     }
 
@@ -63,7 +59,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        assert(
+        assertThat(
                 annotationsOf(RssFeed::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
@@ -91,7 +87,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function noItemsNoStylesheets()
     {
-        assert(
+        assertThat(
                 $this->rssFeedSerializer
                         ->setGenerator('Another generator')
                         ->serialize(
@@ -115,7 +111,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
-        assert(
+        assertThat(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
@@ -137,7 +133,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
-        assert(
+        assertThat(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,
@@ -165,7 +161,7 @@ class RssFeedSerializerTest extends \PHPUnit_Framework_TestCase
                 ->setLastBuildDate(50)
                 ->setTimeToLive(60)
                 ->setImage('http://example.org/example.gif', 'foo');
-        assert(
+        assertThat(
                 $this->rssFeedSerializer->serialize(
                         $rssFeed,
                         $this->xmlSerializer,

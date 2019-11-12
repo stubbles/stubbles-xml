@@ -5,14 +5,14 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
+use PHPUnit\Framework\TestCase;
+
 use stubbles\date\Date;
 use stubbles\xml\XmlException;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
@@ -331,7 +331,7 @@ class RssItemWithDifferentMethods
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
+class RssFeedItemFromEntityTest extends TestCase
 {
     /**
      * instance to test
@@ -340,10 +340,7 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
      */
     private $rssFeed;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->rssFeed = new RssFeed('title', 'link', 'description');
     }
@@ -398,7 +395,7 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
      */
     public function simpleEntityIsTransformedIntoRssItemWithMinimalProperties()
     {
-        assert(
+        assertThat(
                 $this->rssFeed->addEntity(new SimpleRssItemEntity()),
                 equals(new RssFeedItem('simpleTitle', 'simpleLink', 'simpleDescription'))
         );
@@ -459,7 +456,7 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
             ]])
             ->withContent('overrideContent');
 
-        assert($rssFeedItem, equals($expectedRssFeedItem));
+        assertThat($rssFeedItem, equals($expectedRssFeedItem));
     }
 
     /**
@@ -489,7 +486,7 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
                     'name' => 'extendedSourceName', 'url' => 'extendedSourceUrl'
             ]])
             ->withContent('extendedContent');
-        assert(
+        assertThat(
                 $this->rssFeed->addEntity(new ExtendedRSSItemEntity()),
                 equals($expectedRssFeedItem)
         );
@@ -519,7 +516,7 @@ class RssFeedItemFromEntityTest extends \PHPUnit_Framework_TestCase
                     'name' => 'originName', 'url' => 'originUrl'
             ]])
             ->withContent('text');
-        assert(
+        assertThat(
                 $this->rssFeed->addEntity(new RssItemWithDifferentMethods()),
                 equals($expectedRssFeedItem)
         );

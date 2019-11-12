@@ -5,11 +5,11 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml;
-use function bovigo\assert\assert;
+use PHPUnit\Framework\TestCase;
+
+use function bovigo\assert\assertThat;
 use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
@@ -22,7 +22,7 @@ use function stubbles\reflect\annotationsOfConstructorParameter;
  * @group  xml
  * @group  xml_core
  */
-class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
+class XmlStreamWriterProviderTest extends TestCase
 {
     /**
      * instance to test
@@ -31,10 +31,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     private $xmlStreamWriterProvider;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->xmlStreamWriterProvider = new XmlStreamWriterProvider();
     }
@@ -49,7 +46,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriterProvider
         );
         assertTrue($typesParamAnnotations->contain('Named'));
-        assert(
+        assertThat(
                 $typesParamAnnotations->firstNamed('Named')->getName(),
                 equals('stubbles.xml.types')
         );
@@ -58,7 +55,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriterProvider
         );
         assertTrue($versionParamAnnotations->contain('Named'));
-        assert(
+        assertThat(
                 $versionParamAnnotations->firstNamed('Named')->getName(),
                 equals('stubbles.xml.version')
         );
@@ -67,7 +64,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
                 $this->xmlStreamWriterProvider
         );
         assertTrue($encodingParamAnnotations->contain('Named'));
-        assert(
+        assertThat(
                 $encodingParamAnnotations->firstNamed('Named')->getName(),
                 equals('stubbles.xml.encoding')
         );
@@ -78,7 +75,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultProviderForXmlStreamWriter()
     {
-        assert(
+        assertThat(
                 annotationsOf(XmlStreamWriter::class)
                         ->firstNamed('ProvidedBy')
                         ->getProviderClass()
@@ -93,12 +90,12 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function noSpecificRequestedTypeShouldCreateFirstAvailableType()
     {
         if (extension_loaded('dom')) {
-            assert(
+            assertThat(
                     $this->xmlStreamWriterProvider->get(),
                     isInstanceOf(DomXmlStreamWriter::class)
             );
         } elseif (extension_loaded('xmlwriter')) {
-            assert(
+            assertThat(
                     $this->xmlStreamWriterProvider->get(),
                     isInstanceOf(LibXmlStreamWriter::class)
             );
@@ -121,7 +118,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createDomTypeIfRequested()
     {
-        assert(
+        assertThat(
                 $this->xmlStreamWriterProvider->get('dom'),
                 isInstanceOf(DomXmlStreamWriter::class)
         );
@@ -132,7 +129,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createXmlWriterTypeIfRequested()
     {
-        assert(
+        assertThat(
                 $this->xmlStreamWriterProvider->get('xmlwriter'),
                 isInstanceOf(LibXmlStreamWriter::class)
         );
@@ -143,7 +140,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createsWriterForVersion1_0ByDefault()
     {
-        assert(
+        assertThat(
                 $this->xmlStreamWriterProvider->get()->version(),
                 equals('1.0')
         );
@@ -155,7 +152,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function setVersionTo1_1CreatesWriterForVersion1_1()
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.1');
-        assert(
+        assertThat(
                 $xmlStreamWriterProvider->get()->version(),
                 equals('1.1')
         );
@@ -166,7 +163,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function createsWriterWithUTF8EncodingByDefault()
     {
-        assert(
+        assertThat(
                 $this->xmlStreamWriterProvider->get()->encoding(),
                 equals('UTF-8')
         );
@@ -178,7 +175,7 @@ class XmlStreamWriterProviderTest extends \PHPUnit_Framework_TestCase
     public function createsWriterWithChangedEncoding()
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.0', 'ISO-8859-1');
-        assert(
+        assertThat(
                 $xmlStreamWriterProvider->get()->encoding(),
                 equals('ISO-8859-1')
         );

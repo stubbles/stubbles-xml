@@ -5,16 +5,16 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\xml
  */
 namespace stubbles\xml\rss;
 use bovigo\callmap\NewInstance;
+use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
-use function bovigo\assert\assert;
+use function bovigo\assert\assertThat;
+use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
@@ -25,7 +25,7 @@ use function stubbles\reflect\annotationsOf;
  * @group  xml
  * @group  xml_rss
  */
-class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
+class RssFeedItemSerializerTest extends TestCase
 {
     /**
      * instance to test
@@ -46,14 +46,11 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     private $xmlStreamWriter;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->rssFeedItemSerializer = new RssFeedItemSerializer();
         $this->xmlSerializer   = NewInstance::stub(XmlSerializer::class)
-                ->mapCalls(['convertBoolToString' => false]);
+                ->returns(['convertBoolToString' => false]);
         $this->xmlStreamWriter = NewInstance::of(XmlStreamWriter::class);
     }
 
@@ -62,7 +59,7 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
      */
     public function isDefaultSerializerForRssFeedItem()
     {
-        assert(
+        assertThat(
                 annotationsOf(RssFeedItem::class)
                         ->firstNamed('XmlSerializer')
                         ->getSerializerClass()
@@ -140,6 +137,6 @@ class RssFeedItemSerializerTest extends \PHPUnit_Framework_TestCase
                 $this->xmlSerializer,
                 $this->xmlStreamWriter
         );
-        verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12);
+        assertTrue(verify($this->xmlStreamWriter, 'writeElement')->wasCalled(12));
     }
 }
