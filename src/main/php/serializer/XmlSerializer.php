@@ -197,7 +197,7 @@ class XmlSerializer
     /**
      * serializes an array to xml
      *
-     * @param   array                          $array           array to serialize
+     * @param   iterable                       $array           array to serialize
      * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized array into
      * @param   string                         $tagName         name of the surrounding xml tag
      * @param   string                         $elementTagName  necurring element tag name for lists
@@ -205,7 +205,7 @@ class XmlSerializer
      * @since   1.6.0
      */
     public function serializeArray(
-            $array,
+            iterable $array,
             XmlStreamWriter $xmlWriter,
             string $tagName = null,
             string $elementTagName = null
