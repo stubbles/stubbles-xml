@@ -43,8 +43,8 @@ class XmlSerializerFacade
     /**
      * serialize any data structure to XML
      *
-     * @param   mixed  $data     data to serialize
-     * @param   array  $tagName  name for root tag
+     * @param   mixed   $data     data to serialize
+     * @param   string  $tagName  name for root tag
      * @return  string
      */
     public function serializeToXml($data, string $tagName = null): string
@@ -56,8 +56,8 @@ class XmlSerializerFacade
     /**
      * serialize any data structure to XML
      *
-     * @param   mixed  $data     data to serialize
-     * @param   array  $tagName  name for root tag
+     * @param   mixed   $data     data to serialize
+     * @param   string  $tagName  name for root tag
      * @return  \DOMDocument
      */
     public function serializeToDom($data, string $tagName = null): \DOMDocument

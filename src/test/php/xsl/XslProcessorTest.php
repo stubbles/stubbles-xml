@@ -10,7 +10,7 @@ namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
-use stubbles\helper\xsl\TestXslProcessor;
+use stubbles\helper\xsl\ExtendedXslProcessor;
 use stubbles\helper\xsl\XslExampleCallback;
 
 use function bovigo\assert\assertThat;
@@ -34,7 +34,7 @@ class XslProcessorTest extends TestCase
     /**
      * instance to test
      *
-     * @type  XslProcessor
+     * @type  ExtendedXslProcessor
      */
     private $xslProcessor;
     /**
@@ -67,8 +67,8 @@ class XslProcessorTest extends TestCase
     {
         libxml_clear_errors();
         $this->baseXsltProcessor = NewInstance::of(\XSLTProcessor::class);
-        TestXslProcessor::$xsltProcessor = $this->baseXsltProcessor;
-        $this->xslProcessor = new TestXslProcessor(new XslCallbacks());
+        ExtendedXslProcessor::$xsltProcessor = $this->baseXsltProcessor;
+        $this->xslProcessor = new ExtendedXslProcessor(new XslCallbacks());
         $this->document     = new \DOMDocument();
         $this->document->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
         $this->xslProcessor->onDocument($this->document);
@@ -250,7 +250,7 @@ class XslProcessorTest extends TestCase
     public function cloneInstanceCopiesParameters()
     {
         $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
-        TestXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
+        ExtendedXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
         $this->xslProcessor->withParameter('foo', 'bar', 'baz');
         $this->baseXsltProcessor->returns(['importStylesheet' => true]);
         $anotherBaseXsltProcessor->returns(['importStylesheet' => true]);
@@ -266,7 +266,7 @@ class XslProcessorTest extends TestCase
     public function cloneInstanceCopiesStylesheets()
     {
         $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
-        TestXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
+        ExtendedXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
         $stylesheet = new \DOMDocument();
         $stylesheet->loadXML($this->stylesheet);
         $this->baseXsltProcessor->returns(['importStylesheet' => true]);
@@ -282,7 +282,7 @@ class XslProcessorTest extends TestCase
      */
     public function cloneInstanceDoesNotCopyDocumentToTransform()
     {
-        TestXslProcessor::$xsltProcessor = NewInstance::of('\XSLTProcessor')
+      ExtendedXslProcessor::$xsltProcessor = NewInstance::of('\XSLTProcessor')
                 ->returns(['importStylesheet' => true]);
         $this->baseXsltProcessor->returns(['importStylesheet' => true]);
         $this->xslProcessor->applyStylesheet(new \DOMDocument());
@@ -406,9 +406,8 @@ class XslProcessorTest extends TestCase
     public function invokesCorrectCallback()
     {
         $callback     = new XslExampleCallback();
-        $xslProcessor = new TestXslProcessor(new XslCallbacks());
-        $xslProcessor->usingCallback('foo', $callback)
-                     ->registerCallbacks();
+        $xslProcessor = new ExtendedXslProcessor(new XslCallbacks());
+        $xslProcessor->usingCallback('foo', $callback)->callRegisterCallbacks();
         XslProcessor::invokeCallback('foo', 'youCanDoThis');
         assertTrue($callback->calledYouCanDoThis());
     }
@@ -419,8 +418,8 @@ class XslProcessorTest extends TestCase
     public function passesParametersToCallback()
     {
         $callback     = new XslExampleCallback();
-        $xslProcessor = new TestXslProcessor(new XslCallbacks());
-        $xslProcessor->usingCallback('foo', $callback)->registerCallbacks();
+        $xslProcessor = new ExtendedXslProcessor(new XslCallbacks());
+        $xslProcessor->usingCallback('foo', $callback)->callRegisterCallbacks();
         XslProcessor::invokeCallback('foo', 'hello', 'mikey');
         assertThat($callback->getHelloArg(), equals('mikey'));
     }

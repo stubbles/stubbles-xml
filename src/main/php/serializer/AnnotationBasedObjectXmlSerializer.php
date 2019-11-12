@@ -184,8 +184,8 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extracts informations about annotated element
      *
-     * @param   \stubbles\lang\reflect\annotation\Annotations  $annotations     annotations of the element to serialize
-     * @param   string                                         $defaultTagName  default tag name in case element is not annotated
+     * @param   \stubbles\reflect\annotation\Annotations  $annotations     annotations of the element to serialize
+     * @param   string                                    $defaultTagName  default tag name in case element is not annotated
      * @return  \stubbles\xml\serializer\delegate\XmlSerializerDelegate
      */
     private function createSerializerDelegate(

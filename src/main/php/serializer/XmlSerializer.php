@@ -109,7 +109,7 @@ class XmlSerializer
      * @param   bool                           $value
      * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
      * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmltreamWriter
+     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
     public function serializeBool($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter

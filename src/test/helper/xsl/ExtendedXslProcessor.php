@@ -8,11 +8,10 @@ declare(strict_types=1);
  */
 namespace stubbles\helper\xsl;
 use stubbles\xml\xsl\XslProcessor;
-
 /**
  * Helper class for the test.
  */
-class TestXslProcessor extends XslProcessor
+class ExtendedXslProcessor extends XslProcessor
 {
     /**
      * mocked xslt processor
@@ -32,7 +31,7 @@ class TestXslProcessor extends XslProcessor
     /**
      * makes sure callbacks are registered
      */
-    public function registerCallbacks()
+    public function callRegisterCallbacks()
     {
         parent::registerCallbacks();
     }

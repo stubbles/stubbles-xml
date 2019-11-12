@@ -18,7 +18,7 @@ class ExampleObjectSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param  mixed            $value
+     * @param  mixed            $object
      * @param  XmlSerializer    $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  XmlStreamWriter  $xmlWriter      xml writer to write serialized object into
      * @param  string           $tagName        name of the surrounding xml tag
