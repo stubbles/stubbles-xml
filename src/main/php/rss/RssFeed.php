@@ -165,7 +165,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function locale()
+    public function locale(): ?string
     {
         return $this->locale;
     }
@@ -197,7 +197,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function copyright()
+    public function copyright(): ?string
     {
         return $this->copyright;
     }
@@ -246,7 +246,7 @@ class RssFeed
      * @param   int  $pos
      * @return  \stubbles\xml\rss\RssFeedItem
      */
-    public function item(int $pos)
+    public function item(int $pos): ?RssFeedItem
     {
         return $this->items[$pos] ?? null;
     }
@@ -325,7 +325,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function managingEditor()
+    public function managingEditor(): ?string
     {
         return $this->managingEditor;
     }
@@ -362,7 +362,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function webMaster()
+    public function webMaster(): ?string
     {
         return $this->webMaster;
     }
@@ -394,7 +394,7 @@ class RssFeed
      *
      * @return  string
      */
-    public function lastBuildDate()
+    public function lastBuildDate(): ?string
     {
         if ($this->hasLastBuildDate()) {
             return $this->lastBuildDate->format('D d M Y H:i:s O');
@@ -432,7 +432,7 @@ class RssFeed
      *
      * @return  int
      */
-    public function timeToLive()
+    public function timeToLive(): ?int
     {
         return $this->ttl;
     }

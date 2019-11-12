@@ -287,7 +287,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function author()
+    public function author(): ?string
     {
         return $this->author;
     }
@@ -363,7 +363,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function comments()
+    public function comments(): ?string
     {
         return $this->comments;
     }
@@ -436,7 +436,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function guid()
+    public function guid(): ?string
     {
         return $this->guid;
     }
@@ -489,7 +489,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function pubDate()
+    public function pubDate(): ?string
     {
         if ($this->hasPubDate()) {
             return $this->pubDate->format('D d M Y H:i:s O');
@@ -559,7 +559,7 @@ class RssFeedItem
      *
      * @return  string
      */
-    public function content()
+    public function content(): ?string
     {
         return $this->content;
     }
