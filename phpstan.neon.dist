@@ -7,8 +7,12 @@ parameters:
       - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::get#'
       - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::attributeName\(\)#'
       - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::tagName\(\)#'
+      - '#bovigo\\callmap\\ClassProxy given#'
       -
           message: '#Method ReflectionFunction::invokeArgs\(\) invoked with 2 parameters, 1 required#'
+          path: src/main/php/xsl/XslCallbacks.php
+      -
+          message: '#method ReflectionFunction::invokeArgs\(\) expects array#'
           path: src/main/php/xsl/XslCallbacks.php
       -
           message: '#Call to an undefined method stubbles\\xml\\xsl\\XslProcessor::callRegisterCallbacks\(\)#'
