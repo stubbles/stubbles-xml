@@ -274,8 +274,8 @@ class XslProcessor
     /**
      * set a list of parameters for the given namespace
      *
-     * @param   string   $nameSpace  the namespace where the parameters are in
-     * @param   mixed[]  $params     the list of parameters to set: name => value
+     * @param   string                $nameSpace  the namespace where the parameters are in
+     * @param   array<string,string>  $params     the list of parameters to set: name => value
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */
