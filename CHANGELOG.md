@@ -1,12 +1,13 @@
 # Changelog
 
-## 8.0.0 (2019-12-??)
+## 8.0.0 (2019-12-17)
 
 ### BC breaks
 
 * added return value `void` to interface methods:
   * `stubbles\xml\serializer\ObjectXmlSerializer::serialize()`
   * `stubbles\xml\serializer\delegate\XmlSerializerDelegate::serialize()`
+* added more phpstan related type hints
 
 ## 7.0.0 (2019-11-12)
 
