@@ -19,7 +19,7 @@ class Fragment implements XmlSerializerDelegate
     /**
      * name of tag
      *
-     * @var  string
+     * @var  string|null
      */
     protected $tagName;
     /**
