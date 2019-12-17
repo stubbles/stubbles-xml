@@ -25,9 +25,7 @@ use function stubbles\reflect\annotationsOfConstructorParameter;
 class XmlStreamWriterProviderTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  XmlStreamWriterProvider
+     * @var  XmlStreamWriterProvider
      */
     private $xmlStreamWriterProvider;
 
@@ -39,7 +37,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function annotationsPresentOnConstructor()
+    public function annotationsPresentOnConstructor(): void
     {
         $typesParamAnnotations = annotationsOfConstructorParameter(
                 'types',
@@ -73,7 +71,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function isDefaultProviderForXmlStreamWriter()
+    public function isDefaultProviderForXmlStreamWriter(): void
     {
         assertThat(
                 annotationsOf(XmlStreamWriter::class)
@@ -87,7 +85,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function noSpecificRequestedTypeShouldCreateFirstAvailableType()
+    public function noSpecificRequestedTypeShouldCreateFirstAvailableType(): void
     {
         if (extension_loaded('dom')) {
             assertThat(
@@ -105,7 +103,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function noTypeAvailableThrowsException()
+    public function noTypeAvailableThrowsException(): void
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider([]);
         expect(function() use($xmlStreamWriterProvider) {
@@ -116,7 +114,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function createDomTypeIfRequested()
+    public function createDomTypeIfRequested(): void
     {
         assertThat(
                 $this->xmlStreamWriterProvider->get('dom'),
@@ -127,7 +125,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function createXmlWriterTypeIfRequested()
+    public function createXmlWriterTypeIfRequested(): void
     {
         assertThat(
                 $this->xmlStreamWriterProvider->get('xmlwriter'),
@@ -138,7 +136,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function createsWriterForVersion1_0ByDefault()
+    public function createsWriterForVersion1_0ByDefault(): void
     {
         assertThat(
                 $this->xmlStreamWriterProvider->get()->version(),
@@ -149,7 +147,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function setVersionTo1_1CreatesWriterForVersion1_1()
+    public function setVersionTo1_1CreatesWriterForVersion1_1(): void
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.1');
         assertThat(
@@ -161,7 +159,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function createsWriterWithUTF8EncodingByDefault()
+    public function createsWriterWithUTF8EncodingByDefault(): void
     {
         assertThat(
                 $this->xmlStreamWriterProvider->get()->encoding(),
@@ -172,7 +170,7 @@ class XmlStreamWriterProviderTest extends TestCase
     /**
      * @test
      */
-    public function createsWriterWithChangedEncoding()
+    public function createsWriterWithChangedEncoding(): void
     {
         $xmlStreamWriterProvider = new XmlStreamWriterProvider(null, '1.0', 'ISO-8859-1');
         assertThat(

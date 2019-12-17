@@ -32,9 +32,7 @@ use function bovigo\assert\predicate\equals;
 class RssFeedItemFromEntityTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  RssFeed
+     * @var  RssFeed
      */
     private $rssFeed;
 
@@ -46,7 +44,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function noObjectThrowsIllegalArgumentException()
+    public function noObjectThrowsIllegalArgumentException(): void
     {
         expect(function() { $this->rssFeed->addEntity(313); })
                 ->throws(\InvalidArgumentException::class);
@@ -55,7 +53,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function missingAnnotationThrowsXmlException()
+    public function missingAnnotationThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new \stdClass()); })
                 ->throws(XmlException::class);
@@ -64,7 +62,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function missingTitleThrowsXmlException()
+    public function missingTitleThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingAllRssItemEntity());})
                 ->throws(XmlException::class);
@@ -73,7 +71,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function missingLinkThrowsXmlException()
+    public function missingLinkThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingLinkAndDescriptionRssItemEntity());})
                 ->throws(XmlException::class);
@@ -82,7 +80,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function missingDescriptionThrowsXmlException()
+    public function missingDescriptionThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingDescriptionRssItemEntity());})
                 ->throws(XmlException::class);
@@ -91,7 +89,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function simpleEntityIsTransformedIntoRssItemWithMinimalProperties()
+    public function simpleEntityIsTransformedIntoRssItemWithMinimalProperties(): void
     {
         assertThat(
                 $this->rssFeed->addEntity(new SimpleRssItemEntity()),
@@ -102,7 +100,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function simpleEntityWithOverrides()
+    public function simpleEntityWithOverrides(): void
     {
         $rssFeedItem = $this->rssFeed->addEntity(
                 new SimpleRssItemEntity(),
@@ -160,7 +158,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function extendedEntity()
+    public function extendedEntity(): void
     {
         $expectedRssFeedItem = (new RssFeedItem(
                 'simpleTitle',
@@ -193,7 +191,7 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function differentEntity()
+    public function differentEntity(): void
     {
         $expectedRssFeedItem = (new RssFeedItem('headline', 'url', 'teaser'))
             ->byAuthor('creator@example.com (creator)')

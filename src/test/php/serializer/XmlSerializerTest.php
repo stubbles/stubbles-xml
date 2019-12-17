@@ -42,13 +42,13 @@ class XmlSerializerTest extends TestCase
     /**
      * instance to test
      *
-     * @type XmlSerializer
+     * @var XmlSerializer
      */
     private $serializer;
     /**
      * mocked injector instance
      *
-     * @type  \bovigo\callmap\Proxy
+     * @var  Injector&\bovigo\callmap\ClassProxy
      */
     private $injector;
 
@@ -64,6 +64,12 @@ class XmlSerializerTest extends TestCase
         libxml_clear_errors();
     }
 
+    /**
+     * @param   mixed  $value
+     * @param   string  $tagName
+     * @param   string  $elementTagName
+     * @return  string
+     */
     protected function serialize($value, string $tagName = null, string $elementTagName = null): string
     {
         return $this->serializer->serialize(
@@ -82,7 +88,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeNullWithoutTagName()
+    public function serializeNullWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(null),
@@ -93,7 +99,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeNullWithGivenTagName()
+    public function serializeNullWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(null, 'root'),
@@ -104,7 +110,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeBooleanTrueWithoutTagName()
+    public function serializeBooleanTrueWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(true),
@@ -115,7 +121,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeBooleanTrueWithGivenTagName()
+    public function serializeBooleanTrueWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(true, 'root'),
@@ -126,7 +132,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeBooleanFalseWithoutTagName()
+    public function serializeBooleanFalseWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(false),
@@ -137,7 +143,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeBooleanFalseWithGivenTagName()
+    public function serializeBooleanFalseWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(false, 'root'),
@@ -148,7 +154,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeStringWithoutTagName()
+    public function serializeStringWithoutTagName(): void
     {
         assertThat(
                 $this->serialize('This is a string.'),
@@ -159,7 +165,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeStringWithGivenTagName()
+    public function serializeStringWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize('This is a string.', 'root'),
@@ -170,7 +176,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeStringWithoutTagNameDirectly()
+    public function serializeStringWithoutTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeString(
@@ -184,7 +190,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeStringWithGivenTagNameDirectly()
+    public function serializeStringWithGivenTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeString(
@@ -199,7 +205,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIntegerWithoutTagName()
+    public function serializeIntegerWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(45),
@@ -210,7 +216,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIntegerWithGivenTagName()
+    public function serializeIntegerWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(45, 'root'),
@@ -221,7 +227,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIntegerWithoutTagNameDirectly()
+    public function serializeIntegerWithoutTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeInt(45, new DomXmlStreamWriter())
@@ -233,7 +239,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIntegerWithGivenTagNameDirectly()
+    public function serializeIntegerWithGivenTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeInt(45, new DomXmlStreamWriter(), 'root')
@@ -245,7 +251,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeFloatWithoutTagName()
+    public function serializeFloatWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(2.352),
@@ -256,7 +262,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeFloatWithGivenTagName()
+    public function serializeFloatWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(2.352, 'root'),
@@ -267,7 +273,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeFloatWithoutTagNameDirectly()
+    public function serializeFloatWithoutTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeFloat(
@@ -281,7 +287,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeFloatWithGivenTagNameDirectly()
+    public function serializeFloatWithGivenTagNameDirectly(): void
     {
         assertThat(
                 $this->serializer->serializeFloat(
@@ -296,7 +302,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeAssociativeArrayWithoutTagName()
+    public function serializeAssociativeArrayWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(['one' => 'two', 'three' => 'four']),
@@ -307,7 +313,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeAssociativeArrayWithGivenTagName()
+    public function serializeAssociativeArrayWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -323,7 +329,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedArrayWithoutTagName()
+    public function serializeIndexedArrayWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(['one', 2, 'three']),
@@ -334,7 +340,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedArrayWithGivenTagName()
+    public function serializeIndexedArrayWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(['one', 2, 'three'], 'root'),
@@ -345,7 +351,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedArrayWithoutTagNameAndGivenElementTagName()
+    public function serializeIndexedArrayWithoutTagNameAndGivenElementTagName(): void
     {
         assertThat(
                 $this->serialize(['one', 2, 'three'], null, 'foo'),
@@ -356,7 +362,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedArrayWithGivenTagNameAndElementTagName()
+    public function serializeIndexedArrayWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
                 $this->serialize(['one', 2, 'three'], 'root', 'foo'),
@@ -367,7 +373,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeNestedArray()
+    public function serializeNestedArray(): void
     {
         assertThat(
                 $this->serialize(
@@ -383,7 +389,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeAssociativeIteratorWithoutTagName()
+    public function serializeAssociativeIteratorWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -396,7 +402,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeAssociativeIteratorWithGivenTagName()
+    public function serializeAssociativeIteratorWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -410,7 +416,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedIteratorWithoutTagName()
+    public function serializeIndexedIteratorWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(new \ArrayIterator(['one', 2, 'three'])),
@@ -421,7 +427,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedIteratorWithGivenTagName()
+    public function serializeIndexedIteratorWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -435,7 +441,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeIndexedIteratorWithGivenTagNameAndElementTagName()
+    public function serializeIndexedIteratorWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -450,7 +456,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeNestedIterator()
+    public function serializeNestedIterator(): void
     {
         assertThat(
                 $this->serialize(
@@ -469,7 +475,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeAssociativeSequenceWithoutTagName()
+    public function serializeAssociativeSequenceWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(Sequence::of(['one' => 'two', 'three' => 'four'])),
@@ -481,7 +487,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeAssociativeSequenceWithGivenTagName()
+    public function serializeAssociativeSequenceWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(
@@ -500,7 +506,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeIndexedSequenceWithoutTagName()
+    public function serializeIndexedSequenceWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(Sequence::of(['one', 2, 'three'])),
@@ -512,7 +518,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeIndexedSequenceWithGivenTagName()
+    public function serializeIndexedSequenceWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(Sequence::of(['one', 2, 'three']), 'root'),
@@ -524,7 +530,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeIndexedSequenceWithoutTagNameAndGivenElementTagName()
+    public function serializeIndexedSequenceWithoutTagNameAndGivenElementTagName(): void
     {
         assertThat(
                 $this->serialize(Sequence::of(['one', 2, 'three']), null, 'foo'),
@@ -536,7 +542,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeIndexedSequenceWithGivenTagNameAndElementTagName()
+    public function serializeIndexedSequenceWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
                 $this->serialize(Sequence::of(['one', 2, 'three']), 'root', 'foo'),
@@ -548,7 +554,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.0
      */
-    public function serializeFinalSequence()
+    public function serializeFinalSequence(): void
     {
         assertThat(
                 $this->serialize(
@@ -564,7 +570,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithoutTagName()
+    public function serializeObjectWithoutTagName(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectClass()),
@@ -575,7 +581,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithGivenTagName()
+    public function serializeObjectWithGivenTagName(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectClass(), 'baz'),
@@ -586,7 +592,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithXmlSerializerAnnotation()
+    public function serializeObjectWithXmlSerializerAnnotation(): void
     {
         $this->injector->returns(['getInstance' => new ExampleObjectSerializer()]);
         assertThat(
@@ -598,7 +604,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeNestedObject()
+    public function serializeNestedObject(): void
     {
         $obj      = new ExampleObjectClass();
         $obj->bar = new ExampleObjectClass();
@@ -611,7 +617,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWhichContainsArray()
+    public function serializeObjectWhichContainsArray(): void
     {
         assertThat(
                 $this->serialize(new ContainerWithArrayListTagName()),
@@ -622,7 +628,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWhichContainsArrayWhereArrayTagNameIsDisabled()
+    public function serializeObjectWhichContainsArrayWhereArrayTagNameIsDisabled(): void
     {
         assertThat(
                 $this->serialize(new ContainerWithArrayListWithoutTagName()),
@@ -633,7 +639,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWhichContainsIterator()
+    public function serializeObjectWhichContainsIterator(): void
     {
         assertThat(
                 $this->serialize(new ContainerWithIterator()),
@@ -644,7 +650,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeStandardObject()
+    public function serializeStandardObject(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectClassWithMethods()),
@@ -655,7 +661,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithXmlFragment()
+    public function serializeObjectWithXmlFragment(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectWithXmlFragments()),
@@ -666,7 +672,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithInvalidXmlFragment()
+    public function serializeObjectWithInvalidXmlFragment(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectWithInvalidXmlFragments()),
@@ -677,7 +683,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectWithEmptyAttributes()
+    public function serializeObjectWithEmptyAttributes(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectClassWithEmptyAttributes()),
@@ -688,7 +694,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function doesNotSerializeStaticPropertiesAndMethods()
+    public function doesNotSerializeStaticPropertiesAndMethods(): void
     {
         assertThat(
                 $this->serialize(new ExampleStaticClass()),
@@ -699,7 +705,7 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeObjectContainingUmlauts()
+    public function serializeObjectContainingUmlauts(): void
     {
         assertThat(
                 $this->serialize(new ExampleObjectWithUmlauts()),
@@ -711,7 +717,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.1
      */
-    public function serializeObjectOfTraversableWithXmlNonTraversableAnnotation()
+    public function serializeObjectOfTraversableWithXmlNonTraversableAnnotation(): void
     {
         assertThat(
                 $this->serialize(new TraversableNonTraversable()),
@@ -723,7 +729,7 @@ class XmlSerializerTest extends TestCase
      * @test
      * @since  4.2.2
      */
-    public function serializeObjectOfTraversableWithXmlTagh()
+    public function serializeObjectOfTraversableWithXmlTagh(): void
     {
         assertThat(
                 $this->serialize(new TraversableTraversable()),
@@ -734,12 +740,11 @@ class XmlSerializerTest extends TestCase
     /**
      * @test
      */
-    public function doesNotSerializeResources()
+    public function doesNotSerializeResources(): void
     {
         $fp = fopen(__FILE__, 'rb');
         if (false === $fp) {
             fail('Could not open file for test');
-            return;
         }
 
         assertThat($this->serialize($fp), equals('<?xml version="1.0" encoding="UTF-8"?>'));

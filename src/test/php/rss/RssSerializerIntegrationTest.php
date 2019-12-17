@@ -26,12 +26,12 @@ class RssSerializerIntegrationTest extends TestCase
     /**
      * @test
      */
-    public function writeFeed()
+    public function writeFeed(): void
     {
-        $binder = new Binder();
-        $dom    = $binder->getInjector()
-                ->getInstance(XmlSerializerFacade::class)
-                ->serializeToDom($this->createFeed());
+        $binder     = new Binder();
+        /** @var  XmlSerializerFacade  $serializer */
+        $serializer = $binder->getInjector()->getInstance(XmlSerializerFacade::class);
+        $dom = $serializer->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
         assertThat(
                 $dom->saveXML(),

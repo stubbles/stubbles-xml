@@ -30,9 +30,7 @@ use function bovigo\assert\{
 class RssFeedTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  RssFeed
+     * @var  RssFeed
      */
     private $rssFeed;
 
@@ -44,7 +42,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenTitle()
+    public function hasGivenTitle(): void
     {
         assertThat($this->rssFeed->title(), equals('test'));
     }
@@ -52,7 +50,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenLink()
+    public function hasGivenLink(): void
     {
         assertThat($this->rssFeed->link(), equals('http://stubbles.net/'));
     }
@@ -60,7 +58,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenDescription()
+    public function hasGivenDescription(): void
     {
         assertThat($this->rssFeed->description(), equals('description'));
     }
@@ -68,7 +66,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoLocaleByDefault()
+    public function hasNoLocaleByDefault(): void
     {
         assertFalse($this->rssFeed->hasLocale());
     }
@@ -76,7 +74,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function localeIsNullByDefault()
+    public function localeIsNullByDefault(): void
     {
         assertNull($this->rssFeed->locale());
     }
@@ -84,7 +82,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function localeCanBeSet()
+    public function localeCanBeSet(): void
     {
         assertThat($this->rssFeed->setLocale('en_EN')->locale(), equals('en_EN'));
     }
@@ -92,7 +90,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoCopyrightByDefault()
+    public function hasNoCopyrightByDefault(): void
     {
         assertFalse($this->rssFeed->hasCopyright());
     }
@@ -100,7 +98,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function copyrightIsNullByDefault()
+    public function copyrightIsNullByDefault(): void
     {
         assertNull($this->rssFeed->copyright());
     }
@@ -108,7 +106,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function copyrightCanBeSet()
+    public function copyrightCanBeSet(): void
     {
         assertThat(
                 $this->rssFeed->setCopyright('(c) 2012 Stubbles')->copyright(),
@@ -119,7 +117,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoManagingEditorByDefault()
+    public function hasNoManagingEditorByDefault(): void
     {
         assertFalse($this->rssFeed->hasManagingEditor());
     }
@@ -127,7 +125,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function managingEditorIsNullByDefault()
+    public function managingEditorIsNullByDefault(): void
     {
         assertNull($this->rssFeed->managingEditor());
     }
@@ -135,7 +133,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function managingEditorSetWithoutMailAddress()
+    public function managingEditorSetWithoutMailAddress(): void
     {
         assertThat(
                 $this->rssFeed->setManagingEditor('mikey')->managingEditor(),
@@ -146,7 +144,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function managingEditorSetWithMailAddress()
+    public function managingEditorSetWithMailAddress(): void
     {
         assertThat(
                 $this->rssFeed->setManagingEditor('test@example.com (mikey)')
@@ -158,7 +156,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoStylesheetsByDefault()
+    public function hasNoStylesheetsByDefault(): void
     {
         assertEmptyArray($this->rssFeed->stylesheets());
     }
@@ -166,7 +164,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function stylesheetsCanBeAdded()
+    public function stylesheetsCanBeAdded(): void
     {
         assertThat(
                 $this->rssFeed->appendStylesheet('foo.xsl')
@@ -179,7 +177,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoWebmasterByDefault()
+    public function hasNoWebmasterByDefault(): void
     {
         assertFalse($this->rssFeed->hasWebMaster());
     }
@@ -187,7 +185,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function webmasterEditorIsNullByDefault()
+    public function webmasterEditorIsNullByDefault(): void
     {
         assertNull($this->rssFeed->webMaster());
     }
@@ -195,7 +193,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function webmasterEditorSetWithoutMailAddress()
+    public function webmasterEditorSetWithoutMailAddress(): void
     {
         assertThat(
                 $this->rssFeed->setWebMaster('mikey')->webMaster(),
@@ -206,7 +204,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function webmasterEditorSetWithMailAddress()
+    public function webmasterEditorSetWithMailAddress(): void
     {
         assertThat(
                 $this->rssFeed->setWebMaster('test@example.com (mikey)')
@@ -218,7 +216,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoLastBuildDateByDefault()
+    public function hasNoLastBuildDateByDefault(): void
     {
         assertFalse($this->rssFeed->hasLastBuildDate());
     }
@@ -226,7 +224,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function initialLastBuildDateIsNull()
+    public function initialLastBuildDateIsNull(): void
     {
         assertNull($this->rssFeed->lastBuildDate());
     }
@@ -234,7 +232,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function lastBuildDateCanBePassedAsDateInstance()
+    public function lastBuildDateCanBePassedAsDateInstance(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
@@ -246,7 +244,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function alternativeLastBuildDate()
+    public function alternativeLastBuildDate(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
@@ -258,7 +256,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function settingInvalidLastBuildDateThrowsIllegalArgumentException()
+    public function settingInvalidLastBuildDateThrowsIllegalArgumentException(): void
     {
         expect(function() { $this->rssFeed->setLastBuildDate('foo'); })
                 ->throws(\InvalidArgumentException::class);
@@ -267,7 +265,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoTimeToLiveByDefault()
+    public function hasNoTimeToLiveByDefault(): void
     {
         assertFalse($this->rssFeed->hasTimeToLive());
     }
@@ -275,7 +273,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function timeToLiveIsNullByDefault()
+    public function timeToLiveIsNullByDefault(): void
     {
         assertNull($this->rssFeed->timeToLive());
     }
@@ -283,7 +281,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function timeToLiveCanBeSet()
+    public function timeToLiveCanBeSet(): void
     {
         assertThat($this->rssFeed->setTimeToLive(303)->timeToLive(), equals(303));
     }
@@ -291,7 +289,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoImageByDefault()
+    public function hasNoImageByDefault(): void
     {
         assertFalse($this->rssFeed->hasImage());
     }
@@ -299,7 +297,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasImageIfSet()
+    public function hasImageIfSet(): void
     {
         assertTrue(
                 $this->rssFeed->setImage(
@@ -312,7 +310,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageUrlIsEmptyByDefault()
+    public function imageUrlIsEmptyByDefault(): void
     {
         assertEmptyString($this->rssFeed->imageUrl());
     }
@@ -320,7 +318,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageUrlCanBeSet()
+    public function imageUrlCanBeSet(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -334,7 +332,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageDescriptionIsEmptyByDefault()
+    public function imageDescriptionIsEmptyByDefault(): void
     {
         assertEmptyString($this->rssFeed->imageDescription());
     }
@@ -342,7 +340,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageDescriptionCanBeSet()
+    public function imageDescriptionCanBeSet(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -356,7 +354,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageWidthIs88ByDefault()
+    public function imageWidthIs88ByDefault(): void
     {
         assertThat($this->rssFeed->imageWidth(), equals(88));
     }
@@ -364,7 +362,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageWidthIs88IfNotGiven()
+    public function imageWidthIs88IfNotGiven(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -378,7 +376,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageWidthCanBeSet()
+    public function imageWidthCanBeSet(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -393,7 +391,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageHeightIs31ByDefault()
+    public function imageHeightIs31ByDefault(): void
     {
         assertThat($this->rssFeed->imageHeight(), equals(31));
     }
@@ -401,7 +399,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageHeightIs31IfNotGiven()
+    public function imageHeightIs31IfNotGiven(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -415,7 +413,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageHeightCanBeSet()
+    public function imageHeightCanBeSet(): void
     {
         assertThat(
                 $this->rssFeed->setImage(
@@ -431,7 +429,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageWidthTooSmallThrowsIllegalArgumentException()
+    public function imageWidthTooSmallThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 $this->rssFeed->setImage('http://example.org/example.gif', 'foo', -1);
@@ -441,7 +439,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageWidthTooGreatThrowsIllegalArgumentException()
+    public function imageWidthTooGreatThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 $this->rssFeed->setImage('http://example.org/example.gif', 'foo', 145);
@@ -451,7 +449,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageHeightTooSmallThrowsIllegalArgumentException()
+    public function imageHeightTooSmallThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 $this->rssFeed->setImage('http://example.org/example.gif', 'foo', 88, -1);
@@ -461,7 +459,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function imageHeightTooGreatThrowsIllegalArgumentException()
+    public function imageHeightTooGreatThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 $this->rssFeed->setImage('http://example.org/example.gif', 'foo', 88, 401);
@@ -471,7 +469,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function hasNoItemsByDefault()
+    public function hasNoItemsByDefault(): void
     {
         assertThat($this->rssFeed->countItems(), equals(0));
         assertEmptyArray($this->rssFeed->items());
@@ -480,7 +478,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function retrieveNonExistingItemReturnsNull()
+    public function retrieveNonExistingItemReturnsNull(): void
     {
         assertFalse($this->rssFeed->hasItem(0));
         assertNull($this->rssFeed->item(0));
@@ -489,7 +487,7 @@ class RssFeedTest extends TestCase
     /**
      * @test
      */
-    public function addedItemIsStored()
+    public function addedItemIsStored(): void
     {
         $item = $this->rssFeed->addItem('item', 'link', 'description');
         assertThat($this->rssFeed->countItems(), equals(1));

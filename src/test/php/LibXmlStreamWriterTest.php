@@ -24,9 +24,7 @@ use function bovigo\assert\predicate\isInstanceOf;
 class LibXmlStreamWriterTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  LibXmlStreamWriter
+     * @var  LibXmlStreamWriter
      */
     protected $writer;
 
@@ -38,7 +36,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function emptyDocumentContainsXmlHeader()
+    public function emptyDocumentContainsXmlHeader(): void
     {
         assertThat(
                 $this->writer->asXml(),
@@ -49,7 +47,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function canCreateDocumentWithOtherXmlVersion()
+    public function canCreateDocumentWithOtherXmlVersion(): void
     {
         $writer = new LibXmlStreamWriter('1.1');
         assertThat(
@@ -61,7 +59,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function canCreateDocumentWithIso()
+    public function canCreateDocumentWithIso(): void
     {
         $writer = new LibXmlStreamWriter('1.0', 'ISO-8859-1');
         assertThat(
@@ -73,7 +71,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function canCreateDocumentWithOtherVersionAndIso()
+    public function canCreateDocumentWithOtherVersionAndIso(): void
     {
         $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat(
@@ -85,7 +83,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function hasVersion1_0ByDefault()
+    public function hasVersion1_0ByDefault(): void
     {
         assertThat($this->writer->version(), equals('1.0'));
     }
@@ -93,7 +91,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function hasUtf8EncodingByDefault()
+    public function hasUtf8EncodingByDefault(): void
     {
         assertThat($this->writer->encoding(), equals('UTF-8'));
     }
@@ -101,7 +99,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function reportsOtherVersion()
+    public function reportsOtherVersion(): void
     {
         $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat($writer->version(), equals('1.1'));
@@ -110,7 +108,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function reportsOtherEncoding()
+    public function reportsOtherEncoding(): void
     {
         $writer = new LibXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat($writer->encoding(), equals('ISO-8859-1'));
@@ -119,7 +117,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function canWriteNestedElements()
+    public function canWriteNestedElements(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -137,7 +135,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeEndElementBeforeStartElementThrowsLogicException()
+    public function writeEndElementBeforeStartElementThrowsLogicException(): void
     {
         expect(function() { $this->writer->writeEndElement(); })
                 ->throws(\LogicException::class)
@@ -147,7 +145,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeElement()
+    public function writeElement(): void
     {
         assertThat(
                 $this->writer->writeElement('foo', ['att' => 'value'], 'content')
@@ -160,7 +158,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeElementWithGermanUmlautsUtf8()
+    public function writeElementWithGermanUmlautsUtf8(): void
     {
         assertThat(
                 $this->writer->writeElement('foo', ['att' => 'hääää'], 'content')
@@ -173,7 +171,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeAttributesAddsAtributesToCurrentElement()
+    public function writeAttributesAddsAtributesToCurrentElement(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -190,7 +188,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeAttributesWithGermanUmlautsUtf8()
+    public function writeAttributesWithGermanUmlautsUtf8(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -207,7 +205,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeTextAddsTextIntoCurrentElement()
+    public function writeTextAddsTextIntoCurrentElement(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -222,7 +220,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeTextWithGermanUmlautsInUtf8()
+    public function writeTextWithGermanUmlautsInUtf8(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -237,7 +235,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeCDataAddsCdata()
+    public function writeCDataAddsCdata(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -252,7 +250,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeCDataWithGermanUmlautsInUtf8()
+    public function writeCDataWithGermanUmlautsInUtf8(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -267,7 +265,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function writeCommentAddsComment()
+    public function writeCommentAddsComment(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -282,7 +280,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function commentWithGermanUmlautsInUtf8()
+    public function commentWithGermanUmlautsInUtf8(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -297,7 +295,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function processingInstructionCanBeAdded()
+    public function processingInstructionCanBeAdded(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -312,7 +310,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function xmlFragmentCanBeAdded()
+    public function xmlFragmentCanBeAdded(): void
     {
         assertThat(
                 $this->writer->writeStartElement('root')
@@ -327,7 +325,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function doesNotSupportXmlWriterFeature()
+    public function doesNotSupportXmlWriterFeature(): void
     {
         assertFalse(
                 $this->writer->hasFeature(XmlStreamWriter::FEATURE_IMPORT_WRITER)
@@ -338,7 +336,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function importStreamWriter()
+    public function importStreamWriter(): void
     {
         expect(function() {
                 $this->writer->importStreamWriter(new LibXmlStreamWriter());
@@ -348,7 +346,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function clearRemovesAllPreviouslyAddedElements()
+    public function clearRemovesAllPreviouslyAddedElements(): void
     {
         assertThat(
                 $this->writer->writeElement('foo')->clear()->asXml(),
@@ -359,7 +357,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function hasDomExportFeature()
+    public function hasDomExportFeature(): void
     {
         assertTrue($this->writer->hasFeature(XmlStreamWriter::FEATURE_AS_DOM));
     }
@@ -367,7 +365,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function exportAsDom()
+    public function exportAsDom(): void
     {
         $dom = $this->writer->writeElement('root', ['foo' => 'bar'])
                             ->asDom();
@@ -382,7 +380,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function isFinishedAfterStart()
+    public function isFinishedAfterStart(): void
     {
         assertTrue($this->writer->isFinished());
     }
@@ -390,7 +388,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function isNotFinishedAfterElementStarted()
+    public function isNotFinishedAfterElementStarted(): void
     {
         assertFalse($this->writer->writeStartElement('root')->isFinished());
     }
@@ -398,7 +396,7 @@ class LibXmlStreamWriterTest extends TestCase
     /**
      * @test
      */
-    public function isNotFinishedAfterLastElementClosed()
+    public function isNotFinishedAfterLastElementClosed(): void
     {
         assertTrue(
                 $this->writer->writeStartElement('root')

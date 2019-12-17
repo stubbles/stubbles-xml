@@ -28,21 +28,15 @@ use function stubbles\reflect\annotationsOf;
 class RssFeedItemSerializerTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  RssFeedItemSerializer
+     * @var  RssFeedItemSerializer
      */
     private $rssFeedItemSerializer;
     /**
-     * mocked xml serializer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlSerializer&\bovigo\callmap\ClassProxy
      */
     private $xmlSerializer;
     /**
-     * mocked xml serializer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlStreamWriter&\bovigo\callmap\ClassProxy
      */
     private $xmlStreamWriter;
 
@@ -57,7 +51,7 @@ class RssFeedItemSerializerTest extends TestCase
     /**
      * @test
      */
-    public function isDefaultSerializerForRssFeedItem()
+    public function isDefaultSerializerForRssFeedItem(): void
     {
         assertThat(
                 annotationsOf(RssFeedItem::class)
@@ -71,7 +65,7 @@ class RssFeedItemSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeedItem()
+    public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeedItem(): void
     {
         expect(function() {
                 $this->rssFeedItemSerializer->serialize(
@@ -85,7 +79,7 @@ class RssFeedItemSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeEmptyItem()
+    public function serializeEmptyItem(): void
     {
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description'),
@@ -99,7 +93,7 @@ class RssFeedItemSerializerTest extends TestCase
     /**
      * @test
      */
-    public function usesGivenTagNameInsteadOfDefault()
+    public function usesGivenTagNameInsteadOfDefault(): void
     {
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description'),
@@ -114,7 +108,7 @@ class RssFeedItemSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeCompleteItem()
+    public function serializeCompleteItem(): void
     {
         $this->rssFeedItemSerializer->serialize(
                 RssFeedItem::create('title', 'link', 'description')

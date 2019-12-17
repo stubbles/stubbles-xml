@@ -18,13 +18,13 @@ class XmlSerializerFacade
     /**
      * xml serializer to hide
      *
-     * @type  \stubbles\xml\serializer\XmlSerializer
+     * @var  \stubbles\xml\serializer\XmlSerializer
      */
     private $xmlSerializer;
     /**
      * xml stream writer to write serialization to
      *
-     * @type  \stubbles\xml\XmlStreamWriter
+     * @var  \stubbles\xml\XmlStreamWriter
      */
     private $xmlStreamWriter;
 

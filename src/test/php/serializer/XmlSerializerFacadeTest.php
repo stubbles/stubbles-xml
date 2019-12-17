@@ -25,21 +25,15 @@ use function bovigo\assert\predicate\isSameAs;
 class XmlSerializerFacadeTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  XmlSerializerFacade
+     * @var  XmlSerializerFacade
      */
     private $xmlSerializerFacade;
     /**
-     * mocked xml serializer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlSerializer&\bovigo\callmap\ClassProxy
      */
     private $xmlSerializer;
     /**
-     * mocked xml stream writer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlStreamWriter&\bovigo\callmap\ClassProxy
      */
     private $xmlStreamWriter;
 
@@ -62,7 +56,7 @@ class XmlSerializerFacadeTest extends TestCase
     /**
      * @test
      */
-    public function serializeToXmlReturnsXmlString()
+    public function serializeToXmlReturnsXmlString(): void
     {
         $this->xmlSerializer->returns(['serialize' => $this->xmlStreamWriter]);
         $this->xmlStreamWriter->returns(
@@ -77,7 +71,7 @@ class XmlSerializerFacadeTest extends TestCase
     /**
      * @test
      */
-    public function serializeToDomReturnsDOMDocument()
+    public function serializeToDomReturnsDOMDocument(): void
     {
         $domDocument = new \DOMDocument();
         $this->xmlSerializer->returns(['serialize' => $this->xmlStreamWriter]);

@@ -22,15 +22,11 @@ use function bovigo\assert\predicate\equals;
 class XslCallbacksTest extends TestCase
 {
     /**
-     * callback class used for tests
-     *
-     * @type  XslExampleCallback
+     * @var  XslExampleCallback
      */
     private $callback;
     /**
-     * instance to test
-     *
-     * @type  XslCallbacks
+     * @var  XslCallbacks
      */
     private $xslCallbacks;
 
@@ -44,7 +40,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function returnsListOfCallbacks()
+    public function returnsListOfCallbacks(): void
     {
         assertThat(
                 $this->xslCallbacks->getCallbacks(),
@@ -55,7 +51,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function callbackDoesNotExistThrowsCallbackException()
+    public function callbackDoesNotExistThrowsCallbackException(): void
     {
         expect(function() { $this->xslCallbacks->invoke('foo', 'hello'); })
                 ->throws(XslCallbackException::class);
@@ -64,7 +60,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function callbackNonExistingMethodThrowsCallbackException()
+    public function callbackNonExistingMethodThrowsCallbackException(): void
     {
         expect(function() { $this->xslCallbacks->invoke('test', 'doesNotExist'); })
                 ->throws(XslCallbackException::class);
@@ -73,7 +69,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function callingNonAnnotatedMethodThrowsCallbackException()
+    public function callingNonAnnotatedMethodThrowsCallbackException(): void
     {
        expect(function() { $this->xslCallbacks->invoke('test', 'youCanNotCallMe'); })
                ->throws(XslCallbackException::class);
@@ -82,7 +78,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function callingProtectedCallbackMethodThrowsCallbackException()
+    public function callingProtectedCallbackMethodThrowsCallbackException(): void
     {
         expect(function() { $this->xslCallbacks->invoke('test', 'doNotCallMe'); })
                 ->throws(XslCallbackException::class);
@@ -91,7 +87,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function callingPrivateCallbackMethodThrowsCallbackException()
+    public function callingPrivateCallbackMethodThrowsCallbackException(): void
     {
         expect(function() { $this->xslCallbacks->invoke('test', 'doNotCallMeToo'); })
                 ->throws(XslCallbackException::class);
@@ -100,7 +96,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function invokeReturnsValueFromCallbackMethod()
+    public function invokeReturnsValueFromCallbackMethod(): void
     {
         assertThat(
                 $this->xslCallbacks->invoke('test', 'hello', ['world!']),
@@ -111,7 +107,7 @@ class XslCallbacksTest extends TestCase
     /**
      * @test
      */
-    public function invokeReturnsValueFromStaticCallbackMethod()
+    public function invokeReturnsValueFromStaticCallbackMethod(): void
     {
         assertThat(
                 $this->xslCallbacks->invoke('test', 'youCanDoThis'),

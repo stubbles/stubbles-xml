@@ -1,19 +1,14 @@
+includes:
+  - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
+  inferPrivatePropertyTypeFromConstructor: true
   level: 7
   paths:
-      - ./src
+      - ./src/main/php
+      - ./src/test/php
   ignoreErrors:
       # False positive
-      - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::get#'
-      - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::attributeName\(\)#'
-      - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::tagName\(\)#'
-      - '#bovigo\\callmap\\ClassProxy given#'
+      - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::#'
       -
-          message: '#Call to an undefined method stubbles\\xml\\xsl\\XslProcessor::callRegisterCallbacks\(\)#'
-          path: src/test/php/xsl/XslProcessorTest.php
-      -
-          message: '#Call to an undefined method object::serializeToDom\(\)#'
-          path: src/test/php/rss/RssSerializerIntegrationTest.php
-      -
-          message: '#expects string, int\|string given#'
-          path: src/main/php/XmlStreamWriterProvider.php
+          message: '#entity of method stubbles\\xml\\rss\\RssFeed::addEntity\(\) expects object, int given#'
+          path: src/test/php/rss/RssFeedItemFromEntityTest.php

@@ -27,21 +27,15 @@ use function stubbles\reflect\annotationsOf;
 class RssFeedSerializerTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  RssFeedSerializer
+     * @var  RssFeedSerializer
      */
     private $rssFeedSerializer;
     /**
-     * mocked xml serializer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlSerializer&\bovigo\callmap\ClassProxy
      */
     private $xmlSerializer;
     /**
-     * mocked xml serializer
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  XmlStreamWriter&\bovigo\callmap\ClassProxy
      */
     private $xmlStreamWriter;
 
@@ -57,7 +51,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function isDefaultSerializerForRssFeedItem()
+    public function isDefaultSerializerForRssFeedItem(): void
     {
         assertThat(
                 annotationsOf(RssFeed::class)
@@ -71,7 +65,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeed()
+    public function serializeThrowsIllegalArgumentExceptionIfObjectIsNotRssFeed(): void
     {
         expect(function() {
                 $this->rssFeedSerializer->serialize(
@@ -85,7 +79,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function noItemsNoStylesheets()
+    public function noItemsNoStylesheets(): void
     {
         assertThat(
                 $this->rssFeedSerializer
@@ -107,7 +101,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function noItemsWithStylesheets()
+    public function noItemsWithStylesheets(): void
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
@@ -129,7 +123,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function withItemsNoStylesheets()
+    public function withItemsNoStylesheets(): void
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
@@ -151,7 +145,7 @@ class RssFeedSerializerTest extends TestCase
     /**
      * @test
      */
-    public function withAllChannelElements()
+    public function withAllChannelElements(): void
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->setLocale('en_EN')

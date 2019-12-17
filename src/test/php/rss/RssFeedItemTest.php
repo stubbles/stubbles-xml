@@ -27,9 +27,7 @@ use function bovigo\assert\predicate\equals;
 class RssFeedItemTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  RssFeedItem
+     * @var  RssFeedItem
      */
     private $rssFeedItem;
 
@@ -45,7 +43,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenTitleByDefault()
+    public function hasGivenTitleByDefault(): void
     {
         assertThat($this->rssFeedItem->title(), equals('test'));
     }
@@ -53,7 +51,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenLinkByDefault()
+    public function hasGivenLinkByDefault(): void
     {
         assertThat($this->rssFeedItem->link(), equals('http://stubbles.net/'));
     }
@@ -61,7 +59,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasGivenDescriptionByDefault()
+    public function hasGivenDescriptionByDefault(): void
     {
         assertThat($this->rssFeedItem->description(), equals('description'));
     }
@@ -69,7 +67,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoAuthorByDefault()
+    public function hasNoAuthorByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasAuthor());
     }
@@ -77,7 +75,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function initialAuthorIsNull()
+    public function initialAuthorIsNull(): void
     {
         assertNull($this->rssFeedItem->author());
     }
@@ -85,7 +83,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function setAuthorWithoutMailAddressUsesExampleMailAddress()
+    public function setAuthorWithoutMailAddressUsesExampleMailAddress(): void
     {
         assertThat(
                 $this->rssFeedItem->byAuthor('mikey')->author(),
@@ -96,7 +94,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetAuthorWithMailAddress()
+    public function canSetAuthorWithMailAddress(): void
     {
         assertThat(
                 $this->rssFeedItem->byAuthor('test@example.net (mikey)')
@@ -108,7 +106,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoCategoriesByDefault()
+    public function hasNoCategoriesByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->categories());
     }
@@ -116,7 +114,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetCategories()
+    public function canSetCategories(): void
     {
         assertThat(
                 $this->rssFeedItem->inCategory('cat1')
@@ -132,7 +130,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetListOfCategories()
+    public function canSetListOfCategories(): void
     {
         assertThat(
                 $this->rssFeedItem->inCategories(['cat1', 'cat2'])
@@ -147,7 +145,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoCommentsUrlByDefault()
+    public function hasNoCommentsUrlByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasComments());
     }
@@ -155,7 +153,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function initialCommentUrlIsNull()
+    public function initialCommentUrlIsNull(): void
     {
         assertNull($this->rssFeedItem->comments());
     }
@@ -163,7 +161,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetCommentsUrl()
+    public function canSetCommentsUrl(): void
     {
         assertThat(
                 $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
@@ -175,7 +173,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoEnclosuresByDefault()
+    public function hasNoEnclosuresByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->enclosures());
     }
@@ -183,7 +181,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetEnclosures()
+    public function canSetEnclosures(): void
     {
         assertThat(
                 $this->rssFeedItem->deliveringEnclosure(
@@ -202,7 +200,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoGuidByDefault()
+    public function hasNoGuidByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasGuid());
     }
@@ -210,7 +208,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function initialGuidIsNull()
+    public function initialGuidIsNull(): void
     {
         assertNull($this->rssFeedItem->guid());
     }
@@ -218,7 +216,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function guidIsNotPermalinkByDefault()
+    public function guidIsNotPermalinkByDefault(): void
     {
         assertFalse($this->rssFeedItem->isGuidPermaLink());
     }
@@ -226,7 +224,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetGuid()
+    public function canSetGuid(): void
     {
         assertThat($this->rssFeedItem->withGuid('dummy')->guid(), equals('dummy'));
     }
@@ -234,7 +232,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function settingGuidEnablesGuidAsPermalink()
+    public function settingGuidEnablesGuidAsPermalink(): void
     {
         assertTrue($this->rssFeedItem->withGuid('dummy')->isGuidPermaLink());
     }
@@ -242,7 +240,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function settingGuidAndDisablingPermalink()
+    public function settingGuidAndDisablingPermalink(): void
     {
         assertFalse(
                 $this->rssFeedItem->withGuid('dummy')
@@ -254,7 +252,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoPublishingDateByDefault()
+    public function hasNoPublishingDateByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasPubDate());
     }
@@ -262,7 +260,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function initialPublishingDateIsNull()
+    public function initialPublishingDateIsNull(): void
     {
         assertNull($this->rssFeedItem->pubDate());
     }
@@ -270,7 +268,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function publishingDateCanBePassedAsDateInstance()
+    public function publishingDateCanBePassedAsDateInstance(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
@@ -282,7 +280,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function alternativePublishingDate()
+    public function alternativePublishingDate(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
@@ -294,7 +292,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function settingInvalidPublishingDateThrowsIllegalArgumentException()
+    public function settingInvalidPublishingDateThrowsIllegalArgumentException(): void
     {
         expect(function() { $this->rssFeedItem->publishedOn('foo'); })
                 ->throws(\InvalidArgumentException::class);
@@ -303,7 +301,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoSourcesByDefault()
+    public function hasNoSourcesByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->sources());
     }
@@ -311,7 +309,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetSources()
+    public function canSetSources(): void
     {
         assertThat(
                 $this->rssFeedItem->inspiredBySource(
@@ -325,7 +323,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function hasNoContentByDefault()
+    public function hasNoContentByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasContent());
     }
@@ -333,7 +331,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function initialContentIsEmpty()
+    public function initialContentIsEmpty(): void
     {
         assertEmptyString($this->rssFeedItem->content());
     }
@@ -341,7 +339,7 @@ class RssFeedItemTest extends TestCase
     /**
      * @test
      */
-    public function canSetContent()
+    public function canSetContent(): void
     {
         assertThat(
                 $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')

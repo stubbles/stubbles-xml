@@ -32,27 +32,19 @@ use function stubbles\reflect\annotationsOf;
 class XslProcessorTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  ExtendedXslProcessor
+     * @var  ExtendedXslProcessor
      */
     private $xslProcessor;
     /**
-     * a mock for the XSLTProcessor
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  \XSLTProcessor&\bovigo\callmap\ClassProxy
      */
     private $baseXsltProcessor;
     /**
-     * a dom document to test
-     *
-     * @type  \DOMDocument
+     * @var  \DOMDocument
      */
     private $document;
     /**
-     * some stylesheet
-     *
-     * @type  string
+     * @var  string
      */
     private $stylesheet = '<xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -82,7 +74,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function providedByXslProcessorProvider()
+    public function providedByXslProcessorProvider(): void
     {
         assertThat(
                 annotationsOf(XslProcessor::class)
@@ -97,7 +89,7 @@ class XslProcessorTest extends TestCase
      * @test
      * @group  bug165
      */
-    public function enableProfilingBySettingPathToProfileDataFile()
+    public function enableProfilingBySettingPathToProfileDataFile(): void
     {
         vfsStream::setup();
         assertThat(
@@ -111,7 +103,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function onDocumentReturnsItself()
+    public function onDocumentReturnsItself(): void
     {
         assertThat(
                 $this->xslProcessor->onDocument($this->document),
@@ -122,7 +114,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function onXmlFileLoadsDocument()
+    public function onXmlFileLoadsDocument(): void
     {
         $root = vfsStream::setup();
         vfsStream::newFile('test.xsl')
@@ -144,7 +136,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function onXMLFileThrowsIoExceptionIfFileDoesNotExist()
+    public function onXMLFileThrowsIoExceptionIfFileDoesNotExist(): void
     {
         vfsStream::setup();
         expect(function() {
@@ -155,7 +147,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function applyStylesheetStoresStylesheet()
+    public function applyStylesheetStoresStylesheet(): void
     {
         $stylesheet = new \DOMDocument();
         $stylesheet->loadXML($this->stylesheet);
@@ -169,7 +161,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function applyStylesheetFromFileStoresStylesheet()
+    public function applyStylesheetFromFileStoresStylesheet(): void
     {
         $root = vfsStream::setup();
         vfsStream::newFile('test.xsl')
@@ -186,7 +178,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingToImportStylesheetFromFileThrowsIOException()
+    public function failingToImportStylesheetFromFileThrowsIOException(): void
     {
         vfsStream::setup();
         expect(function() {
@@ -197,7 +189,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function singleParameters()
+    public function singleParameters(): void
     {
         $this->baseXsltProcessor->returns(['setParameter' => true]);
         $this->xslProcessor->withParameter('foo', 'bar', 'baz')
@@ -211,7 +203,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingToAddSingleParametersThrowsXSLProcessorException()
+    public function failingToAddSingleParametersThrowsXSLProcessorException(): void
     {
         $this->baseXsltProcessor->returns(['setParameter' => false]);
         expect(function() {
@@ -222,7 +214,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function arrayParameters()
+    public function arrayParameters(): void
     {
         $this->baseXsltProcessor->returns(['setParameter' => true]);
         $this->xslProcessor->withParameters('baz', ['baz' => 'bar'])
@@ -236,7 +228,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingToAddListOfParametersThrowsXSLProcessorException()
+    public function failingToAddListOfParametersThrowsXSLProcessorException(): void
     {
         $this->baseXsltProcessor->returns(['setParameter' => false]);
         expect(function() {
@@ -247,7 +239,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function cloneInstanceCopiesParameters()
+    public function cloneInstanceCopiesParameters(): void
     {
         $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
         ExtendedXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
@@ -263,7 +255,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function cloneInstanceCopiesStylesheets()
+    public function cloneInstanceCopiesStylesheets(): void
     {
         $anotherBaseXsltProcessor = NewInstance::of('\XSLTProcessor');
         ExtendedXslProcessor::$xsltProcessor = $anotherBaseXsltProcessor;
@@ -280,7 +272,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function cloneInstanceDoesNotCopyDocumentToTransform()
+    public function cloneInstanceDoesNotCopyDocumentToTransform(): void
     {
       ExtendedXslProcessor::$xsltProcessor = NewInstance::of('\XSLTProcessor')
                 ->returns(['importStylesheet' => true]);
@@ -295,18 +287,17 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function transformToDocWithoutDocThrowsXslProcessorException()
+    public function transformToDocWithoutDocThrowsXslProcessorException(): void
     {
-        $this->xslProcessor = new XslProcessor(new XslCallbacks());
-        expect(function() {
-                $this->xslProcessor->toDoc();
-        })->throws(XslProcessorException::class);
+        $xslProcessor = new XslProcessor(new XslCallbacks());
+        expect(function() use ($xslProcessor) { $xslProcessor->toDoc(); })
+            ->throws(XslProcessorException::class);
     }
 
     /**
      * @test
      */
-    public function transformToDocReturnsDOMDocument()
+    public function transformToDocReturnsDOMDocument(): void
     {
         $result = new \DOMDocument();
         $result->loadXML('<?xml version="1.0" encoding="UTF-8"?><foo><bar/></foo>');
@@ -317,7 +308,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingTransformationToDomDocumentThrowsXSLProcessorException()
+    public function failingTransformationToDomDocumentThrowsXSLProcessorException(): void
     {
         $this->baseXsltProcessor->returns(['transformToDoc' => false]);
         expect(function() {
@@ -328,12 +319,11 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function transformToUriWithoutDocThrowsXslProcessorException()
+    public function transformToUriWithoutDocThrowsXslProcessorException(): void
     {
-        $this->xslProcessor = new XslProcessor(new XslCallbacks());
-        expect(function() {
-                $this->xslProcessor->toUri('foo');
-        })->throws(XslProcessorException::class);
+        $xslProcessor = new XslProcessor(new XslCallbacks());
+        expect(function() use ($xslProcessor) { $xslProcessor->toUri('foo'); })
+            ->throws(XslProcessorException::class);
     }
 
     /**
@@ -341,7 +331,7 @@ class XslProcessorTest extends TestCase
      *
      * @test
      */
-    public function transformToUri()
+    public function transformToUri(): void
     {
         $this->baseXsltProcessor->returns(['transformToUri' => 4555]);
         assertThat($this->xslProcessor->toUri('foo'), equals(4555));
@@ -350,7 +340,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingTransformationToUriThrowsXSLProcessorException()
+    public function failingTransformationToUriThrowsXSLProcessorException(): void
     {
         $this->baseXsltProcessor->returns(['transformToUri' => false]);
         expect(function() {
@@ -361,12 +351,11 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function transformToXmlWithoutDocThrowsXslProcessorException()
+    public function transformToXmlWithoutDocThrowsXslProcessorException(): void
     {
-        $this->xslProcessor = new XslProcessor(new XslCallbacks());
-        expect(function() {
-                $this->xslProcessor->toXml();
-        })->throws(XslProcessorException::class);
+        $xslProcessor = new XslProcessor(new XslCallbacks());
+        expect(function() use ($xslProcessor) { $xslProcessor->toXml(); })
+            ->throws(XslProcessorException::class);
     }
 
     /**
@@ -374,7 +363,7 @@ class XslProcessorTest extends TestCase
      *
      * @test
      */
-    public function transformToXmlReturnsTransformedXml()
+    public function transformToXmlReturnsTransformedXml(): void
     {
         $this->baseXsltProcessor->returns(['transformToXml' => '<foo>']);
         assertThat($this->xslProcessor->toXML(), equals('<foo>'));
@@ -383,7 +372,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function failingTransformationToXmlThrowsXSLProcessorException()
+    public function failingTransformationToXmlThrowsXSLProcessorException(): void
     {
         $this->baseXsltProcessor->returns(['transformToXml' => false]);
         expect(function() {
@@ -394,7 +383,7 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function tooLessParamsForCallbackInvocationThrowsCallbackException()
+    public function tooLessParamsForCallbackInvocationThrowsCallbackException(): void
     {
         expect(function() { XslProcessor::invokeCallback(); })
                 ->throws(XslCallbackException::class);
@@ -403,11 +392,12 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function invokesCorrectCallback()
+    public function invokesCorrectCallback(): void
     {
         $callback     = new XslExampleCallback();
         $xslProcessor = new ExtendedXslProcessor(new XslCallbacks());
-        $xslProcessor->usingCallback('foo', $callback)->callRegisterCallbacks();
+        $xslProcessor->usingCallback('foo', $callback);
+        $xslProcessor->callRegisterCallbacks();
         XslProcessor::invokeCallback('foo', 'youCanDoThis');
         assertTrue($callback->calledYouCanDoThis());
     }
@@ -415,11 +405,12 @@ class XslProcessorTest extends TestCase
     /**
      * @test
      */
-    public function passesParametersToCallback()
+    public function passesParametersToCallback(): void
     {
         $callback     = new XslExampleCallback();
         $xslProcessor = new ExtendedXslProcessor(new XslCallbacks());
-        $xslProcessor->usingCallback('foo', $callback)->callRegisterCallbacks();
+        $xslProcessor->usingCallback('foo', $callback);
+        $xslProcessor->callRegisterCallbacks();
         XslProcessor::invokeCallback('foo', 'hello', 'mikey');
         assertThat($callback->getHelloArg(), equals('mikey'));
     }

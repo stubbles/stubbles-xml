@@ -28,21 +28,17 @@ use function stubbles\reflect\annotationsOfConstructorParameter;
 class XslProcessorProviderTest extends TestCase
 {
     /**
-     * instance to test
-     *
-     * @type  XslProcessorProvider.
+     * @var  XslProcessorProvider.
      */
     private $xslProcessorProvider;
     /**
-     * mocked injector instance
-     *
-     * @type  \bovigo\callmap\Proxy
+     * @var  Injector&\bovigo\callmap\ClassProxy
      */
     private $injector;
     /**
      * config directory
      *
-     * @type  vfsStreamDirectory
+     * @var  \org\bovigo\vfs\vfsStreamDirectory
      */
     private $root;
 
@@ -59,7 +55,7 @@ class XslProcessorProviderTest extends TestCase
     /**
      * @test
      */
-    public function annotationsPresentOnConstructor()
+    public function annotationsPresentOnConstructor(): void
     {
         $configPathParamAnnotations = annotationsOfConstructorParameter(
                 'configPath',
@@ -75,7 +71,7 @@ class XslProcessorProviderTest extends TestCase
     /**
      * @test
      */
-    public function createXslProcessorWithoutCallbacks()
+    public function createXslProcessorWithoutCallbacks(): void
     {
         assertEmptyArray(
                 $this->xslProcessorProvider->get('stubbles.xml.xsl.callbacks.disabled')
@@ -86,7 +82,7 @@ class XslProcessorProviderTest extends TestCase
     /**
      * @test
      */
-    public function createWithNonExistingCallbackConfigurationReturnsXslProcessorWithoutCallbacks()
+    public function createWithNonExistingCallbackConfigurationReturnsXslProcessorWithoutCallbacks(): void
     {
         assertEmptyArray($this->xslProcessorProvider->get()->getCallbacks());
     }
@@ -94,7 +90,7 @@ class XslProcessorProviderTest extends TestCase
     /**
      * @test
      */
-    public function createWithInvalidCallbackConfigurationThrowsConfigurationException()
+    public function createWithInvalidCallbackConfigurationThrowsConfigurationException(): void
     {
         vfsStream::newFile('xsl-callbacks.ini')
                  ->withContent('!')
@@ -106,7 +102,7 @@ class XslProcessorProviderTest extends TestCase
     /**
      * @test
      */
-    public function createWithCallbacksReturnsXslProcessorWithCallbacks()
+    public function createWithCallbacksReturnsXslProcessorWithCallbacks(): void
     {
         vfsStream::newFile('xsl-callbacks.ini')
                  ->withContent('foo="org\stubbles\example\xsl\ExampleCallback"')
