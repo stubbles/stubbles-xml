@@ -37,73 +37,73 @@ class RssFeedItem
     /**
      * title of the item
      *
-     * @type  string
+     * @var  string
      */
     private $title       = '';
     /**
      * URL of the item
      *
-     * @type  string
+     * @var  string
      */
     private $link        = '';
     /**
      * item synopsis
      *
-     * @type  string
+     * @var  string
      */
     private $description = '';
     /**
      * email address of the author of the item
      *
-     * @type  string
+     * @var  string
      */
     private $author      = null;
     /**
      * categories where the item is included
      *
-     * @type  array
+     * @var  array<array<string,string>>
      */
     private $categories  = [];
     /**
      * URL of a page for comments relating to the item
      *
-     * @type  string
+     * @var  string
      */
     private $comments    = null;
     /**
      * describes a media object that is attached to the item
      *
-     * @type  array
+     * @var  array<array<string,string>>
      */
     private $enclosures  = [];
     /**
      * unique identifier for the item
      *
-     * @type  string
+     * @var  string
      */
     private $guid        = null;
     /**
      * whether the id may be interpreted as a permanent link or not
      *
-     * @type  bool
+     * @var  bool
      */
     private $isPermaLink = false;
     /**
      * indicates when the item was published
      *
-     * @type  \stubbles\date\Date
+     * @var  \stubbles\date\Date
      */
     private $pubDate     = null;
     /**
      * where that the item came from
      *
-     * @type  array
+     * @var  array<array<string,string>>
      */
     private $sources     = [];
     /**
      * content of rss feed item
      *
-     * @type  string
+     * @var  string
      */
     private $content     = null;
 
@@ -137,8 +137,8 @@ class RssFeedItem
     /**
      * creates a new stubRssFeedItem from given entity
      *
-     * @param   object  $entity
-     * @param   array   $overrides
+     * @param   object                $entity
+     * @param   array<string,string>  $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
      * @throws  \InvalidArgumentException
      * @throws  \stubbles\xml\XmlException
@@ -329,7 +329,7 @@ class RssFeedItem
     /**
      * returns one or more categories where the item is included into
      *
-     * @return  array
+     * @return  array<array<string,string>>
      */
     public function categories(): array
     {
@@ -380,7 +380,7 @@ class RssFeedItem
     {
         $this->enclosures[] = [
                 'url'    => $url,
-                'length' => $length,
+                'length' => (string) $length,
                 'type'   => $type
         ];
         return $this;
@@ -389,7 +389,7 @@ class RssFeedItem
     /**
      * sets enclosures for the item
      *
-     * @param   array  $enclosures
+     * @param   array<array<string,string>>  $enclosures
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function deliveringEnclosures(array $enclosures): self
@@ -401,7 +401,7 @@ class RssFeedItem
     /**
      * returns the description of a media object that is attached to the item
      *
-     * @return  array
+     * @return  array<array<string,scalar>>
      */
     public function enclosures(): array
     {
@@ -514,7 +514,7 @@ class RssFeedItem
     /**
      * sets the sources where that the item came from
      *
-     * @param   array  $sources
+     * @param   array<array<string,string>>  $sources
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function inspiredBySources(array $sources): self
@@ -526,7 +526,7 @@ class RssFeedItem
     /**
      * returns where that the item came from
      *
-     * @return  array
+     * @return  array<array<string,string>>
      */
     public function sources(): array
     {

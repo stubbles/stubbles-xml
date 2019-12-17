@@ -17,37 +17,37 @@ class XslProcessor
     /**
      * the document to transform
      *
-     * @type  \DOMDocument
+     * @var  \DOMDocument|null
      */
     private $document;
     /**
      * the real processor used for the transformation
      *
-     * @type  \XSLTProcessor
+     * @var  \XSLTProcessor|null
      */
     private $xsltProcessor;
     /**
      * list of parameters that were set
      *
-     * @type  array
+     * @var  array<string,array<string,string>>
      */
     private $parameters       = [];
     /**
      * list of callbacks which should be available while processing the stylesheet
      *
-     * @type  \stubbles\xml\xsl\XslCallbacks
+     * @var  \stubbles\xml\xsl\XslCallbacks
      */
     private $xslCallbacks;
     /**
      * workaround for limitation of XSLTProcessor::registerPHPFunctions()
      *
-     * @type  \stubbles\xml\xsl\XslCallbacks
+     * @var  \stubbles\xml\xsl\XslCallbacks
      */
     private static $_callbacks;
     /**
      * list of used stylesheets
      *
-     * @type  \DOMDocument[]
+     * @var  \DOMDocument[]
      */
     private $stylesheets      = [];
 
@@ -75,7 +75,7 @@ class XslProcessor
      *
      * @return  \XSLTProcessor
      */
-    protected function createXsltProcessor()
+    protected function createXsltProcessor(): \XSLTProcessor
     {
         return new \XSLTProcessor();
     }
@@ -218,7 +218,7 @@ class XslProcessor
      * XSLTProcessor::registerPHPFunctions() does not support non-static
      * methods nor anonymous functions directly.
      */
-    protected function registerCallbacks()
+    protected function registerCallbacks(): void
     {
         self::$_callbacks = $this->xslCallbacks;
         $this->xsltProcessor->registerPHPFunctions(get_class($this) . '::invokeCallback');
@@ -274,8 +274,8 @@ class XslProcessor
     /**
      * set a list of parameters for the given namespace
      *
-     * @param   string  $nameSpace  the namespace where the parameters are in
-     * @param   array   $params     the list of parameters to set: name => value
+     * @param   string   $nameSpace  the namespace where the parameters are in
+     * @param   mixed[]  $params     the list of parameters to set: name => value
      * @return  \stubbles\xml\xsl\XslProcessor
      * @throws  \stubbles\xml\xsl\XslProcessorException
      */

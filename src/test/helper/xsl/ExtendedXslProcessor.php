@@ -16,14 +16,14 @@ class ExtendedXslProcessor extends XslProcessor
     /**
      * mocked xslt processor
      *
-     * @type  \bovigo\callmap\Proxy
+     * @var  \XSLTProcessor&\bovigo\callmap\ClassProxy
      */
     public static $xsltProcessor;
 
     /**
      * overwrite creation method to inject the mock object
      */
-    protected function createXsltProcessor()
+    protected function createXsltProcessor(): \XSLTProcessor
     {
         return self::$xsltProcessor;
     }

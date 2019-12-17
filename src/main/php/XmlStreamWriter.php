@@ -17,31 +17,31 @@ abstract class XmlStreamWriter
     /**
      * Is able to import an XmlStreamWriter
      *
-     * @type int
+     * @var int
      */
     const FEATURE_IMPORT_WRITER = 1;
     /**
      * Is able to export as DOM
      *
-     * @type int
+     * @var int
      */
     const FEATURE_AS_DOM = 2;
     /**
      * XML version
      *
-     * @type  string
+     * @var  string
      */
     private $xmlVersion;
     /**
      * encoding used by the writer
      *
-     * @type  string
+     * @var  string
      */
     private $encoding;
     /**
      * depth, i.e. amount of opened tags
      *
-     * @type  int
+     * @var  int
      */
     private $depth        = 0;
 
@@ -124,7 +124,7 @@ abstract class XmlStreamWriter
      *
      * @param  string  $elementName
      */
-    protected abstract function doWriteStartElement(string $elementName);
+    protected abstract function doWriteStartElement(string $elementName): void;
 
 
     /**
@@ -197,14 +197,14 @@ abstract class XmlStreamWriter
     /**
      *  really writes an end element
      */
-    protected abstract function doWriteEndElement();
+    protected abstract function doWriteEndElement(): void;
 
     /**
      * Write a full element
      *
-     * @param   string  $elementName
-     * @param   array   $attributes
-     * @param   string  $cdata
+     * @param   string                $elementName
+     * @param   array<string,scalar>  $attributes
+     * @param   string                $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
     public abstract function writeElement(

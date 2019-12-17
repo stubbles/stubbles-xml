@@ -15,7 +15,7 @@ class LibXmlStreamWriter extends XmlStreamWriter
     /**
      * Writer
      *
-     * @type  \XMLWriter
+     * @var  \XMLWriter
      */
     private $writer;
 
@@ -31,7 +31,7 @@ class LibXmlStreamWriter extends XmlStreamWriter
         $this->writer = $this->createWriter($xmlVersion, $encoding);
     }
 
-    private function createWriter($xmlVersion, $encoding): \XMLWriter
+    private function createWriter(string $xmlVersion, string $encoding): \XMLWriter
     {
         $writer = new \XMLWriter();
         $writer->openMemory();
@@ -67,7 +67,7 @@ class LibXmlStreamWriter extends XmlStreamWriter
      *
      * @param  string  $elementName
      */
-    protected function doWriteStartElement(string $elementName)
+    protected function doWriteStartElement(string $elementName): void
     {
         $this->writer->startElement($elementName);
     }
@@ -149,7 +149,7 @@ class LibXmlStreamWriter extends XmlStreamWriter
     /**
      * really writes an end element
      */
-    protected function doWriteEndElement()
+    protected function doWriteEndElement(): void
     {
         $this->writer->endElement();
     }
@@ -157,9 +157,9 @@ class LibXmlStreamWriter extends XmlStreamWriter
     /**
      * Write a full element
      *
-     * @param   string  $elementName
-     * @param   array   $attributes
-     * @param   string  $cdata
+     * @param   string                $elementName
+     * @param   array<string,string>  $attributes
+     * @param   string                $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeElement(

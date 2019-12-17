@@ -14,6 +14,7 @@ use stubbles\xml\LibXmlStreamWriter;
  * Provider to create a xml stream writer instances.
  *
  * @since  1.1.0
+ * @implements  InjectionProvider<XmlStreamWriter>
  */
 class XmlStreamWriterProvider implements InjectionProvider
 {
@@ -24,7 +25,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * and the value the full qualified class name of the XmlStreamWriter
      * implementation.
      *
-     * @type  array<string,string>
+     * @var  array<string,string>
      */
     private $types    = [
             'dom'       => DomXmlStreamWriter::class,
@@ -33,13 +34,13 @@ class XmlStreamWriterProvider implements InjectionProvider
     /**
      * default version of xml stream writers to create
      *
-     * @type  string
+     * @var  string
      */
     private $version;
     /**
      * default encoding of xml stream writers to create
      *
-     * @type  string
+     * @var  string
      */
     private $encoding;
 

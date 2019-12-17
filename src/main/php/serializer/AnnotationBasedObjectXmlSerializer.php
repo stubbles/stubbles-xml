@@ -56,7 +56,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * method. The constructor should be used if one is sure that there is only
      * one instance of a class to serialize.
      *
-     * @param  \ReflectionClass  $objectClass
+     * @param  \ReflectionClass<object>  $objectClass
      */
     public function __construct(\ReflectionClass $objectClass)
     {
@@ -128,8 +128,8 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extract informations about properties
      *
-     * @param   \ReflectionClass  $objectClass
-     * @return  array
+     * @param   \ReflectionClass<object>  $objectClass
+     * @return  XmlSerializerDelegate[]
      */
     private function extractProperties(\ReflectionClass $objectClass): array
     {
@@ -152,8 +152,8 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extract informations about methods
      *
-     * @param   \ReflectionClass  $objectClass
-     * @return  array
+     * @param   \ReflectionClass<object>  $objectClass
+     * @return  XmlSerializerDelegate[]
      */
     private function extractMethods(\ReflectionClass $objectClass): array
     {

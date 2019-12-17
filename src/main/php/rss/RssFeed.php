@@ -18,74 +18,74 @@ class RssFeed
     /**
      * name of the channel
      *
-     * @type  string
+     * @var  string
      */
     private $title;
     /**
      * URL to the HTML website corresponding to the channel
      *
-     * @type  string
+     * @var  string
      */
     private $link;
     /**
      * phrase or sentence describing the channel
      *
-     * @type  string
+     * @var  string
      */
     private $description;
     /**
      * list of items in feed
      *
-     * @type  RssFeedItem[]
+     * @var  RssFeedItem[]
      */
     private $items          = [];
     /**
      * list of stylesheets to append as processing instructions
      *
-     * @type  string[]
+     * @var  string[]
      */
     private $stylesheets    = [];
     /**
      * the locale the channel is written in
      *
-     * @type  string
-     * @see   http://rssboard.org/rss-language-codes
+     * @var  string
+     * @see  http://rssboard.org/rss-language-codes
      */
     private $locale         = null;
     /**
      * copyright notice for content in the channel
      *
-     * @type  string
+     * @var  string
      */
     private $copyright      = null;
     /**
      * email address for person responsible for editorial content
      *
-     * @type  string
+     * @var  string
      */
     private $managingEditor = null;
     /**
      * email address for person responsible for technical issues relating to channel
      *
-     * @type  string
+     * @var  string
      */
     private $webMaster      = null;
     /**
      * last time the content of the channel changed
      *
-     * @type  \stubbles\date\Date
+     * @var  \stubbles\date\Date
      */
     private $lastBuildDate  = null;
     /**
      * number of minutes that indicates how long a channel can be cached before refreshing from the source
      *
-     * @type  int
+     * @var  int
      */
     private $ttl            = null;
     /**
      * specifies a GIF, JPEG or PNG image that can be displayed with the channel
      *
-     * @type  array
+     * @var  array<string,mixed>
      */
     private $image          = [
             'url'         => '',
@@ -220,8 +220,8 @@ class RssFeed
      *
      * Return value is the created item.
      *
-     * @param   object  $entity
-     * @param   array   $overrides
+     * @param   object                $entity
+     * @param   array<string,string>  $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function addEntity($entity, array $overrides = []): RssFeedItem

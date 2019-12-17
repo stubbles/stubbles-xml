@@ -78,19 +78,17 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function noItemsNoStylesheets(): void
     {
-        assertThat(
-                $this->rssFeedSerializer
-                        ->setGenerator('Another generator')
-                        ->serialize(
-                                new RssFeed('title', 'link', 'description'),
-                                $this->xmlSerializer,
-                                $this->xmlStreamWriter
-                        ),
-                isSameAs($this->xmlStreamWriter)
-        );
+        $this->rssFeedSerializer
+            ->setGenerator('Another generator')
+            ->serialize(
+                new RssFeed('title', 'link', 'description'),
+                $this->xmlSerializer,
+                $this->xmlStreamWriter
+            );
         verify($this->xmlSerializer, 'serializeObject')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeStartElement')->wasCalled(2);
@@ -100,18 +98,16 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function noItemsWithStylesheets(): void
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->appendStylesheet('foo.xsl');
-        assertThat(
-                $this->rssFeedSerializer->serialize(
-                        $rssFeed,
-                        $this->xmlSerializer,
-                        $this->xmlStreamWriter
-                ),
-                isSameAs($this->xmlStreamWriter)
+        $this->rssFeedSerializer->serialize(
+            $rssFeed,
+            $this->xmlSerializer,
+            $this->xmlStreamWriter
         );
         verify($this->xmlSerializer, 'serializeObject')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasCalledOnce();
@@ -122,18 +118,16 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function withItemsNoStylesheets(): void
     {
         $rssFeed = new RssFeed('title', 'link', 'description');
         $rssFeed->addItem('foo', 'bar', 'baz');
-        assertThat(
-                $this->rssFeedSerializer->serialize(
-                        $rssFeed,
-                        $this->xmlSerializer,
-                        $this->xmlStreamWriter
-                ),
-                isSameAs($this->xmlStreamWriter)
+        $this->rssFeedSerializer->serialize(
+            $rssFeed,
+            $this->xmlSerializer,
+            $this->xmlStreamWriter
         );
         verify($this->xmlSerializer, 'serializeObject')->wasCalledOnce();
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
@@ -144,6 +138,7 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
+     * @doesNotPerformAssertions
      */
     public function withAllChannelElements(): void
     {
@@ -155,13 +150,10 @@ class RssFeedSerializerTest extends TestCase
                 ->setLastBuildDate(50)
                 ->setTimeToLive(60)
                 ->setImage('http://example.org/example.gif', 'foo');
-        assertThat(
-                $this->rssFeedSerializer->serialize(
-                        $rssFeed,
-                        $this->xmlSerializer,
-                        $this->xmlStreamWriter
-                ),
-                isSameAs($this->xmlStreamWriter)
+        $this->rssFeedSerializer->serialize(
+            $rssFeed,
+            $this->xmlSerializer,
+            $this->xmlStreamWriter
         );
         verify($this->xmlStreamWriter, 'writeProcessingInstruction')->wasNeverCalled();
         verify($this->xmlStreamWriter, 'writeStartElement')->wasCalled(3);

@@ -13,25 +13,26 @@ use stubbles\ioc\Injector;
  * Injection provider for XSL processor instances.
  *
  * @since  1.5.0
+ * @implements  InjectionProvider<XslProcessor>
  */
 class XslProcessorProvider implements InjectionProvider
 {
     /**
      * injector instance to create instances of other classes
      *
-     * @type  \stubbles\ioc\Injector
+     * @var  \stubbles\ioc\Injector
      */
     private $injector;
     /**
      * path to config files
      *
-     * @type  string
+     * @var  string
      */
     private $configPath;
     /**
      * list of callbacks
      *
-     * @type  array
+     * @var  array<string,class-string>
      */
     private $callbackList;
 
@@ -102,7 +103,7 @@ class XslProcessorProvider implements InjectionProvider
     /**
      * reads list of callbacks from configuration
      *
-     * @return  array
+     * @return  array<string,class-string>
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
     protected function callbacks(): array
@@ -111,13 +112,15 @@ class XslProcessorProvider implements InjectionProvider
             if (!file_exists($this->configPath . '/xsl-callbacks.ini')) {
                 $this->callbackList = [];
             } else {
-                $this->callbackList = @parse_ini_file($this->configPath . '/xsl-callbacks.ini');
-                if (false === $this->callbackList) {
+                $callbackList = @parse_ini_file($this->configPath . '/xsl-callbacks.ini');
+                if (false === $callbackList) {
                     throw new XslCallbackException(
                             'XSL callback in ' . $this->configPath
                             . '/xsl-callbacks.ini contains errors and can not be parsed.'
                     );
                 }
+
+                $this->callbackList = $callbackList;
             }
         }
 

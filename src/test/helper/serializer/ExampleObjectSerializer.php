@@ -23,7 +23,7 @@ class ExampleObjectSerializer implements ObjectXmlSerializer
      * @param  XmlStreamWriter  $xmlWriter      xml writer to write serialized object into
      * @param  string           $tagName        name of the surrounding xml tag
      */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null)
+    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null): void
     {
         if ($object instanceof ExampleObjectClassWithSerializer) {
             $xmlWriter->writeStartElement('example');

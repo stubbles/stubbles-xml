@@ -15,13 +15,13 @@ class DomXmlStreamWriter extends XmlStreamWriter
     /**
      * DOM Document
      *
-     * @type  \DOMDocument
+     * @var  \DOMDocument
      */
     private $doc;
     /**
      * stack of all opened elements
      *
-     * @type  array
+     * @var  \DOMNode[]
      */
     private $openElements = [];
 
@@ -68,7 +68,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      *
      * @param  string  $elementName
      */
-    protected function doWriteStartElement(string $elementName)
+    protected function doWriteStartElement(string $elementName): void
     {
         $this->append(
                 function(\DOMNode $parent) use ($elementName)
@@ -204,7 +204,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
      *
      * @throws  \stubbles\xml\XmlException
      */
-    protected function doWriteEndElement()
+    protected function doWriteEndElement(): void
     {
         array_pop($this->openElements);
     }
@@ -212,9 +212,9 @@ class DomXmlStreamWriter extends XmlStreamWriter
     /**
      * Write a full element
      *
-     * @param   string  $elementName
-     * @param   array   $attributes
-     * @param   string  $cdata
+     * @param   string                $elementName
+     * @param   array<string,string>  $attributes
+     * @param   string                $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      * @throws  \stubbles\xml\XmlException
      */

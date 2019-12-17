@@ -17,7 +17,7 @@ class XslCallbacks
     /**
      * list of callback instances
      *
-     * @type  Object[]
+     * @var  object[]
      */
     private $callbacks = [];
 
@@ -28,7 +28,7 @@ class XslCallbacks
      * @param   object  $callback
      * @throws  \InvalidArgumentException
      */
-    public function addCallback(string $name, $callback)
+    public function addCallback(string $name, $callback): void
     {
         if (!is_object($callback)) {
             throw new \InvalidArgumentException('Given callback must be an object');
@@ -77,9 +77,9 @@ class XslCallbacks
     /**
      * invoke a method on a callback class
      *
-     * @param   string  $name        name of callback instance to call method on
-     * @param   string  $methodName  name of method to call
-     * @param   array   $arguments   list of arguments for method to call
+     * @param   string   $name        name of callback instance to call method on
+     * @param   string   $methodName  name of method to call
+     * @param   mixed[]  $arguments   list of arguments for method to call
      * @return  mixed
      * @throws  \stubbles\xml\xsl\XslCallbackException
      */
