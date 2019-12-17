@@ -137,8 +137,8 @@ class RssFeedItem
     /**
      * creates a new stubRssFeedItem from given entity
      *
-     * @param   object                $entity
-     * @param   array<string,string>  $overrides
+     * @param   object               $entity
+     * @param   array<string,mixed>  $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
      * @throws  \InvalidArgumentException
      * @throws  \stubbles\xml\XmlException

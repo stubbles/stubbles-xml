@@ -220,8 +220,8 @@ class RssFeed
      *
      * Return value is the created item.
      *
-     * @param   object                $entity
-     * @param   array<string,string>  $overrides
+     * @param   object               $entity
+     * @param   array<string,mixed>  $overrides
      * @return  \stubbles\xml\rss\RssFeedItem
      */
     public function addEntity($entity, array $overrides = []): RssFeedItem
