@@ -253,9 +253,15 @@ class DomXmlStreamWriter extends XmlStreamWriter
         return $this->append(
                 function(\DOMNode $parent) use ($writer)
                 {
+                    $element = $writer->asDom()->documentElement;
+                    if (null === $element) {
+                        // nothing to import
+                        return;
+                    }
+
                     $parent->appendChild($this->doc->importNode(
-                            $writer->asDom()->documentElement,
-                            true
+                        $element,
+                        true
                     ));
                 },
                 'imported nodes'
