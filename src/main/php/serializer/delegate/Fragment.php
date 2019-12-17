@@ -19,13 +19,13 @@ class Fragment implements XmlSerializerDelegate
     /**
      * name of tag
      *
-     * @type  string
+     * @var  string
      */
     protected $tagName;
     /**
      * switch whether to transform line breaks to <br/> or not
      *
-     * @type  bool
+     * @var  bool
      */
     protected $transformNewLineToBr;
 
@@ -48,7 +48,7 @@ class Fragment implements XmlSerializerDelegate
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      */
-    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter)
+    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter): void
     {
         if (null != $this->tagName) {
             $xmlWriter->writeStartElement($this->tagName);

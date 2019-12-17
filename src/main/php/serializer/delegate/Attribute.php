@@ -19,13 +19,13 @@ class Attribute implements XmlSerializerDelegate
     /**
      * name of attribute
      *
-     * @type  string
+     * @var  string
      */
     protected $attributeName;
     /**
      * switch whether to skip serialisation if value is empty
      *
-     * @type  bool
+     * @var  bool
      */
     protected $skipEmpty;
 
@@ -48,7 +48,7 @@ class Attribute implements XmlSerializerDelegate
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      */
-    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter)
+    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter): void
     {
         if (gettype($value) === 'boolean') {
             $xmlWriter->writeAttribute($this->attributeName, ((true === $value) ? ('true') : ('false')));

@@ -31,7 +31,7 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null
-    ) {
+    ): void {
         if (!($rssFeedItem instanceof RssFeedItem)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeedItem');
         }

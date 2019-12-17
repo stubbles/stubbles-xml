@@ -23,5 +23,5 @@ interface XmlSerializerDelegate
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      */
-    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter);
+    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter): void;
 }

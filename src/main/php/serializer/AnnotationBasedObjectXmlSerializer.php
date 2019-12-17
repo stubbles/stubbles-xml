@@ -27,25 +27,25 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * default tag name for class
      *
-     * @type  string
+     * @var  string
      */
     private $classTagName;
     /**
      * map of delegates to serialize properties of class with
      *
-     * @type  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
+     * @var  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
      */
     private $properties  = [];
     /**
      * map of delegates to serialize methods of class with
      *
-     * @type  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
+     * @var  \stubbles\xml\serializer\delegate\XmlSerializerDelegate[]
      */
     private $methods     = [];
     /**
      * map of serializer instances for different classes
      *
-     * @type  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer[]
+     * @var  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer[]
      */
     private static $cache = [];
 
@@ -104,7 +104,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null
-    ) {
+    ): void {
         $xmlWriter->writeStartElement(null !== $tagName ? $tagName : $this->classTagName);
         foreach ($this->properties as $propertyName => $xmlSerializerDelegate) {
             $xmlSerializerDelegate->serialize(

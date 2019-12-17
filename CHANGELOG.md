@@ -1,5 +1,13 @@
 # Changelog
 
+## 8.0.0 (2019-12-??)
+
+### BC breaks
+
+* added return value `void` to interface methods:
+  * `stubbles\xml\serializer\ObjectXmlSerializer::serialize()`
+  * `stubbles\xml\serializer\delegate\XmlSerializerDelegate::serialize()`
+
 ## 7.0.0 (2019-11-12)
 
 ### BC breaks

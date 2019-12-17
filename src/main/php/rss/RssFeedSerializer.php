@@ -31,7 +31,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
     /**
      * the generator of this rss feed
      *
-     * @type  string
+     * @var  string
      */
     private $generator = 'Stubbles RssFeedGenerator';
 
@@ -61,7 +61,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null
-    ) {
+    ): void {
         if (!($rssFeed instanceof RssFeed)) {
             throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeed');
         }
@@ -123,7 +123,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
             $xmlSerializer->serializeObject($item, $xmlWriter);
         }
 
-        return $xmlWriter->writeEndElement() // </channel>
-                ->writeEndElement(); // </rss>
+        $xmlWriter->writeEndElement() // </channel>
+                  ->writeEndElement(); // </rss>
     }
 }

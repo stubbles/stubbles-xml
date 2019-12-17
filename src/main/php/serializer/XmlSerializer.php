@@ -19,7 +19,7 @@ class XmlSerializer
     /**
      * injector to create object serializer instances
      *
-     * @type  \stubbles\ioc\Injector
+     * @var  \stubbles\ioc\Injector
      */
     protected $injector;
 
@@ -197,7 +197,7 @@ class XmlSerializer
     /**
      * serializes an array to xml
      *
-     * @param   iterable                       $array           array to serialize
+     * @param   iterable<mixed>                $array           array to serialize
      * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized array into
      * @param   string                         $tagName         name of the surrounding xml tag
      * @param   string                         $elementTagName  necurring element tag name for lists
@@ -260,11 +260,13 @@ class XmlSerializer
             return AnnotationBasedObjectXmlSerializer::fromObject($object);
         }
 
-        return $this->injector->getInstance(
+        /** @var  ObjectXmlSerializer  $serializer */
+        $serializer = $this->injector->getInstance(
                 annotationsOf($object)
                         ->firstNamed('XmlSerializer')
                         ->getValue()
                         ->getName()
         );
+        return $serializer;
     }
 }
