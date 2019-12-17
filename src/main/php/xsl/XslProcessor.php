@@ -23,7 +23,7 @@ class XslProcessor
     /**
      * the real processor used for the transformation
      *
-     * @var  \XSLTProcessor|null
+     * @var  \XSLTProcessor
      */
     private $xsltProcessor;
     /**

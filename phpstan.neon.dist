@@ -2,7 +2,7 @@ includes:
   - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
-  level: 7
+  level: max
   paths:
       - ./src/main/php
       - ./src/test/php
@@ -12,6 +12,9 @@ parameters:
       -
           message: '#entity of method stubbles\\xml\\rss\\RssFeed::addEntity\(\) expects object, int given#'
           path: src/test/php/rss/RssFeedItemFromEntityTest.php
+      -
+          message: '#doc of method XSLTProcessor::transformToDoc() expects DOMNode, DOMDocument|null given#'
+          path: src/main/php/xsl/XslProcessor.php
       # phpstan doesn't know return values of \XSLTProcessor properly
       -
           message: '#Strict comparison using === between false and DOMDocument will always evaluate to false#'
