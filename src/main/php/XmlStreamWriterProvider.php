@@ -98,7 +98,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * creates a xml stream writer depending on available xml extensions
      *
      * @return  \stubbles\xml\XmlStreamWriter
-     * @throws  \stubbles\xml\XMLException
+     * @throws  \stubbles\xml\XmlException
      */
     protected function createAsAvailable(): XmlStreamWriter
     {
