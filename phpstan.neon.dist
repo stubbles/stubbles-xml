@@ -12,3 +12,13 @@ parameters:
       -
           message: '#entity of method stubbles\\xml\\rss\\RssFeed::addEntity\(\) expects object, int given#'
           path: src/test/php/rss/RssFeedItemFromEntityTest.php
+      # phpstan doesn't know return values of \XSLTProcessor properly
+      -
+          message: '#Strict comparison using === between false and DOMDocument will always evaluate to false#'
+          path: src/main/php/xsl/XslProcessor.php
+      -
+          message: '#Strict comparison using === between false and int will always evaluate to false#'
+          path: src/main/php/xsl/XslProcessor.php
+      -
+          message: '#Strict comparison using === between false and string will always evaluate to false#'
+          path: src/main/php/xsl/XslProcessor.php
