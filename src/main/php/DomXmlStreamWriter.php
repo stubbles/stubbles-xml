@@ -285,7 +285,24 @@ class DomXmlStreamWriter extends XmlStreamWriter
      */
     public function asXml(): string
     {
-        return rtrim($this->doc->saveXML());
+        $xml = $this->doc->saveXML();
+        if (false !== $xml) {
+            return rtrim($xml);
+        }
+        
+        $errors = libxml_get_errors();
+        if (!empty($errors)) {
+            libxml_clear_errors();
+            throw new XmlException(
+                'Error returning document as XML: '
+                . implode(', ', array_map(
+                    function($error) { return trim($error->message); },
+                    $errors
+                ))
+            );
+        }
+
+        throw new XmlException('Unknown error on returning document as XML');
     }
 
     /**
