@@ -12,9 +12,9 @@
     },
     "require-dev": {
         "mikey179/vfsstream": "^1.6.8",
-        "phpunit/phpunit": "^8.4",
-        "bovigo/callmap": "^5.2.1",
-        "bovigo/assert": "^5.1.1",
+        "phpunit/phpunit": "^9.0",
+        "bovigo/callmap": "^6.0",
+        "bovigo/assert": "^6.0",
         "stubbles/sequence": "^9.0"
     },
     "autoload": {
