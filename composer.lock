@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f7bd2a101408e108e4a0a731572c0c5",
+    "content-hash": "4e983d3cb27a5545cd62cbe247037f78",
     "packages": [
         {
             "name": "stubbles/date",
@@ -1964,7 +1964,13 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3"
+        "php": "^7.3",
+        "ext-mbstring": "*",
+        "ext-libxml": "*"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "ext-xsl": "*",
+        "ext-dom": "*",
+        "ext-xmlwriter": "*"
+    }
 }

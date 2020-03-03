@@ -6,11 +6,16 @@
     "description": "Classes to work with XML",
     "require": {
         "php": "^7.3",
+        "ext-mbstring": "*",
+        "ext-libxml": "*",
         "stubbles/ioc": "^10.0",
         "stubbles/reflect": "^9.1",
         "stubbles/date": "^8.0.1"
     },
     "require-dev": {
+        "ext-xsl": "*",
+        "ext-dom": "*",
+        "ext-xmlwriter": "*",
         "mikey179/vfsstream": "^1.6.8",
         "phpunit/phpunit": "^9.0",
         "bovigo/callmap": "^6.0",
