@@ -7,7 +7,7 @@ Produce XML without being bothered by details.
 Build status
 ------------
 
-[![Build Status](https://secure.travis-ci.org/stubbles/stubbles-xml.png)](http://travis-ci.org/stubbles/stubbles-xml)
+[![Tests](https://github.com/stubbles/stubbles-xml/workflows/Tests/badge.svg)](https://github.com/stubbles/stubbles-xml/actions?query=workflow%3ATests)
 [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-xml/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-xml?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/stubbles/xml/version.png)](https://packagist.org/packages/stubbles/xml)
