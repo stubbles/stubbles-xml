@@ -25,7 +25,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * and the value the full qualified class name of the XmlStreamWriter
      * implementation.
      *
-     * @var  array<string,string>
+     * @var  array<string,class-string<XmlStreamWriter>>
      */
     private $types    = [
             'dom'       => DomXmlStreamWriter::class,
@@ -47,9 +47,9 @@ class XmlStreamWriterProvider implements InjectionProvider
     /**
      * constructor
      *
-     * @param  array<string,string>  $types     optional  map of available streamwriter types
-     * @param  string                $version   optional  xml version
-     * @param  string                $encoding  optional  xml encoding
+     * @param  array<string,class-string<XmlStreamWriter>>  $types     optional  map of available streamwriter types
+     * @param  string                                       $version   optional  xml version
+     * @param  string                                       $encoding  optional  xml encoding
      * @Named{types}('stubbles.xml.types')
      * @Named{version}('stubbles.xml.version')
      * @Named{encoding}('stubbles.xml.encoding')
@@ -71,7 +71,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * returns the value to provide
      *
      * @param   string  $name
-     * @return  mixed
+     * @return  XmlStreamWriter
      */
     public function get(string $name = null)
     {

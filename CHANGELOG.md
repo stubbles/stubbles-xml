@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.?.? (2020-??-??)
+
+* provide more specific types where applicable
+
 ## 8.0.0 (2019-12-17)
 
 ### BC breaks
