@@ -44,15 +44,6 @@ class RssFeedItemFromEntityTest extends TestCase
     /**
      * @test
      */
-    public function noObjectThrowsIllegalArgumentException(): void
-    {
-        expect(function() { $this->rssFeed->addEntity(313); })
-                ->throws(\InvalidArgumentException::class);
-    }
-
-    /**
-     * @test
-     */
     public function missingAnnotationThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new \stdClass()); })

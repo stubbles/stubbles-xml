@@ -55,7 +55,7 @@ class RssFeedItem
     /**
      * email address of the author of the item
      *
-     * @var  string
+     * @var  string|null
      */
     private $author      = null;
     /**
@@ -67,7 +67,7 @@ class RssFeedItem
     /**
      * URL of a page for comments relating to the item
      *
-     * @var  string
+     * @var  string|null
      */
     private $comments    = null;
     /**
@@ -79,7 +79,7 @@ class RssFeedItem
     /**
      * unique identifier for the item
      *
-     * @var  string
+     * @var  string|null
      */
     private $guid        = null;
     /**
@@ -91,7 +91,7 @@ class RssFeedItem
     /**
      * indicates when the item was published
      *
-     * @var  \stubbles\date\Date
+     * @var  \stubbles\date\Date|null
      */
     private $pubDate     = null;
     /**
@@ -103,7 +103,7 @@ class RssFeedItem
     /**
      * content of rss feed item
      *
-     * @var  string
+     * @var  string|null
      */
     private $content     = null;
 
@@ -143,12 +143,8 @@ class RssFeedItem
      * @throws  \InvalidArgumentException
      * @throws  \stubbles\xml\XmlException
      */
-    public static function fromEntity($entity, array $overrides = []): self
+    public static function fromEntity(object $entity, array $overrides = []): self
     {
-        if (!is_object($entity)) {
-            throw new \InvalidArgumentException('Given entity must be an object.');
-        }
-
         $annotations = annotationsOf($entity);
         if (!$annotations->contain('RssFeedItem')) {
             throw new XmlException(
@@ -491,7 +487,7 @@ class RssFeedItem
      */
     public function pubDate(): ?string
     {
-        if ($this->hasPubDate()) {
+        if (null !== $this->pubDate) {
             return $this->pubDate->format('D d M Y H:i:s O');
         }
 
