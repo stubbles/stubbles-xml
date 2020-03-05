@@ -12,19 +12,20 @@ use stubbles\xml\XmlStreamWriter;
  * Interface for object serializers.
  *
  * @since  1.6.0
+ * @template T of object
  */
 interface ObjectXmlSerializer
 {
     /**
      * serializes given value
      *
-     * @param  mixed                                   $object
+     * @param  T                                       $object
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param  string                                  $tagName        name of the surrounding xml tag
      */
     public function serialize(
-            $object,
+            object $object,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null

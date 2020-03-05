@@ -21,6 +21,9 @@ use function stubbles\reflect\methodsOf;
 use function stubbles\reflect\propertiesOf;
 /**
  * Container for extracting informations on how to serialize a class.
+ * 
+ * @implements ObjectXmlSerializer<object>
+ * @template T of object
  */
 class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
 {
@@ -45,7 +48,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * map of serializer instances for different classes
      *
-     * @var  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer[]
+     * @var  array<class-string<T>,AnnotationBasedObjectXmlSerializer<T>>
      */
     private static $cache = [];
 
@@ -56,7 +59,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * method. The constructor should be used if one is sure that there is only
      * one instance of a class to serialize.
      *
-     * @param  \ReflectionClass<object>  $objectClass
+     * @param  \ReflectionClass<T>  $objectClass
      */
     public function __construct(\ReflectionClass $objectClass)
     {
@@ -77,30 +80,33 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * class it will return the same result, even if the given object is a
      * different instance.
      *
-     * @param   object  $object
-     * @return  \stubbles\xml\serializer\AnnotationBasedObjectXmlSerializer
+     * @param   T  $object
+     * @return  AnnotationBasedObjectXmlSerializer<T>
      */
-    public static function fromObject($object): self
+    public static function fromObject(object $object): self
     {
+        /** @var class-string<T> $className */
         $className = get_class($object);
-        if (isset(self::$cache[$className])) {
-            return self::$cache[$className];
+        if (!isset(self::$cache[$className])) {
+            /** @var \ReflectionClass<T> */
+            $ref = new \ReflectionObject($object);
+            self::$cache[$className] = new self($ref);
         }
 
-        self::$cache[$className] = new self(new \ReflectionObject($object));
+        /** @var AnnotationBasedObjectXmlSerializer<T> */
         return self::$cache[$className];
     }
 
     /**
      * serializes given value
      *
-     * @param  mixed                                   $object
+     * @param  T                                       $object
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param  string                                  $tagName        name of the surrounding xml tag
      */
     public function serialize(
-            $object,
+            object $object,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null
@@ -128,7 +134,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extract informations about properties
      *
-     * @param   \ReflectionClass<object>  $objectClass
+     * @param   \ReflectionClass<T>  $objectClass
      * @return  XmlSerializerDelegate[]
      */
     private function extractProperties(\ReflectionClass $objectClass): array
@@ -152,7 +158,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     /**
      * extract informations about methods
      *
-     * @param   \ReflectionClass<object>  $objectClass
+     * @param   \ReflectionClass<T>  $objectClass
      * @return  XmlSerializerDelegate[]
      */
     private function extractMethods(\ReflectionClass $objectClass): array

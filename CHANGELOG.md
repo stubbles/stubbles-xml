@@ -1,6 +1,12 @@
 # Changelog
 
-## 8.?.? (2020-??-??)
+## 9.?.? (2020-??-??)
+
+### BC breaks
+
+* added type hint `object` for first parameter of `stubbles\xml\serializer\ObjectXmlSerializer::serialize()`
+
+### Other changes
 
 * provide more specific types where applicable
 

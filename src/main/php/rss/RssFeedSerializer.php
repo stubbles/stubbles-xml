@@ -25,6 +25,7 @@ use stubbles\xml\serializer\XmlSerializer;
  * skipDays   Usage relies on behaviour of aggregators.
  *
  * @see  http://rssboard.org/rss-specification
+ * @implements ObjectXmlSerializer<RssFeed>
  */
 class RssFeedSerializer implements ObjectXmlSerializer
 {
@@ -50,14 +51,14 @@ class RssFeedSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param   mixed                                   $rssFeed
+     * @param   RssFeed                                 $rssFeed
      * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param   string                                  $tagName        name of the surrounding xml tag
      * @throws  \InvalidArgumentException  in case $rssFeed is not an instance of stubbles\xml\rss\RssFeed
      */
     public function serialize(
-            $rssFeed,
+            object $rssFeed,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null

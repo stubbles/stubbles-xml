@@ -10,9 +10,6 @@ parameters:
       # False positive
       - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::#'
       -
-          message: '#entity of method stubbles\\xml\\rss\\RssFeed::addEntity\(\) expects object, int given#'
-          path: src/test/php/rss/RssFeedItemFromEntityTest.php
-      -
           message: '#doc of method XSLTProcessor::transformToDoc() expects DOMNode, DOMDocument|null given#'
           path: src/main/php/xsl/XslProcessor.php
       # phpstan doesn't know return values of \XSLTProcessor properly
@@ -25,3 +22,10 @@ parameters:
       -
           message: '#Strict comparison using === between false and string will always evaluate to false#'
           path: src/main/php/xsl/XslProcessor.php
+      # explicit tests
+      -
+          message: '#rssFeedItem of method stubbles\\xml\\rss\\RssFeedItemSerializer::serialize\(\) expects stubbles\\xml\\rss\\RssFeedItem, stdClass given#'
+          path: src/test/php/rss/RssFeedItemSerializerTest.php
+      -
+          message: '#rssFeed of method stubbles\\xml\\rss\\RssFeedSerializer::serialize\(\) expects stubbles\\xml\\rss\\RssFeed, stdClass given#'
+          path: src/test/php/rss/RssFeedSerializerTest.php

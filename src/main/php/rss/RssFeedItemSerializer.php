@@ -14,20 +14,21 @@ use stubbles\xml\serializer\XmlSerializer;
  * Class for a rss 2.0 feed item.
  *
  * @see  http://rssboard.org/rss-specification
+ * @implements ObjectXmlSerializer<RssFeedItem>
  */
 class RssFeedItemSerializer implements ObjectXmlSerializer
 {
     /**
      * serializes given value
      *
-     * @param   mixed                                   $rssFeedItem
+     * @param   RssFeedItem                             $rssFeedItem
      * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
      * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
      * @param   string                                  $tagName        name of the surrounding xml tag
      * @throws  \InvalidArgumentException  in case $rssFeedItem is not an instance of stubbles\xml\rss\RssFeedItem
      */
     public function serialize(
-            $rssFeedItem,
+            object $rssFeedItem,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
             string $tagName = null

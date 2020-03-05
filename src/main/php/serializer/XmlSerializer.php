@@ -242,7 +242,7 @@ class XmlSerializer
      * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
       */
-    public function serializeObject($object, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
+    public function serializeObject(object $object, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
     {
         $this->serializerFor($object)->serialize($object, $this, $xmlWriter, $tagName);
         return $xmlWriter;
@@ -251,16 +251,18 @@ class XmlSerializer
     /**
      * returns serializer for given object
      *
-     * @param   object  $object
-     * @return  \stubbles\xml\serializer\ObjectXmlSerializer
+     * @template T of object
+     * @param   T  $object
+     * @return  \stubbles\xml\serializer\ObjectXmlSerializer<T>
      */
     protected function serializerFor($object): ObjectXmlSerializer
     {
         if (!annotationsOf($object)->contain('XmlSerializer')) {
+            /** @var ObjectXmlSerializer<T> */
             return AnnotationBasedObjectXmlSerializer::fromObject($object);
         }
 
-        /** @var  ObjectXmlSerializer  $serializer */
+        /** @var  ObjectXmlSerializer<T>  $serializer */
         $serializer = $this->injector->getInstance(
                 annotationsOf($object)
                         ->firstNamed('XmlSerializer')
