@@ -203,7 +203,7 @@ abstract class XmlStreamWriter
      * Write a full element
      *
      * @param   string                $elementName
-     * @param   array<string,scalar>  $attributes
+     * @param   array<string,string>  $attributes
      * @param   string                $cdata
      * @return  \stubbles\xml\XmlStreamWriter
      */
