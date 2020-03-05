@@ -48,51 +48,51 @@ class RssFeed
     /**
      * the locale the channel is written in
      *
-     * @var  string
+     * @var  string|null
      * @see  http://rssboard.org/rss-language-codes
      */
     private $locale         = null;
     /**
      * copyright notice for content in the channel
      *
-     * @var  string
+     * @var  string|null
      */
     private $copyright      = null;
     /**
      * email address for person responsible for editorial content
      *
-     * @var  string
+     * @var  string|null
      */
     private $managingEditor = null;
     /**
      * email address for person responsible for technical issues relating to channel
      *
-     * @var  string
+     * @var  string|null
      */
     private $webMaster      = null;
     /**
      * last time the content of the channel changed
      *
-     * @var  \stubbles\date\Date
+     * @var  \stubbles\date\Date|null
      */
     private $lastBuildDate  = null;
     /**
      * number of minutes that indicates how long a channel can be cached before refreshing from the source
      *
-     * @var  int
+     * @var  int|null
      */
     private $ttl            = null;
     /**
      * specifies a GIF, JPEG or PNG image that can be displayed with the channel
-     *
-     * @var  array<string,mixed>
+     * @var  string
      */
-    private $image          = [
-            'url'         => '',
-            'description' => '',
-            'width'       => 88,
-            'height'      => 31
-    ];
+    private $imageUrl = '';
+    /** @var  string */
+    private $imageDescription = '';
+    /** @var  int */
+    private $imageWidth = 88;
+    /** @var  int */
+    private $imageHeight = 31;
 
     /**
      * constructor
@@ -396,7 +396,7 @@ class RssFeed
      */
     public function lastBuildDate(): ?string
     {
-        if ($this->hasLastBuildDate()) {
+        if (null !== $this->lastBuildDate) {
             return $this->lastBuildDate->format('D d M Y H:i:s O');
         }
 
@@ -461,12 +461,10 @@ class RssFeed
             throw new \InvalidArgumentException('Height must be a value between 0 and 400.');
         }
 
-        $this->image = [
-                'url'         => $url,
-                'description' => $description,
-                'width'       => $width,
-                'height'      => $height
-        ];
+        $this->imageUrl         = $url;
+        $this->imageDescription = $description;
+        $this->imageWidth       = $width;
+        $this->imageHeight      = $height;
         return $this;
     }
 
@@ -477,7 +475,7 @@ class RssFeed
      */
     public function hasImage(): bool
     {
-        return (strlen($this->image['url']) > 0);
+        return (strlen($this->imageUrl) > 0);
     }
 
     /**
@@ -487,7 +485,7 @@ class RssFeed
      */
     public function imageUrl(): string
     {
-        return $this->image['url'];
+        return $this->imageUrl;
     }
 
     /**
@@ -497,7 +495,7 @@ class RssFeed
      */
     public function imageDescription(): string
     {
-        return $this->image['description'];
+        return $this->imageDescription;
     }
 
     /**
@@ -507,7 +505,7 @@ class RssFeed
      */
     public function imageWidth(): int
     {
-        return $this->image['width'];
+        return $this->imageWidth;
     }
 
     /**
@@ -517,6 +515,6 @@ class RssFeed
      */
     public function imageHeight(): int
     {
-        return $this->image['height'];
+        return $this->imageHeight;
     }
 }

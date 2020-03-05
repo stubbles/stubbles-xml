@@ -401,7 +401,7 @@ class RssFeedItem
     /**
      * returns the description of a media object that is attached to the item
      *
-     * @return  array<array<string,scalar>>
+     * @return  array<array<string,string>>
      */
     public function enclosures(): array
     {
