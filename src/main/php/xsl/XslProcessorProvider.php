@@ -60,9 +60,8 @@ class XslProcessorProvider implements InjectionProvider
      * Callbacks are read from xsl-callbacks.ini within the given config path.
      *
      * @param   string  $name
-     * @return  mixed
      */
-    public function get(string $name = null)
+    public function get(string $name = null): XslProcessor
     {
         if ($this->shouldHaveCallbacks($name)) {
             return new XslProcessor($this->createXslCallbacks());
@@ -73,19 +72,14 @@ class XslProcessorProvider implements InjectionProvider
 
     /**
      * checks whether the xsl processor instance to create should have callbacks
-     *
-     * @param   string  $name
-     * @return  bool
      */
     protected function shouldHaveCallbacks(string $name = null): bool
     {
-        return ('stubbles.xml.xsl.callbacks.disabled' !== $name);
+        return 'stubbles.xml.xsl.callbacks.disabled' !== $name;
     }
 
     /**
      * creates callbacks
-     *
-     * @return  \stubbles\xml\xsl\XslCallbacks
      */
     protected function createXslCallbacks(): XslCallbacks
     {
@@ -104,26 +98,37 @@ class XslProcessorProvider implements InjectionProvider
      * reads list of callbacks from configuration
      *
      * @return  array<string,class-string>
-     * @throws  \stubbles\xml\xsl\XslCallbackException
+     * @throws  XslCallbackException
      */
     protected function callbacks(): array
     {
         if (!is_array($this->callbackList)) {
-            if (!file_exists($this->configPath . '/xsl-callbacks.ini')) {
-                $this->callbackList = [];
-            } else {
-                $callbackList = @parse_ini_file($this->configPath . '/xsl-callbacks.ini');
-                if (false === $callbackList) {
-                    throw new XslCallbackException(
-                            'XSL callback in ' . $this->configPath
-                            . '/xsl-callbacks.ini contains errors and can not be parsed.'
-                    );
-                }
-
-                $this->callbackList = $callbackList;
-            }
+            $this->callbackList = $this->createCallbackList();
         }
 
         return $this->callbackList;
+    }
+
+    /**
+     * @return  array<string,class-string>
+     */
+    private function createCallbackList(): array
+    {
+        $callbackConfig = $this->configPath . '/xsl-callbacks.ini';
+        if (!file_exists($callbackConfig)) {
+            return [];
+        }
+
+        $callbackList = @parse_ini_file($callbackConfig);
+        if (false === $callbackList) {
+            throw new XslCallbackException(
+                sprintf(
+                    'XSL callback config in %s contains errors and can not be parsed.',
+                    $callbackConfig
+                )
+            );
+        }
+
+        return $callbackList;
     }
 }

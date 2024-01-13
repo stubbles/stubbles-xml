@@ -5,22 +5,22 @@
     "license": "BSD-3-Clause",
     "description": "Classes to work with XML",
     "require": {
-        "php": "^7.3",
+        "php": "^8.2",
         "ext-mbstring": "*",
         "ext-libxml": "*",
-        "stubbles/ioc": "^10.0",
-        "stubbles/reflect": "^9.1",
-        "stubbles/date": "^8.0.1"
+        "stubbles/ioc": "^11.0",
+        "stubbles/reflect": "^10.0",
+        "stubbles/date": "^9.0"
     },
     "require-dev": {
         "ext-xsl": "*",
         "ext-dom": "*",
         "ext-xmlwriter": "*",
-        "mikey179/vfsstream": "^1.6.8",
-        "phpunit/phpunit": "^9.0",
-        "bovigo/callmap": "^6.0",
-        "bovigo/assert": "^6.0",
-        "stubbles/sequence": "^9.0"
+        "mikey179/vfsstream": "^1.6.11",
+        "phpunit/phpunit": "^10.5",
+        "bovigo/callmap": "^8.0",
+        "bovigo/assert": "^8.0",
+        "stubbles/sequence": "^10.1"
     },
     "autoload": {
         "psr-4": {
@@ -35,13 +35,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "8.0.x-dev"
+            "dev-master": "9.0.x-dev"
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "test": "phpunit",
-        "php-coveralls": "php-coveralls"
+        "test": "phpunit"
     }
 }

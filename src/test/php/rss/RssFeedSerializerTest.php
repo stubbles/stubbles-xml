@@ -78,7 +78,6 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function noItemsNoStylesheets(): void
     {
@@ -98,7 +97,6 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function noItemsWithStylesheets(): void
     {
@@ -118,7 +116,6 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function withItemsNoStylesheets(): void
     {
@@ -138,7 +135,6 @@ class RssFeedSerializerTest extends TestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function withAllChannelElements(): void
     {

@@ -10,6 +10,7 @@ namespace stubbles\xml\xsl;
 use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use stubbles\ioc\Injector;
 
 use function bovigo\assert\assertThat;
@@ -25,6 +26,7 @@ use function stubbles\reflect\annotationsOfConstructorParameter;
  * @group  xml
  * @group  xml_xsl
  */
+#[RequiresPhpExtension('xsl')]
 class XslProcessorProviderTest extends TestCase
 {
     /**

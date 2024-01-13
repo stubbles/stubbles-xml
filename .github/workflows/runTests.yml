@@ -3,19 +3,20 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
   tests:
     name: PHP ${{ matrix.php-versions }} on ${{ matrix.os }} w/ ${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.php-versions == '8.4' }}
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['7.3', '7.4']
+        php-versions: ['8.2', '8.3', '8.4']
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        dependencies: ['install', 'update --prefer-lowest', 'update']
+        dependencies: ['install', 'update']
 
     steps:
     - name: Configure git
@@ -43,13 +44,15 @@ jobs:
       run: composer validate
 
     - name: Get Composer Cache Directory
+      if: runner.os != 'Windows'
       id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      run: echo "value=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
     - name: Cache dependencies
-      uses: actions/cache@v1
+      if: runner.os != 'Windows'
+      uses: actions/cache@v3.3.2
       with:
-        path: ${{ steps.composer-cache.outputs.dir }}
+        path: ${{ steps.composer-cache.outputs.value }}
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
@@ -58,4 +61,3 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test -- --coverage-text
-

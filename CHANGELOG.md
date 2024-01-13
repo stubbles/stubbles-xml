@@ -4,6 +4,7 @@
 
 ### BC breaks
 
+* raised minimum required PHP version to 8.2
 * added type hint `object` for first parameter of `stubbles\xml\serializer\ObjectXmlSerializer::serialize()`
 
 ### Other changes
