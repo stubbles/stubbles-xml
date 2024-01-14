@@ -309,16 +309,16 @@
         },
         {
             "name": "bovigo/callmap",
-            "version": "v8.0.4",
+            "version": "v8.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "b1006b087e39c1c5da79bd2025dcb78466ad8e94"
+                "reference": "13aad013e856aad1cd3529b1e7a97c912e53b0b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/b1006b087e39c1c5da79bd2025dcb78466ad8e94",
-                "reference": "b1006b087e39c1c5da79bd2025dcb78466ad8e94",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/13aad013e856aad1cd3529b1e7a97c912e53b0b4",
+                "reference": "13aad013e856aad1cd3529b1e7a97c912e53b0b4",
                 "shasum": ""
             },
             "require": {
@@ -356,9 +356,9 @@
             "description": "Allows to stub and mock method calls by applying a callmap.",
             "support": {
                 "issues": "https://github.com/bovigo/callmap/issues",
-                "source": "https://github.com/bovigo/callmap/tree/v8.0.4"
+                "source": "https://github.com/bovigo/callmap/tree/v8.0.5"
             },
-            "time": "2024-01-14T18:17:00+00:00"
+            "time": "2024-01-14T19:41:32+00:00"
         },
         {
             "name": "mikey179/vfsstream",
