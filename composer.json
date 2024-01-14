@@ -18,7 +18,7 @@
         "ext-xmlwriter": "*",
         "mikey179/vfsstream": "^1.6.11",
         "phpunit/phpunit": "^10.5",
-        "bovigo/callmap": "^8.0",
+        "bovigo/callmap": "^8.0.4",
         "bovigo/assert": "^8.0",
         "stubbles/sequence": "^10.1"
     },

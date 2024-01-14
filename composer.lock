@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed8a64af491b56008ca81d80f48dfaa5",
+    "content-hash": "3f62ad7f3f4c3a24859587065483ba96",
     "packages": [
         {
             "name": "stubbles/date",
@@ -309,16 +309,16 @@
         },
         {
             "name": "bovigo/callmap",
-            "version": "v8.0.3",
+            "version": "v8.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "fb0b5fb620d259cf71c795b9620749ba89e496ef"
+                "reference": "b1006b087e39c1c5da79bd2025dcb78466ad8e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/fb0b5fb620d259cf71c795b9620749ba89e496ef",
-                "reference": "fb0b5fb620d259cf71c795b9620749ba89e496ef",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/b1006b087e39c1c5da79bd2025dcb78466ad8e94",
+                "reference": "b1006b087e39c1c5da79bd2025dcb78466ad8e94",
                 "shasum": ""
             },
             "require": {
@@ -356,9 +356,9 @@
             "description": "Allows to stub and mock method calls by applying a callmap.",
             "support": {
                 "issues": "https://github.com/bovigo/callmap/issues",
-                "source": "https://github.com/bovigo/callmap/tree/v8.0.3"
+                "source": "https://github.com/bovigo/callmap/tree/v8.0.4"
             },
-            "time": "2023-12-31T20:44:19+00:00"
+            "time": "2024-01-14T18:17:00+00:00"
         },
         {
             "name": "mikey179/vfsstream",
