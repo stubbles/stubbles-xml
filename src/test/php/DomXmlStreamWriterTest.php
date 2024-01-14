@@ -207,7 +207,7 @@ class DomXmlStreamWriterTest extends TestCase
         assertThat(
             $this->writer->writeStartElement('root')
                 ->writeStartElement('foo')
-                ->writeAttribute('bar', utf8_decode('hääää'))
+                ->writeAttribute('bar', mb_convert_encoding('hääää', 'ISO-8859-1', 'UTF-8'))
                 ->writeEndElement()
                 ->writeEndElement()
                 ->asXml(),
@@ -250,12 +250,22 @@ class DomXmlStreamWriterTest extends TestCase
         );
     }
 
+    private function textWithGermanUmlauts(
+        string $text = 'This is text containing äöü.'
+    ): string {
+        return mb_convert_encoding(
+            $text,
+            'ISO-8859-1',
+            'UTF-8'
+        );
+    }
+
     #[Test]
     public function writeTextWithGermanUmlautsInNonUtf8WillEncodeText(): void
     {
         assertThat(
             $this->writer->writeStartElement('root')
-                ->writeText(utf8_decode('This is text containing äöü.'))
+                ->writeText($this->textWithGermanUmlauts())
                 ->writeEndElement()
                 ->asXml(),
             equals(
@@ -300,7 +310,7 @@ class DomXmlStreamWriterTest extends TestCase
     {
         assertThat(
             $this->writer->writeStartElement('root')
-                ->writeCData(utf8_decode('This is text containing äöü.'))
+                ->writeCData($this->textWithGermanUmlauts())
                 ->writeEndElement()
                 ->asXml(),
             equals(
@@ -345,8 +355,9 @@ class DomXmlStreamWriterTest extends TestCase
     {
         assertThat(
             $this->writer->writeStartElement('root')
-                ->writeComment(utf8_decode('This is a comment containing äöü.'))
-                ->writeEndElement()
+                ->writeComment(
+                    $this->textWithGermanUmlauts('This is a comment containing äöü.')
+                )->writeEndElement()
                 ->asXml(),
             equals(
                 '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
