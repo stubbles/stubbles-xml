@@ -7,7 +7,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\serializer;
+
+use bovigo\callmap\ClassProxy;
 use bovigo\callmap\NewInstance;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
@@ -19,23 +23,14 @@ use function bovigo\assert\predicate\isSameAs;
  * Test for stubbles\xml\serializer\XmlSerializerFacade.
  *
  * @since  1.1.0
- * @group  xml
- * @group  xml_serializer
  */
+#[Group('xml')]
+#[Group('xml_serializer')]
 class XmlSerializerFacadeTest extends TestCase
 {
-    /**
-     * @var  XmlSerializerFacade
-     */
-    private $xmlSerializerFacade;
-    /**
-     * @var  XmlSerializer&\bovigo\callmap\ClassProxy
-     */
-    private $xmlSerializer;
-    /**
-     * @var  XmlStreamWriter&\bovigo\callmap\ClassProxy
-     */
-    private $xmlStreamWriter;
+    private XmlSerializerFacade $xmlSerializerFacade;
+    private XmlSerializer&ClassProxy $xmlSerializer;
+    private XmlStreamWriter&ClassProxy $xmlStreamWriter;
 
     protected function setUp(): void
     {
@@ -43,8 +38,8 @@ class XmlSerializerFacadeTest extends TestCase
         $this->xmlSerializer   = NewInstance::stub(XmlSerializer::class);
         $this->xmlStreamWriter = NewInstance::of(XmlStreamWriter::class);
         $this->xmlSerializerFacade = new XmlSerializerFacade(
-                $this->xmlSerializer,
-                $this->xmlStreamWriter
+            $this->xmlSerializer,
+            $this->xmlStreamWriter
         );
     }
 
@@ -53,32 +48,30 @@ class XmlSerializerFacadeTest extends TestCase
         libxml_clear_errors();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeToXmlReturnsXmlString(): void
     {
         $this->xmlSerializer->returns(['serialize' => $this->xmlStreamWriter]);
         $this->xmlStreamWriter->returns(
-                ['asXml' => '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>']
+            ['asXml' => '<?xml version="1.0" encoding="UTF-8"?><string>foo</string>']
         );
+
         assertThat(
-                $this->xmlSerializerFacade->serializeToXml('foo'),
-                equals('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>')
+            $this->xmlSerializerFacade->serializeToXml('foo'),
+            equals('<?xml version="1.0" encoding="UTF-8"?><string>foo</string>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeToDomReturnsDOMDocument(): void
     {
         $domDocument = new \DOMDocument();
         $this->xmlSerializer->returns(['serialize' => $this->xmlStreamWriter]);
         $this->xmlStreamWriter->returns(['asDom' => $domDocument]);
+
         assertThat(
-                $this->xmlSerializerFacade->serializeToDom('foo'),
-                isSameAs($domDocument)
+            $this->xmlSerializerFacade->serializeToDom('foo'),
+            isSameAs($domDocument)
         );
     }
 }

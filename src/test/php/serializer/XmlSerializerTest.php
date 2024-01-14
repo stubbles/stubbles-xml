@@ -7,7 +7,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\serializer;
+
+use ArrayIterator;
+use bovigo\callmap\ClassProxy;
 use bovigo\callmap\NewInstance;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\helper\serializer\ContainerWithArrayListTagName;
 use stubbles\helper\serializer\ContainerWithArrayListWithoutTagName;
@@ -28,29 +33,17 @@ use stubbles\sequence\Sequence;
 use stubbles\xml\DomXmlStreamWriter;
 
 use function bovigo\assert\assertThat;
-use function bovigo\assert\expect;
 use function bovigo\assert\fail;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\serializer\XmlSerializer.
- *
- * @group  xml
- * @group  xml_serializer
  */
+#[Group('xml')]
+#[Group('xml_serializer')]
 class XmlSerializerTest extends TestCase
 {
-    /**
-     * instance to test
-     *
-     * @var XmlSerializer
-     */
-    private $serializer;
-    /**
-     * mocked injector instance
-     *
-     * @var  Injector&\bovigo\callmap\ClassProxy
-     */
-    private $injector;
+    private XmlSerializer $serializer;
+    private Injector&ClassProxy $injector;
 
     protected function setUp(): void
     {
@@ -70,676 +63,601 @@ class XmlSerializerTest extends TestCase
      * @param   string  $elementTagName
      * @return  string
      */
-    protected function serialize($value, string $tagName = null, string $elementTagName = null): string
-    {
+    private function serialize(
+        mixed $value,
+        ?string $tagName = null,
+        ?string $elementTagName = null
+    ): string {
         return $this->serializer->serialize(
-                $value,
-                new DomXmlStreamWriter(),
-                $tagName,
-                $elementTagName
+            $value,
+            new DomXmlStreamWriter(),
+            $tagName,
+            $elementTagName
         )->asXml();
     }
 
-    protected function prefixXml(string $xml): string
+    private function prefixXml(string $xml): string
     {
         return '<?xml version="1.0" encoding="UTF-8"?>' . "\n" . $xml;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeNullWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(null),
-                equals($this->prefixXml('<null><null/></null>'))
+            $this->serialize(null),
+            equals($this->prefixXml('<null><null/></null>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeNullWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(null, 'root'),
-                equals($this->prefixXml('<root><null/></root>'))
+            $this->serialize(null, 'root'),
+            equals($this->prefixXml('<root><null/></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeBooleanTrueWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(true),
-                equals($this->prefixXml('<boolean>true</boolean>'))
+            $this->serialize(true),
+            equals($this->prefixXml('<boolean>true</boolean>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeBooleanTrueWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(true, 'root'),
-                equals($this->prefixXml('<root>true</root>'))
+            $this->serialize(true, 'root'),
+            equals($this->prefixXml('<root>true</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeBooleanFalseWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(false),
-                equals($this->prefixXml('<boolean>false</boolean>'))
+            $this->serialize(false),
+            equals($this->prefixXml('<boolean>false</boolean>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeBooleanFalseWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(false, 'root'),
-                equals($this->prefixXml('<root>false</root>'))
+            $this->serialize(false, 'root'),
+            equals($this->prefixXml('<root>false</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeStringWithoutTagName(): void
     {
         assertThat(
-                $this->serialize('This is a string.'),
-                equals($this->prefixXml('<string>This is a string.</string>'))
+            $this->serialize('This is a string.'),
+            equals($this->prefixXml('<string>This is a string.</string>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeStringWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize('This is a string.', 'root'),
-                equals($this->prefixXml('<root>This is a string.</root>'))
+            $this->serialize('This is a string.', 'root'),
+            equals($this->prefixXml('<root>This is a string.</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeStringWithoutTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeString(
-                        'This is a string.',
-                        new DomXmlStreamWriter()
-                )->asXml(),
-                equals($this->prefixXml('<string>This is a string.</string>'))
+            $this->serializer->serializeString(
+                'This is a string.',
+                new DomXmlStreamWriter()
+            )->asXml(),
+            equals($this->prefixXml('<string>This is a string.</string>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeStringWithGivenTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeString(
-                        'This is a string.',
-                        new DomXmlStreamWriter(),
-                        'root'
-                )->asXml(),
-                equals($this->prefixXml('<root>This is a string.</root>'))
+            $this->serializer->serializeString(
+                'This is a string.',
+                new DomXmlStreamWriter(),
+                'root'
+            )->asXml(),
+            equals($this->prefixXml('<root>This is a string.</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIntegerWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(45),
-                equals($this->prefixXml('<integer>45</integer>'))
+            $this->serialize(45),
+            equals($this->prefixXml('<integer>45</integer>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIntegerWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(45, 'root'),
-                equals($this->prefixXml('<root>45</root>'))
+            $this->serialize(45, 'root'),
+            equals($this->prefixXml('<root>45</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIntegerWithoutTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeInt(45, new DomXmlStreamWriter())
-                        ->asXml(),
-                equals($this->prefixXml('<integer>45</integer>'))
+            $this->serializer->serializeInt(45, new DomXmlStreamWriter())
+                ->asXml(),
+            equals($this->prefixXml('<integer>45</integer>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIntegerWithGivenTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeInt(45, new DomXmlStreamWriter(), 'root')
-                        ->asXml(),
-                equals($this->prefixXml('<root>45</root>'))
+            $this->serializer->serializeInt(45, new DomXmlStreamWriter(), 'root')
+                ->asXml(),
+            equals($this->prefixXml('<root>45</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeFloatWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(2.352),
-                equals($this->prefixXml('<double>2.352</double>'))
+            $this->serialize(2.352),
+            equals($this->prefixXml('<double>2.352</double>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeFloatWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(2.352, 'root'),
-                equals($this->prefixXml('<root>2.352</root>'))
+            $this->serialize(2.352, 'root'),
+            equals($this->prefixXml('<root>2.352</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeFloatWithoutTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeFloat(
-                        2.352,
-                        new DomXmlStreamWriter()
-                )->asXml(),
-                equals($this->prefixXml('<double>2.352</double>'))
+            $this->serializer->serializeFloat(
+                2.352,
+                new DomXmlStreamWriter()
+            )->asXml(),
+            equals($this->prefixXml('<double>2.352</double>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeFloatWithGivenTagNameDirectly(): void
     {
         assertThat(
-                $this->serializer->serializeFloat(
-                        2.352,
-                        new DomXmlStreamWriter(),
-                        'root'
-                )->asXml(),
-                equals($this->prefixXml('<root>2.352</root>'))
+            $this->serializer->serializeFloat(
+                2.352,
+                new DomXmlStreamWriter(),
+                'root'
+            )->asXml(),
+            equals($this->prefixXml('<root>2.352</root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeAssociativeArrayWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(['one' => 'two', 'three' => 'four']),
-                equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
+            $this->serialize(['one' => 'two', 'three' => 'four']),
+            equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeAssociativeArrayWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        ['one'   => 'two',
-                         'three' => 'four'
-                        ],
-                        'root'
-                ),
-                equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
+            $this->serialize(
+                [
+                    'one'   => 'two',
+                    'three' => 'four'
+                ],
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedArrayWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(['one', 2, 'three']),
-                equals($this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'))
+            $this->serialize(['one', 2, 'three']),
+            equals(
+                $this->prefixXml(
+                    '<array><string>one</string><integer>2</integer><string>three</string></array>'
+                )
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedArrayWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(['one', 2, 'three'], 'root'),
-                equals($this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'))
+            $this->serialize(['one', 2, 'three'], 'root'),
+            equals(
+                $this->prefixXml(
+                    '<root><string>one</string><integer>2</integer><string>three</string></root>'
+                )
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedArrayWithoutTagNameAndGivenElementTagName(): void
     {
         assertThat(
-                $this->serialize(['one', 2, 'three'], null, 'foo'),
-                equals($this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'))
+            $this->serialize(['one', 2, 'three'], null, 'foo'),
+            equals($this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedArrayWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
-                $this->serialize(['one', 2, 'three'], 'root', 'foo'),
-                equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
+            $this->serialize(['one', 2, 'three'], 'root', 'foo'),
+            equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeNestedArray(): void
     {
         assertThat(
-                $this->serialize(
-                        ['one'   => 'two',
-                         'three' => ['four' => 'five']
-                        ],
-                        'root'
-                ),
-                equals($this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'))
+            $this->serialize(
+                [
+                    'one'   => 'two',
+                    'three' => ['four' => 'five']
+                ],
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeAssociativeIteratorWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        new \ArrayIterator(['one' => 'two', 'three' => 'four'])
-                ),
-                equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
+            $this->serialize(
+                new ArrayIterator(['one' => 'two', 'three' => 'four'])
+            ),
+            equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeAssociativeIteratorWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        new \ArrayIterator(['one' => 'two', 'three' => 'four']),
-                        'root'
-                ),
-                equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
+            $this->serialize(
+                new ArrayIterator(['one' => 'two', 'three' => 'four']),
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedIteratorWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(new \ArrayIterator(['one', 2, 'three'])),
-                equals($this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'))
+            $this->serialize(new ArrayIterator(['one', 2, 'three'])),
+            equals($this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedIteratorWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        new \ArrayIterator(['one', 2, 'three']),
-                        'root'
-                ),
-                equals($this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'))
+            $this->serialize(
+                new ArrayIterator(['one', 2, 'three']),
+                'root'
+            ),
+            equals($this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeIndexedIteratorWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        new \ArrayIterator(['one', 2, 'three']),
-                        'root',
-                        'foo'
-                ),
-                equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
+            $this->serialize(
+                new ArrayIterator(['one', 2, 'three']),
+                'root',
+                'foo'
+            ),
+            equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeNestedIterator(): void
     {
         assertThat(
-                $this->serialize(
-                        new \ArrayIterator(
-                                ['one'   => 'two',
-                                 'three' => new \ArrayIterator(['four' => 'five'])
-                                ]
-                        ),
-                        'root'
+            $this->serialize(
+                new ArrayIterator(
+                    [
+                        'one'   => 'two',
+                        'three' => new ArrayIterator(['four' => 'five'])
+                    ]
                 ),
-                equals($this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'))
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>two</one><three><four>five</four></three></root>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeAssociativeSequenceWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(Sequence::of(['one' => 'two', 'three' => 'four'])),
-                equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
+            $this->serialize(Sequence::of(['one' => 'two', 'three' => 'four'])),
+            equals($this->prefixXml('<array><one>two</one><three>four</three></array>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeAssociativeSequenceWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(
-                        Sequence::of(
-                                ['one'   => 'two',
-                                 'three' => 'four'
-                                ]
-                        ),
-                        'root'
+            $this->serialize(
+                Sequence::of(
+                    [
+                        'one'   => 'two',
+                        'three' => 'four'
+                    ]
                 ),
-                equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>two</one><three>four</three></root>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeIndexedSequenceWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(Sequence::of(['one', 2, 'three'])),
-                equals($this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'))
+            $this->serialize(Sequence::of(['one', 2, 'three'])),
+            equals($this->prefixXml('<array><string>one</string><integer>2</integer><string>three</string></array>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeIndexedSequenceWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(Sequence::of(['one', 2, 'three']), 'root'),
-                equals($this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'))
+            $this->serialize(Sequence::of(['one', 2, 'three']), 'root'),
+            equals($this->prefixXml('<root><string>one</string><integer>2</integer><string>three</string></root>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeIndexedSequenceWithoutTagNameAndGivenElementTagName(): void
     {
         assertThat(
-                $this->serialize(Sequence::of(['one', 2, 'three']), null, 'foo'),
-                equals($this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'))
+            $this->serialize(Sequence::of(['one', 2, 'three']), null, 'foo'),
+            equals($this->prefixXml('<array><foo>one</foo><foo>2</foo><foo>three</foo></array>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeIndexedSequenceWithGivenTagNameAndElementTagName(): void
     {
         assertThat(
-                $this->serialize(Sequence::of(['one', 2, 'three']), 'root', 'foo'),
-                equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
+            $this->serialize(Sequence::of(['one', 2, 'three']), 'root', 'foo'),
+            equals($this->prefixXml('<root><foo>one</foo><foo>2</foo><foo>three</foo></root>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.0
      */
+    #[Test]
     public function serializeFinalSequence(): void
     {
         assertThat(
-                $this->serialize(
-                        Sequence::of(
-                            ['one'   => 'two', 'three' => 'four']
-                        )->map(function($value) { return strtoupper($value); }),
-                        'root'
-                ),
-                equals($this->prefixXml('<root><one>TWO</one><three>FOUR</three></root>'))
+            $this->serialize(
+                Sequence::of(
+                    ['one'   => 'two', 'three' => 'four']
+                )->map(function($value) { return strtoupper($value); }),
+                'root'
+            ),
+            equals($this->prefixXml('<root><one>TWO</one><three>FOUR</three></root>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithoutTagName(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectClass()),
-                equals($this->prefixXml('<foo bar="test"><bar>42</bar></foo>'))
+            $this->serialize(new ExampleObjectClass()),
+            equals($this->prefixXml('<foo bar="test"><bar>42</bar></foo>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithGivenTagName(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectClass(), 'baz'),
-                equals($this->prefixXml('<baz bar="test"><bar>42</bar></baz>'))
+            $this->serialize(new ExampleObjectClass(), 'baz'),
+            equals($this->prefixXml('<baz bar="test"><bar>42</bar></baz>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithXmlSerializerAnnotation(): void
     {
         $this->injector->returns(['getInstance' => new ExampleObjectSerializer()]);
         assertThat(
-                $this->serialize(new ExampleObjectClassWithSerializer()),
-                equals($this->prefixXml('<example sound="303"><anything>something</anything></example>'))
+            $this->serialize(new ExampleObjectClassWithSerializer()),
+            equals($this->prefixXml('<example sound="303"><anything>something</anything></example>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeNestedObject(): void
     {
         $obj      = new ExampleObjectClass();
         $obj->bar = new ExampleObjectClass();
         assertThat(
-                $this->serialize($obj),
-                equals($this->prefixXml('<foo bar="test"><bar bar="test"><bar>42</bar></bar></foo>'))
+            $this->serialize($obj),
+            equals($this->prefixXml('<foo bar="test"><bar bar="test"><bar>42</bar></bar></foo>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWhichContainsArray(): void
     {
         assertThat(
-                $this->serialize(new ContainerWithArrayListTagName()),
-                equals($this->prefixXml('<container><list><item>one</item><item>two</item><item>three</item></list></container>'))
+            $this->serialize(new ContainerWithArrayListTagName()),
+            equals($this->prefixXml('<container><list><item>one</item><item>two</item><item>three</item></list></container>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWhichContainsArrayWhereArrayTagNameIsDisabled(): void
     {
         assertThat(
-                $this->serialize(new ContainerWithArrayListWithoutTagName()),
-                equals($this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'))
+            $this->serialize(new ContainerWithArrayListWithoutTagName()),
+            equals($this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWhichContainsIterator(): void
     {
         assertThat(
-                $this->serialize(new ContainerWithIterator()),
-                equals($this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'))
+            $this->serialize(new ContainerWithIterator()),
+            equals($this->prefixXml('<container><item>one</item><item>two</item><item>three</item></container>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeStandardObject(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectClassWithMethods()),
-                equals($this->prefixXml('<class method="returned" isFoo="true" isBar="false"><getBaz>baz</getBaz></class>'))
+            $this->serialize(new ExampleObjectClassWithMethods()),
+            equals($this->prefixXml('<class method="returned" isFoo="true" isBar="false"><getBaz>baz</getBaz></class>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithXmlFragment(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectWithXmlFragments()),
-                equals($this->prefixXml('<test><xml><foo>bar</foo></xml><foo>bar</foo><description>foo<br/>' . "\n" . 'b&amp;ar<br/>' . "\n" . '<br/>' . "\n" . 'baz</description></test>'))
+            $this->serialize(new ExampleObjectWithXmlFragments()),
+            equals($this->prefixXml('<test><xml><foo>bar</foo></xml><foo>bar</foo><description>foo<br/>' . "\n" . 'b&amp;ar<br/>' . "\n" . '<br/>' . "\n" . 'baz</description></test>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithInvalidXmlFragment(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectWithInvalidXmlFragments()),
-                equals($this->prefixXml('<test><noXml>bar</noXml><noData/></test>'))
+            $this->serialize(new ExampleObjectWithInvalidXmlFragments()),
+            equals($this->prefixXml('<test><noXml>bar</noXml><noData/></test>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectWithEmptyAttributes(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectClassWithEmptyAttributes()),
-                equals($this->prefixXml('<test emptyProp2="" emptyMethod2=""/>'))
+            $this->serialize(new ExampleObjectClassWithEmptyAttributes()),
+            equals($this->prefixXml('<test emptyProp2="" emptyMethod2=""/>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotSerializeStaticPropertiesAndMethods(): void
     {
         assertThat(
-                $this->serialize(new ExampleStaticClass()),
-                equals($this->prefixXml('<ExampleStaticClass/>'))
+            $this->serialize(new ExampleStaticClass()),
+            equals($this->prefixXml('<ExampleStaticClass/>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function serializeObjectContainingUmlauts(): void
     {
         assertThat(
-                $this->serialize(new ExampleObjectWithUmlauts()),
-                equals($this->prefixXml('<test bar="Hähnchen"><foo>Hähnchen</foo></test>'))
+            $this->serialize(new ExampleObjectWithUmlauts()),
+            equals($this->prefixXml('<test bar="Hähnchen"><foo>Hähnchen</foo></test>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.1
      */
+    #[Test]
     public function serializeObjectOfTraversableWithXmlNonTraversableAnnotation(): void
     {
         assertThat(
-                $this->serialize(new TraversableNonTraversable()),
-                equals($this->prefixXml('<TraversableNonTraversable><baz>dummy</baz></TraversableNonTraversable>'))
+            $this->serialize(new TraversableNonTraversable()),
+            equals($this->prefixXml('<TraversableNonTraversable><baz>dummy</baz></TraversableNonTraversable>'))
         );
     }
 
     /**
-     * @test
      * @since  4.2.2
      */
+    #[Test]
     public function serializeObjectOfTraversableWithXmlTagh(): void
     {
         assertThat(
-                $this->serialize(new TraversableTraversable()),
-                equals($this->prefixXml('<foo><example>bar</example></foo>'))
+            $this->serialize(new TraversableTraversable()),
+            equals($this->prefixXml('<foo><example>bar</example></foo>'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotSerializeResources(): void
     {
         $fp = fopen(__FILE__, 'rb');

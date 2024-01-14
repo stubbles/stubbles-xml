@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\rss;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 use stubbles\helper\rss\ExtendedRSSItemEntity;
@@ -18,194 +21,172 @@ use stubbles\helper\rss\SimpleRssItemEntity;
 use stubbles\xml\XmlException;
 
 use function bovigo\assert\assertThat;
-use function bovigo\assert\assertEmptyArray;
-use function bovigo\assert\assertFalse;
-use function bovigo\assert\assertNull;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\rss\RssFeedItem::fromEntity().
- *
- * @group  xml
- * @group  xml_rss
  */
+#[Group('xml')]
+#[Group('xml_rss')]
 class RssFeedItemFromEntityTest extends TestCase
 {
-    /**
-     * @var  RssFeed
-     */
-    private $rssFeed;
+    private RssFeed $rssFeed;
 
     protected function setUp(): void
     {
         $this->rssFeed = new RssFeed('title', 'link', 'description');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingAnnotationThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new \stdClass()); })
-                ->throws(XmlException::class);
+            ->throws(XmlException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingTitleThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingAllRssItemEntity());})
-                ->throws(XmlException::class);
+            ->throws(XmlException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingLinkThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingLinkAndDescriptionRssItemEntity());})
-                ->throws(XmlException::class);
+            ->throws(XmlException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingDescriptionThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new MissingDescriptionRssItemEntity());})
-                ->throws(XmlException::class);
+            ->throws(XmlException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleEntityIsTransformedIntoRssItemWithMinimalProperties(): void
     {
         assertThat(
-                $this->rssFeed->addEntity(new SimpleRssItemEntity()),
-                equals(new RssFeedItem('simpleTitle', 'simpleLink', 'simpleDescription'))
+            $this->rssFeed->addEntity(new SimpleRssItemEntity()),
+            equals(new RssFeedItem('simpleTitle', 'simpleLink', 'simpleDescription'))
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleEntityWithOverrides(): void
     {
         $rssFeedItem = $this->rssFeed->addEntity(
                 new SimpleRssItemEntity(),
-                ['title'                 => 'overrideTitle',
-                 'link'                  => 'overrideLink',
-                 'description'           => 'overrideDescription',
-                 'byAuthor'              => 'overrideAuthor',
-                 'inCategories'          => [['category' => 'overrideCategories',
-                                              'domain'   => 'overrideDomain'
-                                             ]
-                                            ],
-                 'addCommentsAt'         => 'overrideCommentsUrl',
-                 'deliveringEnclosures'  => [['url'   => 'overrideEnclosureUrl',
-                                              'length' => 'overrideEnclosureLength',
-                                              'type'   => 'overrideEnclosureType'
-                                             ]
-                                            ],
-                 'withGuid'              => 'overrideGuid',
-                 'andGuidIsNotPermaLink' => false,
-                 'publishedOn'           => 1221598221,
-                 'inspiredBySources'     => [['name' => 'overrideSourceName',
-                                              'url'  => 'overrideSourceUrl'
-                                             ]
-                                            ],
-                 'withContent'           => 'overrideContent'
+                [
+                    'title'                 => 'overrideTitle',
+                    'link'                  => 'overrideLink',
+                    'description'           => 'overrideDescription',
+                    'byAuthor'              => 'overrideAuthor',
+                    'inCategories'          => [['category' => 'overrideCategories',
+                                                'domain'   => 'overrideDomain'
+                                                ]
+                                                ],
+                    'addCommentsAt'         => 'overrideCommentsUrl',
+                    'deliveringEnclosures'  => [['url'   => 'overrideEnclosureUrl',
+                                                'length' => 'overrideEnclosureLength',
+                                                'type'   => 'overrideEnclosureType'
+                                                ]
+                                                ],
+                    'withGuid'              => 'overrideGuid',
+                    'andGuidIsNotPermaLink' => false,
+                    'publishedOn'           => 1221598221,
+                    'inspiredBySources'     => [['name' => 'overrideSourceName',
+                                                'url'  => 'overrideSourceUrl'
+                                                ]
+                                                ],
+                    'withContent'           => 'overrideContent'
                 ]
         );
 
         $expectedRssFeedItem = (new RssFeedItem(
-                'overrideTitle',
-                'overrideLink',
-                'overrideDescription'
+            'overrideTitle',
+            'overrideLink',
+            'overrideDescription'
         ))->byAuthor('nospam@example.com (overrideAuthor)')
             ->inCategories([[
-                    'category' => 'overrideCategories',
-                    'domain'   => 'overrideDomain'
+                'category' => 'overrideCategories',
+                'domain'   => 'overrideDomain'
             ]])
             ->addCommentsAt('overrideCommentsUrl')
             ->deliveringEnclosures([[
-                    'url'    => 'overrideEnclosureUrl',
-                    'length' => 'overrideEnclosureLength',
-                    'type'   => 'overrideEnclosureType'
+                'url'    => 'overrideEnclosureUrl',
+                'length' => 'overrideEnclosureLength',
+                'type'   => 'overrideEnclosureType'
             ]])
             ->withGuid('overrideGuid')
             ->andGuidIsNotPermaLink()
             ->publishedOn(new Date(1221598221))
             ->inspiredBySources([[
-                    'name' => 'overrideSourceName', 'url' => 'overrideSourceUrl'
+                'name' => 'overrideSourceName', 'url' => 'overrideSourceUrl'
             ]])
             ->withContent('overrideContent');
 
         assertThat($rssFeedItem, equals($expectedRssFeedItem));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function extendedEntity(): void
     {
         $expectedRssFeedItem = (new RssFeedItem(
-                'simpleTitle',
-                'simpleLink',
-                'simpleDescription'
+            'simpleTitle',
+            'simpleLink',
+            'simpleDescription'
         ))->byAuthor('nospam@example.com (extendedAuthor)')
             ->inCategories([[
-                    'category' => 'extendedCategories',
-                    'domain'   => 'extendedDomain'
+                'category' => 'extendedCategories',
+                'domain'   => 'extendedDomain'
             ]])
             ->addCommentsAt('extendedCommentsUrl')
             ->deliveringEnclosures([[
-                    'url'    => 'extendedEnclosureUrl',
-                    'length' => 'extendedEnclosureLength',
-                    'type'   => 'extendedEnclosureType'
+                'url'    => 'extendedEnclosureUrl',
+                'length' => 'extendedEnclosureLength',
+                'type'   => 'extendedEnclosureType'
             ]])
             ->withGuid('extendedGuid')
             ->andGuidIsNotPermaLink()
             ->publishedOn(new Date(1221598221))
             ->inspiredBySources([[
-                    'name' => 'extendedSourceName', 'url' => 'extendedSourceUrl'
+                'name' => 'extendedSourceName', 'url' => 'extendedSourceUrl'
             ]])
             ->withContent('extendedContent');
         assertThat(
-                $this->rssFeed->addEntity(new ExtendedRSSItemEntity()),
-                equals($expectedRssFeedItem)
+            $this->rssFeed->addEntity(new ExtendedRSSItemEntity()),
+            equals($expectedRssFeedItem)
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function differentEntity(): void
     {
         $expectedRssFeedItem = (new RssFeedItem('headline', 'url', 'teaser'))
             ->byAuthor('creator@example.com (creator)')
             ->inCategories([[
-                    'category' => 'tag1',
-                    'domain'   => 'other'
+                'category' => 'tag1',
+                'domain'   => 'other'
             ]])
             ->addCommentsAt('remarks')
             ->deliveringEnclosures([[
-                    'url'    => 'imagesUrl',
-                    'length' => 'imagesLength',
-                    'type'   => 'imagesType'
+                'url'    => 'imagesUrl',
+                'length' => 'imagesLength',
+                'type'   => 'imagesType'
             ]])
             ->withGuid('id')
             ->andGuidIsNotPermaLink()
             ->publishedOn(new Date(1221598221))
             ->inspiredBySources([[
-                    'name' => 'originName', 'url' => 'originUrl'
+                'name' => 'originName', 'url' => 'originUrl'
             ]])
             ->withContent('text');
         assertThat(
-                $this->rssFeed->addEntity(new RssItemWithDifferentMethods()),
-                equals($expectedRssFeedItem)
+            $this->rssFeed->addEntity(new RssItemWithDifferentMethods()),
+            equals($expectedRssFeedItem)
         );
     }
 }

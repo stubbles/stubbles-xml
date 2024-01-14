@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\rss;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 
@@ -20,226 +23,180 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\rss\RssFeedItem.
- *
- * @group  xml
- * @group  xml_rss
  */
+#[Group('xml')]
+#[Group('xml_rss')]
 class RssFeedItemTest extends TestCase
 {
-    /**
-     * @var  RssFeedItem
-     */
-    private $rssFeedItem;
+    private RssFeedItem $rssFeedItem;
 
     protected function setUp(): void
     {
         $this->rssFeedItem = RssFeedItem::create(
-                'test',
-                'http://stubbles.net/',
-                'description'
+            'test',
+            'http://stubbles.net/',
+            'description'
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasGivenTitleByDefault(): void
     {
         assertThat($this->rssFeedItem->title(), equals('test'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasGivenLinkByDefault(): void
     {
         assertThat($this->rssFeedItem->link(), equals('http://stubbles.net/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasGivenDescriptionByDefault(): void
     {
         assertThat($this->rssFeedItem->description(), equals('description'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoAuthorByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasAuthor());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initialAuthorIsNull(): void
     {
         assertNull($this->rssFeedItem->author());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAuthorWithoutMailAddressUsesExampleMailAddress(): void
     {
         assertThat(
-                $this->rssFeedItem->byAuthor('mikey')->author(),
-                equals('nospam@example.com (mikey)')
+            $this->rssFeedItem->byAuthor('mikey')->author(),
+            equals('nospam@example.com (mikey)')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetAuthorWithMailAddress(): void
     {
         assertThat(
-                $this->rssFeedItem->byAuthor('test@example.net (mikey)')
-                        ->author(),
-                equals('test@example.net (mikey)')
+            $this->rssFeedItem->byAuthor('test@example.net (mikey)')
+                ->author(),
+            equals('test@example.net (mikey)')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoCategoriesByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->categories());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetCategories(): void
     {
         assertThat(
-                $this->rssFeedItem->inCategory('cat1')
-                        ->inCategory('cat2', 'domain')
-                        ->categories(),
-                equals([
-                        ['category' => 'cat1', 'domain'   => ''],
-                        ['category' => 'cat2', 'domain'   => 'domain']
-                ])
+            $this->rssFeedItem->inCategory('cat1')
+                ->inCategory('cat2', 'domain')
+                ->categories(),
+            equals([
+                ['category' => 'cat1', 'domain'   => ''],
+                ['category' => 'cat2', 'domain'   => 'domain']
+            ])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetListOfCategories(): void
     {
         assertThat(
-                $this->rssFeedItem->inCategories(['cat1', 'cat2'])
-                        ->categories(),
-                equals([
-                        ['category' => 'cat1', 'domain'   => ''],
-                        ['category' => 'cat2', 'domain'   => '']
-                ])
+            $this->rssFeedItem->inCategories(['cat1', 'cat2'])
+                ->categories(),
+            equals([
+                ['category' => 'cat1', 'domain'   => ''],
+                ['category' => 'cat2', 'domain'   => '']
+            ])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoCommentsUrlByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasComments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initialCommentUrlIsNull(): void
     {
         assertNull($this->rssFeedItem->comments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetCommentsUrl(): void
     {
         assertThat(
-                $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
-                        ->comments(),
-                equals('http://stubbles.net/comments/')
+            $this->rssFeedItem->addCommentsAt('http://stubbles.net/comments/')
+                ->comments(),
+            equals('http://stubbles.net/comments/')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoEnclosuresByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->enclosures());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetEnclosures(): void
     {
         assertThat(
-                $this->rssFeedItem->deliveringEnclosure(
-                        'http://stubbles.net/enclosure.mp3',
-                        50,
-                        'audio/mpeg'
-                )->enclosures(),
-                equals([[
-                        'url'    => 'http://stubbles.net/enclosure.mp3',
-                        'length' => 50,
-                        'type' => 'audio/mpeg'
-                ]])
+            $this->rssFeedItem->deliveringEnclosure(
+                'http://stubbles.net/enclosure.mp3',
+                50,
+                'audio/mpeg'
+            )->enclosures(),
+            equals([[
+                'url'    => 'http://stubbles.net/enclosure.mp3',
+                'length' => 50,
+                'type' => 'audio/mpeg'
+            ]])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoGuidByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasGuid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initialGuidIsNull(): void
     {
         assertNull($this->rssFeedItem->guid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function guidIsNotPermalinkByDefault(): void
     {
         assertFalse($this->rssFeedItem->isGuidPermaLink());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetGuid(): void
     {
         assertThat($this->rssFeedItem->withGuid('dummy')->guid(), equals('dummy'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingGuidEnablesGuidAsPermalink(): void
     {
         assertTrue($this->rssFeedItem->withGuid('dummy')->isGuidPermaLink());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingGuidAndDisablingPermalink(): void
     {
         assertFalse(
@@ -249,102 +206,82 @@ class RssFeedItemTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoPublishingDateByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasPubDate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initialPublishingDateIsNull(): void
     {
         assertNull($this->rssFeedItem->pubDate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function publishingDateCanBePassedAsDateInstance(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
-                $this->rssFeedItem->publishedOn($date)->pubDate(),
-                equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
+            $this->rssFeedItem->publishedOn($date)->pubDate(),
+            equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alternativePublishingDate(): void
     {
         $date = new Date('2008-05-24');
         assertThat(
-                $this->rssFeedItem->publishedOn('2008-05-24')->pubDate(),
-                equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
+            $this->rssFeedItem->publishedOn('2008-05-24')->pubDate(),
+            equals('Sat 24 May 2008 00:00:00 ' . $date->offset())
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingInvalidPublishingDateThrowsIllegalArgumentException(): void
     {
         expect(function() { $this->rssFeedItem->publishedOn('foo'); })
-                ->throws(\InvalidArgumentException::class);
+            ->throws(\InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoSourcesByDefault(): void
     {
         assertEmptyArray($this->rssFeedItem->sources());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetSources(): void
     {
         assertThat(
-                $this->rssFeedItem->inspiredBySource(
-                        'stubbles',
-                        'http://stubbles.net/source/'
-                )->sources(),
-                equals([['name' => 'stubbles', 'url'  => 'http://stubbles.net/source/']])
+            $this->rssFeedItem->inspiredBySource(
+                'stubbles',
+                'http://stubbles.net/source/'
+            )->sources(),
+            equals([['name' => 'stubbles', 'url'  => 'http://stubbles.net/source/']])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasNoContentByDefault(): void
     {
         assertFalse($this->rssFeedItem->hasContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initialContentIsEmpty(): void
     {
         assertEmptyString($this->rssFeedItem->content());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSetContent(): void
     {
         assertThat(
-                $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
-                        ->content(),
-                equals('<foo>bar</foo><baz/>')
+            $this->rssFeedItem->withContent('<foo>bar</foo><baz/>')
+                ->content(),
+            equals('<foo>bar</foo><baz/>')
         );
     }
 }

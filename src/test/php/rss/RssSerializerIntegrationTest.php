@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\rss;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\date\Date;
 use stubbles\date\TimeZone;
@@ -17,25 +20,23 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
- *
- * @group  xml
- * @group  xml_rss
  */
+#[Group('xml')]
+#[Group('xml_rss')]
 class RssSerializerIntegrationTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function writeFeed(): void
     {
-        $binder     = new Binder();
+        $binder = new Binder();
         /** @var  XmlSerializerFacade  $serializer */
         $serializer = $binder->getInjector()->getInstance(XmlSerializerFacade::class);
         $dom = $serializer->serializeToDom($this->createFeed());
         $dom->formatOutput = true;
         assertThat(
-                $dom->saveXML(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>
+            $dom->saveXML(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Example rss feed</title>
@@ -78,19 +79,19 @@ class RssSerializerIntegrationTest extends TestCase
     {
         $rssFeed = new RssFeed('Example rss feed', 'http://example.net/rss/', 'An example RSS feed');
         $rssFeed->setCopyright('(c) 2012 example.net')
-                ->setLocale('en_EN')
-                ->setLastBuildDate(new Date('2012-01-22', new TimeZone('Europe/Berlin')))
-                ->setManagingEditor('Master Yoda')
-                ->setWebMaster('Mr Hermann')
-                ->setTimeToLive(86400)
-                ->setImage('http://example.net/logo.png', 'An example rss feed', 100, 80);
+            ->setLocale('en_EN')
+            ->setLastBuildDate(new Date('2012-01-22', new TimeZone('Europe/Berlin')))
+            ->setManagingEditor('Master Yoda')
+            ->setWebMaster('Mr Hermann')
+            ->setTimeToLive(86400)
+            ->setImage('http://example.net/logo.png', 'An example rss feed', 100, 80);
         $rssFeed->addItem('Entry 1', 'http://example.net/article/1', 'A first article')
-                ->byAuthor('mikey')
-                ->addCommentsAt('http://example.net/article/1/comments')
-                ->inCategories(['live', 'examples'])
-                ->publishedOn(new Date('2012-01-21', new TimeZone('Europe/Berlin')))
-                ->withContent('Some article content')
-                ->withGuid('http://example.net/article/1');
+            ->byAuthor('mikey')
+            ->addCommentsAt('http://example.net/article/1/comments')
+            ->inCategories(['live', 'examples'])
+            ->publishedOn(new Date('2012-01-21', new TimeZone('Europe/Berlin')))
+            ->withContent('Some article content')
+            ->withGuid('http://example.net/article/1');
         return $rssFeed;
     }
 }

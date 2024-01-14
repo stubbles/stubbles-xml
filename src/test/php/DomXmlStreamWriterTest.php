@@ -7,6 +7,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml;
+
+use DOMDocument;
+use LogicException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertThat;
@@ -17,501 +22,468 @@ use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 /**
  * Test for stubbles\xml\DomXmlStreamWriter.
- *
- * @group  xml
- * @group  xml_core
  */
+#[Group('xml')]
+#[Group('xml_core')]
 class DomXmlStreamWriterTest extends TestCase
 {
-    /**
-     * @var  DomXmlStreamWriter
-     */
-    protected $writer;
+    private DomXmlStreamWriter $writer;
 
     protected function setUp(): void
     {
         $this->writer = new DomXmlStreamWriter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emptyDocumentContainsXmlHeader(): void
     {
         assertThat(
-                $this->writer->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>')
+            $this->writer->asXml(),
+            equals('<?xml version="1.0" encoding="UTF-8"?>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDocumentWithOtherXmlVersion(): void
     {
         $writer = new DomXmlStreamWriter('1.1');
         assertThat(
-                $writer->asXml(),
-                equals('<?xml version="1.1" encoding="UTF-8"?>')
+            $writer->asXml(),
+            equals('<?xml version="1.1" encoding="UTF-8"?>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDocumentWithIso(): void
     {
         $writer = new DomXmlStreamWriter('1.0', 'ISO-8859-1');
         assertThat(
-                $writer->asXml(),
-                equals('<?xml version="1.0" encoding="ISO-8859-1"?>')
+            $writer->asXml(),
+            equals('<?xml version="1.0" encoding="ISO-8859-1"?>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canCreateDocumentWithOtherVersionAndIso(): void
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat(
-                $writer->asXml(),
-                equals('<?xml version="1.1" encoding="ISO-8859-1"?>')
+            $writer->asXml(),
+            equals('<?xml version="1.1" encoding="ISO-8859-1"?>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasVersion1_0ByDefault(): void
     {
         assertThat($this->writer->version(), equals('1.0'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasUtf8EncodingByDefault(): void
     {
         assertThat($this->writer->encoding(), equals('UTF-8'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reportsOtherVersion(): void
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat($writer->version(), equals('1.1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reportsOtherEncoding(): void
     {
         $writer = new DomXmlStreamWriter('1.1', 'ISO-8859-1');
         assertThat($writer->encoding(), equals('ISO-8859-1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canWriteNestedElements(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeStartElement('foo')
-                        ->writeEndElement()
-                        ->writeStartElement('bar')
-                        ->writeEndElement()
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>'
-                . "\n<root><foo/><bar/></root>")
+            $this->writer->writeStartElement('root')
+                ->writeStartElement('foo')
+                ->writeEndElement()
+                ->writeStartElement('bar')
+                ->writeEndElement()
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>'
+                . "\n<root><foo/><bar/></root>"
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canWriteNestedCompleteElements(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeStartElement('foo')
-                        ->writeEndElement()
-                        ->writeElement('bar', ['baz' => 'blub'], 'content')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo/><bar baz="blub">content</bar></root>')
+            $this->writer->writeStartElement('root')
+                ->writeStartElement('foo')
+                ->writeEndElement()
+                ->writeElement('bar', ['baz' => 'blub'], 'content')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo/><bar baz="blub">content</bar></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeEndElementBeforeStartElementThrowsLogicException(): void
     {
         expect(function() { $this->writer->writeEndElement(); })
-                ->throws(\LogicException::class)
-                ->withMessage('Can not write end elements, no element open.');
+            ->throws(LogicException::class)
+            ->withMessage('Can not write end elements, no element open.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeElement(): void
     {
         assertThat(
-                $this->writer->writeElement('foo', ['att' => 'value'], 'content')
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<foo att="value">content</foo>')
+            $this->writer->writeElement('foo', ['att' => 'value'], 'content')
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<foo att="value">content</foo>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeElementWithGermanUmlautsInNonUtf8WillEncodeValue(): void
     {
         assertThat(
-                $this->writer->writeElement('foo', ['att' => mb_convert_encoding('hääää', 'ISO-8859-1')], 'content')
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<foo att="hääää">content</foo>')
+            $this->writer->writeElement(
+                'foo',
+                ['att' => mb_convert_encoding('hääää', 'ISO-8859-1')],
+                'content'
+            )->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<foo att="hääää">content</foo>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeElementWithGermanUmlautsUtf8(): void
     {
         assertThat(
-                $this->writer->writeElement('foo', ['att' => 'hääää'], 'content')
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<foo att="hääää">content</foo>')
+            $this->writer->writeElement('foo', ['att' => 'hääää'], 'content')
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<foo att="hääää">content</foo>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeAttributesAddsAtributesToCurrentElement(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeStartElement('foo')
-                        ->writeAttribute('bar', '42')
-                        ->writeEndElement()
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo bar="42"/></root>')
+            $this->writer->writeStartElement('root')
+                ->writeStartElement('foo')
+                ->writeAttribute('bar', '42')
+                ->writeEndElement()
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo bar="42"/></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeAttributesWithGermanUmlautsInNonUtf8WillEncodeValue(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeStartElement('foo')
-                        ->writeAttribute('bar', utf8_decode('hääää'))
-                        ->writeEndElement()
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo bar="hääää"/></root>')
+            $this->writer->writeStartElement('root')
+                ->writeStartElement('foo')
+                ->writeAttribute('bar', utf8_decode('hääää'))
+                ->writeEndElement()
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo bar="hääää"/></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeAttributesWithGermanUmlautsUtf8(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeStartElement('foo')
-                        ->writeAttribute('bar', 'hääää')
-                        ->writeEndElement()
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo bar="hääää"/></root>')
+            $this->writer->writeStartElement('root')
+                ->writeStartElement('foo')
+                ->writeAttribute('bar', 'hääää')
+                ->writeEndElement()
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo bar="hääää"/></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeTextAddsTextIntoCurrentElement(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeText('This is text.')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root>This is text.</root>')
+            $this->writer->writeStartElement('root')
+                ->writeText('This is text.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root>This is text.</root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeTextWithGermanUmlautsInNonUtf8WillEncodeText(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeText(utf8_decode('This is text containing äöü.'))
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root>This is text containing äöü.</root>')
+            $this->writer->writeStartElement('root')
+                ->writeText(utf8_decode('This is text containing äöü.'))
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root>This is text containing äöü.</root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeTextWithGermanUmlautsInUtf8(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeText('This is text containing äöü.')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root>This is text containing äöü.</root>')
+            $this->writer->writeStartElement('root')
+                ->writeText('This is text containing äöü.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root>This is text containing äöü.</root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCDataAddsCdata(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeCData('This is text.')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><![CDATA[This is text.]]></root>')
+            $this->writer->writeStartElement('root')
+                ->writeCData('This is text.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><![CDATA[This is text.]]></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCDataWithGermanUmlautsInNonUtf8WillEncodeCData(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeCData(utf8_decode('This is text containing äöü.'))
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><![CDATA[This is text containing äöü.]]></root>')
+            $this->writer->writeStartElement('root')
+                ->writeCData(utf8_decode('This is text containing äöü.'))
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><![CDATA[This is text containing äöü.]]></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCDataWithGermanUmlautsInUtf8(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeCData('This is text containing äöü.')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><![CDATA[This is text containing äöü.]]></root>')
+            $this->writer->writeStartElement('root')
+                ->writeCData('This is text containing äöü.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><![CDATA[This is text containing äöü.]]></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCommentAddsComment(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeComment('This is a comment.')
-                        ->writeEndElement()
-                        ->asXml(),
-                        equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                        . '<root><!--This is a comment.--></root>')
+            $this->writer->writeStartElement('root')
+                ->writeComment('This is a comment.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><!--This is a comment.--></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writeCommentWithGermanUmlautsInNonUtf8WillEncodeComment(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeComment(utf8_decode('This is a comment containing äöü.'))
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><!--This is a comment containing äöü.--></root>')
+            $this->writer->writeStartElement('root')
+                ->writeComment(utf8_decode('This is a comment containing äöü.'))
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><!--This is a comment containing äöü.--></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function commentWithGermanUmlautsInUtf8(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeComment('This is a comment containing äöü.')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><!--This is a comment containing äöü.--></root>')
+            $this->writer->writeStartElement('root')
+                ->writeComment('This is a comment containing äöü.')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><!--This is a comment containing äöü.--></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processingInstructionCanBeAdded(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeProcessingInstruction('php', 'phpinfo();')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><?php phpinfo();?></root>')
+            $this->writer->writeStartElement('root')
+                ->writeProcessingInstruction('php', 'phpinfo();')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><?php phpinfo();?></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function writingInvalidXmlFragmentThrowsXmlException(): void
     {
         expect(function() {
-                $this->writer->writeStartElement('root')
-                        ->writeXmlFragment('<foo>');
+            $this->writer->writeStartElement('root')
+                ->writeXmlFragment('<foo>');
         })->throws(XmlException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function xmlFragmentCanBeAdded(): void
     {
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->writeXmlFragment('<foo bar="true"/>')
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo bar="true"/></root>')
+            $this->writer->writeStartElement('root')
+                ->writeXmlFragment('<foo bar="true"/>')
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo bar="true"/></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasImportXmlWriterFeature(): void
     {
         assertTrue(
-                $this->writer->hasFeature(XmlStreamWriter::FEATURE_IMPORT_WRITER)
+            $this->writer->hasFeature(XmlStreamWriter::FEATURE_IMPORT_WRITER)
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importStreamWriterAddsElementsFromImportedStreamWriter(): void
     {
         $otherWriter = new DomXmlStreamWriter();
         $otherWriter->writeStartElement('foo')
-                ->writeStartElement('bar')
-                ->writeEndElement()
-                ->writeEndElement();
+            ->writeStartElement('bar')
+            ->writeEndElement()
+            ->writeEndElement();
         assertThat(
-                $this->writer->writeStartElement('root')
-                        ->importStreamWriter($otherWriter)
-                        ->writeEndElement()
-                        ->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
-                . '<root><foo><bar/></foo></root>')
+            $this->writer->writeStartElement('root')
+                ->importStreamWriter($otherWriter)
+                ->writeEndElement()
+                ->asXml(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n"
+                . '<root><foo><bar/></foo></root>'
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function clearRemovesAllPreviouslyAddedElements(): void
     {
         assertThat(
-                $this->writer->writeElement('foo')->clear()->asXml(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>')
+            $this->writer->writeElement('foo')->clear()->asXml(),
+            equals('<?xml version="1.0" encoding="UTF-8"?>')
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasDomExportFeature(): void
     {
         assertTrue($this->writer->hasFeature(XmlStreamWriter::FEATURE_AS_DOM));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exportAsDom(): void
     {
         $dom = $this->writer->writeElement('root', ['foo' => 'bar'])->asDom();
-        assertThat($dom, isInstanceOf(\DOMDocument::class));
+        assertThat($dom, isInstanceOf(DOMDocument::class));
         assertThat(
-                $dom->saveXML(),
-                equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root foo="bar"/>' . "\n")
+            $dom->saveXML(),
+            equals(
+                '<?xml version="1.0" encoding="UTF-8"?>' . "\n". '<root foo="bar"/>' . "\n"
+            )
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFinishedAfterStart(): void
     {
         assertTrue($this->writer->isFinished());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotFinishedAfterElementStarted(): void
     {
         assertFalse($this->writer->writeStartElement('root')->isFinished());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotFinishedAfterLastElementClosed(): void
     {
         assertTrue(
-                $this->writer->writeStartElement('root')
-                        ->writeEndElement()
-                        ->isFinished()
+            $this->writer->writeStartElement('root')
+                ->writeEndElement()
+                ->isFinished()
         );
     }
 }
