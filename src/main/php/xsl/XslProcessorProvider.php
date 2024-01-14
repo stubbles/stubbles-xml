@@ -22,7 +22,7 @@ class XslProcessorProvider implements InjectionProvider
      *
      * @var  array<string,class-string>
      */
-    private array $callbackList;
+    private ?array $callbackList = null;
 
     /**
      * constructor
