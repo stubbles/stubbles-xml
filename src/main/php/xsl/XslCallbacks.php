@@ -19,21 +19,13 @@ class XslCallbacks
      *
      * @var  object[]
      */
-    private $callbacks = [];
+    private array $callbacks = [];
 
     /**
      * register a new instance as callback
-     *
-     * @param   string  $name      name to register the callback under
-     * @param   object  $callback
-     * @throws  \InvalidArgumentException
      */
-    public function addCallback(string $name, $callback): void
+    public function addCallback(string $name, object $callback): void
     {
-        if (!is_object($callback)) {
-            throw new \InvalidArgumentException('Given callback must be an object');
-        }
-
         $this->callbacks[$name] = $callback;
     }
 

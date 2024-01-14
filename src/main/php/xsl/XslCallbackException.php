@@ -7,10 +7,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\xsl;
+
+use Exception;
+
 /**
  * Exception to be thrown when a xsl callback can not be called.
  */
-class XslCallbackException extends \Exception
+class XslCallbackException extends Exception
 {
     // intentionally empty
 }

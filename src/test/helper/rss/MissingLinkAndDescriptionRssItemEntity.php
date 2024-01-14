@@ -16,8 +16,6 @@ class MissingLinkAndDescriptionRssItemEntity
 {
     /**
      * returns the title
-     *
-     * @return  string
      */
     public function getTitle(): string
     {

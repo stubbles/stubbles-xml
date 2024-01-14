@@ -16,8 +16,6 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 {
     /**
      * returns the author
-     *
-     * @return  string
      */
     public function getAuthor(): string
     {
@@ -26,21 +24,17 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns the categories
-     *
-     * @return  array
      */
     public function getCategories(): array
     {
         return [[
-                'category' => 'extendedCategories',
-                'domain'   => 'extendedDomain'
+            'category' => 'extendedCategories',
+            'domain'   => 'extendedDomain'
         ]];
     }
 
     /**
      * returns the comments url
-     *
-     * @return  string
      */
     public function getCommentsUrl(): string
     {
@@ -49,22 +43,18 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns the enclosures
-     *
-     * @return  array
      */
     public function getEnclosures(): array
     {
         return [[
-                'url'    => 'extendedEnclosureUrl',
-                'length' => 'extendedEnclosureLength',
-                'type'   => 'extendedEnclosureType'
+            'url'    => 'extendedEnclosureUrl',
+            'length' => 'extendedEnclosureLength',
+            'type'   => 'extendedEnclosureType'
         ]];
     }
 
     /**
      * returns the guid
-     *
-     * @return  string
      */
     public function getGuid(): string
     {
@@ -73,8 +63,6 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns whether guid is perma link or not
-     *
-     * @return  bool
      */
     public function isPermaLink(): bool
     {
@@ -83,8 +71,6 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns the publishing date
-     *
-     * @return  int
      */
     public function getPubDate(): int
     {
@@ -93,8 +79,6 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns the sources
-     *
-     * @return  array
      */
     public function getSources(): array
     {
@@ -103,8 +87,6 @@ class ExtendedRSSItemEntity extends SimpleRssItemEntity
 
     /**
      * returns the content
-     *
-     * @return  string
      */
     public function getContent(): string
     {

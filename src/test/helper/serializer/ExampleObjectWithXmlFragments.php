@@ -17,22 +17,19 @@ class ExampleObjectWithXmlFragments
     /**
      * property containing XML
      *
-     * @type string
      * @XmlFragment(tagName='xml');
      */
-    public $xml = '<foo>bar</foo>';
+    public string $xml = '<foo>bar</foo>';
     /**
      * another property containing XML
      *
-     * @type string
      * @XmlFragment(tagName=false);
      */
-    public $xml2 = '<foo>bar</foo>';
+    public string $xml2 = '<foo>bar</foo>';
 
     /**
      * method returning xml
      *
-     * @return  string
      * @XmlFragment(tagName='description', transformNewLineToBr=true);
      */
     public function getSomeXml(): string

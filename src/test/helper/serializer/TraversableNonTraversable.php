@@ -7,6 +7,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use ArrayIterator;
+use Traversable;
+
 /**
  * Simple example class to test the xml serializer with object serialization.
  *
@@ -20,13 +24,11 @@ class TraversableNonTraversable implements \IteratorAggregate
     }
 
     /**
-     *
-     * @return \ArrayIterator
      * @XmlIgnore
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator(['foo' => 'bar']);
+        return new ArrayIterator(['foo' => 'bar']);
     }
 
 }

@@ -14,15 +14,11 @@ class ExampleStaticClass
 {
     /**
      * static property
-     *
-     * @type  string
      */
-    public static $foo = 'foo';
+    public static string $foo = 'foo';
 
     /**
      * static method
-     *
-     * @return  string
      */
     public static function getBar(): string
     {

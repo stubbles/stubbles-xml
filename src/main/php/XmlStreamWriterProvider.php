@@ -27,44 +27,27 @@ class XmlStreamWriterProvider implements InjectionProvider
      *
      * @var  array<string,class-string<XmlStreamWriter>>
      */
-    private $types    = [
-            'dom'       => DomXmlStreamWriter::class,
-            'xmlwriter' => LibXmlStreamWriter::class
+    private array $types    = [
+        'dom'       => DomXmlStreamWriter::class,
+        'xmlwriter' => LibXmlStreamWriter::class
     ];
-    /**
-     * default version of xml stream writers to create
-     *
-     * @var  string
-     */
-    private $version;
-    /**
-     * default encoding of xml stream writers to create
-     *
-     * @var  string
-     */
-    private $encoding;
 
     /**
      * constructor
      *
-     * @param  array<string,class-string<XmlStreamWriter>>  $types     optional  map of available streamwriter types
-     * @param  string                                       $version   optional  xml version
-     * @param  string                                       $encoding  optional  xml encoding
+     * @param  array<string,class-string<XmlStreamWriter>>  $types  map of available streamwriter types
      * @Named{types}('stubbles.xml.types')
      * @Named{version}('stubbles.xml.version')
      * @Named{encoding}('stubbles.xml.encoding')
      */
     public function __construct(
             array $types = null,
-            string $version = '1.0',
-            string $encoding = 'UTF-8'
+            private string $version = '1.0',
+            private string $encoding = 'UTF-8'
     ) {
         if (null !== $types) {
             $this->types = $types;
         }
-
-        $this->version  = $version;
-        $this->encoding = $encoding;
     }
 
     public function get(string $name = null): XmlStreamWriter
@@ -76,11 +59,6 @@ class XmlStreamWriterProvider implements InjectionProvider
         return $this->createAsAvailable();
     }
 
-    /**
-     * creates a xml stream writer of the given type
-     *
-     * @param  string  $xmlExtension  concrete type to create
-     */
     protected function createStreamWriter(string $xmlExtension): XmlStreamWriter
     {
         $className = $this->types[$xmlExtension];
@@ -101,7 +79,7 @@ class XmlStreamWriterProvider implements InjectionProvider
         }
 
         throw new XmlException(
-            'No supported xml extension available, can not create a xml stream writer!'
+            'No supported xml extension available, can not create a xml stream writer.'
         );
     }
 }

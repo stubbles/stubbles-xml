@@ -7,44 +7,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml;
+
+use BadMethodCallException;
+use DOMDocument;
+use Override;
+use XMLWriter;
+
 /**
  * XML Stream Writer based on libxml
  */
 class LibXmlStreamWriter extends XmlStreamWriter
 {
-    /**
-     * Writer
-     *
-     * @var  \XMLWriter
-     */
-    private $writer;
+    private XMLWriter $writer;
 
-    /**
-     * Create a new writer
-     *
-     * @param  string  $xmlVersion
-     * @param  string  $encoding
-     */
     public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
     {
         parent::__construct($xmlVersion, $encoding);
         $this->writer = $this->createWriter($xmlVersion, $encoding);
     }
 
-    private function createWriter(string $xmlVersion, string $encoding): \XMLWriter
+    private function createWriter(string $xmlVersion, string $encoding): XMLWriter
     {
-        $writer = new \XMLWriter();
+        $writer = new XMLWriter();
         $writer->openMemory();
         $writer->startDocument($xmlVersion, $encoding);
         $writer->setIndent(false);
         return $writer;
     }
 
-    /**
-     * Clears all previously written elements so that the document starts fresh.
-     *
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function clear(): XmlStreamWriter
     {
         unset($this->writer);
@@ -57,111 +48,70 @@ class LibXmlStreamWriter extends XmlStreamWriter
      *
      * @return  int[]
      */
+    #[Override]
     protected function features(): array
     {
         return [XmlStreamWriter::FEATURE_AS_DOM];
     }
 
-    /**
-     * really writes an opening tag
-     *
-     * @param  string  $elementName
-     */
+    #[Override]
     protected function doWriteStartElement(string $elementName): void
     {
         $this->writer->startElement($elementName);
     }
 
-    /**
-     * Write a text node
-     *
-     * @param   string  $data
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeText(string $data): XmlStreamWriter
     {
         $this->writer->text($data);
         return $this;
     }
 
-    /**
-     * Write a cdata section
-     *
-     * @param   string  $cdata
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeCData(string $cdata): XmlStreamWriter
     {
         $this->writer->writeCdata($cdata);
         return $this;
     }
 
-    /**
-     * Write a comment
-     *
-     * @param   string  $comment
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeComment(string $comment): XmlStreamWriter
     {
         $this->writer->writeComment($comment);
         return $this;
     }
 
-    /**
-     * Write a processing instruction
-     *
-     * @param   string  $target
-     * @param   string  $data
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeProcessingInstruction(string $target, string $data = ''): XmlStreamWriter
     {
         $this->writer->writePi($target, $data);
         return $this;
     }
 
-    /**
-     * Write an xml fragment
-     *
-     * @param   string  $fragment
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeXmlFragment(string $fragment): XmlStreamWriter
     {
         $this->writer->writeRaw($fragment);
         return $this;
     }
 
-    /**
-     * Write an attribute
-     *
-     * @param   string  $attributeName
-     * @param   string  $attributeValue
-     * @return  \stubbles\xml\XmlStreamWriter
-     */
+    #[Override]
     public function writeAttribute(string $attributeName, string $attributeValue): XmlStreamWriter
     {
         $this->writer->writeAttribute($attributeName, $attributeValue);
         return $this;
     }
 
-    /**
-     * really writes an end element
-     */
+    #[Override]
     protected function doWriteEndElement(): void
     {
         $this->writer->endElement();
     }
 
     /**
-     * Write a full element
-     *
-     * @param   string                $elementName
-     * @param   array<string,string>  $attributes
-     * @param   string                $cdata
-     * @return  \stubbles\xml\XmlStreamWriter
+     * @param  array<string,string>  $attributes
      */
+    #[Override]
     public function writeElement(
             string $elementName,
             array $attributes = [],
@@ -181,33 +131,23 @@ class LibXmlStreamWriter extends XmlStreamWriter
     }
 
     /**
-     * Import another stream
-     *
-     * @param   \stubbles\xml\XmlStreamWriter  $writer
-     * @throws  \BadMethodCallException
+     * @throws  BadMethodCallException
      */
+    #[Override]
     public function importStreamWriter(XmlStreamWriter $writer): XmlStreamWriter
     {
-        throw new \BadMethodCallException('Can not import another stream writer.');
+        throw new BadMethodCallException('Can not import another stream writer.');
     }
 
-    /**
-     * Return the XML as a DOM
-     *
-     * @return  \DOMDocument
-     */
-    public function asDom(): \DOMDocument
+    #[Override]
+    public function asDom(): DOMDocument
     {
-        $doc = new \DOMDocument();
+        $doc = new DOMDocument();
         $doc->loadXML($this->writer->outputMemory());
         return $doc;
     }
 
-    /**
-     * Return the XML as a string
-     *
-     * @return  string
-     */
+    #[Override]
     public function asXml(): string
     {
         return rtrim($this->writer->outputMemory());

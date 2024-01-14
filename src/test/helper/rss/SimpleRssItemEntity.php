@@ -16,8 +16,6 @@ class SimpleRssItemEntity extends MissingDescriptionRssItemEntity
 {
     /**
      * returns the description
-     *
-     * @return  string
      */
     public function getDescription(): string
     {

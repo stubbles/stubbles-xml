@@ -28,8 +28,6 @@ class RssItemWithDifferentMethods
 {
     /**
      * returns the title
-     *
-     * @return  string
      */
     public function getHeadline(): string
     {
@@ -38,8 +36,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the link
-     *
-     * @return  string
      */
     public function getUrl(): string
     {
@@ -48,8 +44,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the description
-     *
-     * @return  string
      */
     public function getTeaser(): string
     {
@@ -58,8 +52,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the author
-     *
-     * @return  string
      */
     public function getCreator(): string
     {
@@ -68,8 +60,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the categories
-     *
-     * @return  array
      */
     public function getTags(): array
     {
@@ -78,8 +68,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the comments url
-     *
-     * @return  string
      */
     public function getRemarks(): string
     {
@@ -88,22 +76,18 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the enclosures
-     *
-     * @return  array
      */
     public function getImages(): array
     {
         return [[
-                'url'    => 'imagesUrl',
-                'length' => 'imagesLength',
-                'type'   => 'imagesType'
+            'url'    => 'imagesUrl',
+            'length' => 'imagesLength',
+            'type'   => 'imagesType'
         ]];
     }
 
     /**
      * returns the guid
-     *
-     * @return  string
      */
     public function getId(): string
     {
@@ -112,8 +96,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns whether guid is perma link or not
-     *
-     * @return  bool
      */
     public function isPermanent(): bool
     {
@@ -122,8 +104,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the publishing date
-     *
-     * @return  int
      */
     public function getDate(): int
     {
@@ -132,8 +112,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the sources
-     *
-     * @return  array
      */
     public function getOrigin(): array
     {
@@ -142,8 +120,6 @@ class RssItemWithDifferentMethods
 
     /**
      * returns the content
-     *
-     * @return  string
      */
     public function getText(): string
     {

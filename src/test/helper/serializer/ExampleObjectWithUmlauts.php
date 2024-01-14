@@ -17,15 +17,13 @@ class ExampleObjectWithUmlauts
     /**
      * test property
      *
-     * @type string
      * @XmlTag(tagName='foo')
      */
-    public $foo = 'Hähnchen';
+    public string $foo = 'Hähnchen';
     /**
      * test attribute property
      *
-     * @type string
      * @XmlAttribute(attributeName='bar')
      */
-    public $ba = 'Hähnchen';
+    public string $ba = 'Hähnchen';
 }

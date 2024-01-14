@@ -15,16 +15,12 @@ use stubbles\xml\serializer\XmlSerializer;
  */
 class ExampleObjectSerializer implements ObjectXmlSerializer
 {
-    /**
-     * serializes given value
-     *
-     * @param  mixed            $object
-     * @param  XmlSerializer    $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param  XmlStreamWriter  $xmlWriter      xml writer to write serialized object into
-     * @param  string           $tagName        name of the surrounding xml tag
-     */
-    public function serialize($object, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter, string $tagName = null): void
-    {
+    public function serialize(
+        mixed $object,
+        XmlSerializer $xmlSerializer,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): void {
         if ($object instanceof ExampleObjectClassWithSerializer) {
             $xmlWriter->writeStartElement('example');
             $xmlWriter->writeAttribute('sound', (string) $object->bar);

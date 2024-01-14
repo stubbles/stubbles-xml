@@ -178,7 +178,7 @@ class DomXmlStreamWriterTest extends TestCase
     public function writeElementWithGermanUmlautsInNonUtf8WillEncodeValue(): void
     {
         assertThat(
-                $this->writer->writeElement('foo', ['att' => utf8_decode('hääää')], 'content')
+                $this->writer->writeElement('foo', ['att' => mb_convert_encoding('hääää', 'ISO-8859-1')], 'content')
                         ->asXml(),
                 equals('<?xml version="1.0" encoding="UTF-8"?>' . "\n"
                 . '<foo att="hääää">content</foo>')

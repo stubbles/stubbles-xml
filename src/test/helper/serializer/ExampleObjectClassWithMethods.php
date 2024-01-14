@@ -32,10 +32,8 @@ class ExampleObjectClassWithMethods
 
     /**
      * another magic method
-     *
-     * @param  string  $prop
      */
-    public function __get($prop)
+    public function __get(string $prop)
     {
         // intentionally empty
     }
@@ -43,7 +41,6 @@ class ExampleObjectClassWithMethods
     /**
      * Return a value
      *
-     * @return string
      * @XmlAttribute(attributeName='method')
      */
     public function getValue(): string {
@@ -53,7 +50,6 @@ class ExampleObjectClassWithMethods
     /**
      * return a boolean value
      *
-     * @return  bool
      * @XmlAttribute(attributeName='isFoo')
      */
     public function isFoo(): bool
@@ -64,7 +60,6 @@ class ExampleObjectClassWithMethods
     /**
      * return a boolean value
      *
-     * @return  bool
      * @XmlAttribute(attributeName='isBar')
      */
     public function isBar(): bool
@@ -72,9 +67,6 @@ class ExampleObjectClassWithMethods
         return false;
     }
 
-    /**
-     * @return  string
-     */
     public function getBaz(): string
     {
         return 'baz';
@@ -82,9 +74,6 @@ class ExampleObjectClassWithMethods
 
     /**
      * a method with arguments
-     *
-     * @param   string  $arg
-     * @return  string
      */
     public function withArguments(string $arg): string
     {

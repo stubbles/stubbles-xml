@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\xsl;
+
+use DOMDocument;
+
 /**
  * Class to transform xml via xsl.
  *
@@ -227,16 +230,15 @@ class XslProcessor
     /**
      * invoke a method on a callback class
      *
-     * @return  mixed
-     * @throws  \stubbles\xml\xsl\XslCallbackException
+     * @throws  XslCallbackException
      * @since   1.5.0
      */
-    public static function invokeCallback()
+    public static function invokeCallback(): mixed
     {
         $arguments = func_get_args();
         if (count($arguments) < 2) {
             throw new XslCallbackException(
-                    'To less arguments: need at last two arguments to use callbacks.'
+                'To less arguments: need at last two arguments to use callbacks.'
             );
         }
 
@@ -248,18 +250,17 @@ class XslProcessor
     /**
      * sets a parameter for a namespace
      *
-     * @param   string  $nameSpace   the namespace where the parameter is in
-     * @param   string  $paramName   the name of the parameter to set
-     * @param   string  $paramValue  the value to set the parameter to
-     * @return  \stubbles\xml\xsl\XslProcessor
-     * @throws  \stubbles\xml\xsl\XslProcessorException
+     * @throws  XslProcessorException
      */
-    public function withParameter(string $nameSpace, string $paramName, string $paramValue): self
-    {
+    public function withParameter(
+        string $nameSpace,
+        string $paramName,
+        string $paramValue
+    ): self {
         if (false === $this->xsltProcessor->setParameter($nameSpace, $paramName, $paramValue)) {
             throw new XslProcessorException(
-                    'Could not set parameter ' . $nameSpace . ':' . $paramName
-                    . ' with value ' . $paramValue
+                'Could not set parameter ' . $nameSpace . ':' . $paramName
+                . ' with value ' . $paramValue
             );
         }
 
@@ -274,10 +275,8 @@ class XslProcessor
     /**
      * set a list of parameters for the given namespace
      *
-     * @param   string                $nameSpace  the namespace where the parameters are in
      * @param   array<string,string>  $params     the list of parameters to set: name => value
-     * @return  \stubbles\xml\xsl\XslProcessor
-     * @throws  \stubbles\xml\xsl\XslProcessorException
+     * @throws  XslProcessorException
      */
     public function withParameters(string $nameSpace, array $params): self
     {
@@ -296,14 +295,14 @@ class XslProcessor
     /**
      * transoforms the document into another DOMDocument
      *
-     * @return  \DOMDocument
-     * @throws  \stubbles\xml\xsl\XslProcessorException
+     * @return  DOMDocument
+     * @throws  XslProcessorException
      */
-    public function toDoc(): \DOMDocument
+    public function toDoc(): DOMDocument
     {
         if (null === $this->document) {
             throw new XslProcessorException(
-                    'Can not transform, set document or xml file to transform first'
+                'Can not transform, set document or xml file to transform first'
             );
         }
 
@@ -320,15 +319,13 @@ class XslProcessor
      * transforms the document and saves it to the given uri, returns the
      * amount of bytes written
      *
-     * @param   string  $uri
-     * @return  int
-     * @throws  \stubbles\xml\xsl\XslProcessorException
+     * @throws  XslProcessorException
      */
     public function toUri(string $uri): int
     {
         if (null === $this->document) {
             throw new XslProcessorException(
-                    'Can not transform, set document or xml file to transform first'
+                'Can not transform, set document or xml file to transform first'
             );
         }
 
@@ -345,13 +342,13 @@ class XslProcessor
      * transforms the document and returns the result as string
      *
      * @return  string
-     * @throws  \stubbles\xml\xsl\XslProcessorException
+     * @throws  XslProcessorException
      */
     public function toXml(): string
     {
         if (null === $this->document) {
             throw new XslProcessorException(
-                    'Can not transform, set document or xml file to transform first'
+                'Can not transform, set document or xml file to transform first'
             );
         }
 
@@ -365,15 +362,19 @@ class XslProcessor
     }
 
     /**
-     * creates a message frim the last libxml error
-     *
-     * @return  string
+     * creates a message from the last libxml error
      */
     private function createMessage(): string
     {
         $message = '';
         foreach (libxml_get_errors() as $error) {
-            $message .= trim($error->message) . (($error->file) ? (' in file ' . $error->file) : ('')) . ' on line ' . $error->line . ' in column ' . $error->column . "\n";
+            $message .= sprintf(
+                "%s %s on line %d in column %d\n",
+                trim($error->message),
+                ($error->file) ? (' in file ' . $error->file) : (''),
+                $error->line,
+                $error->column
+            );
         }
 
         libxml_clear_errors();

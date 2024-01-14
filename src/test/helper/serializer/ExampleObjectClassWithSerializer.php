@@ -16,21 +16,15 @@ class ExampleObjectClassWithSerializer
 {
     /**
      * a property
-     *
-     * @type  int
      */
-    public $bar    = 303;
+    public int $bar    = 303;
     /**
      * another property
-     *
-     * @type  string
      */
-    public $scalar = 'not interesting';
+    public string $scalar = 'not interesting';
 
     /**
      * returns something
-     *
-     * @return  string
      */
     public function getSomething(): string
     {

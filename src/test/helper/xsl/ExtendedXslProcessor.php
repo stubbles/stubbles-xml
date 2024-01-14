@@ -7,23 +7,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\xsl;
+
+use bovigo\callmap\ClassProxy;
 use stubbles\xml\xsl\XslProcessor;
+use XSLTProcessor;
+
 /**
  * Helper class for the test.
  */
 class ExtendedXslProcessor extends XslProcessor
 {
-    /**
-     * mocked xslt processor
-     *
-     * @var  \XSLTProcessor&\bovigo\callmap\ClassProxy
-     */
-    public static $xsltProcessor;
+    public static XSLTProcessor&ClassProxy $xsltProcessor;
 
     /**
      * overwrite creation method to inject the mock object
      */
-    protected function createXsltProcessor(): \XSLTProcessor
+    protected function createXsltProcessor(): XSLTProcessor&ClassProxy
     {
         return self::$xsltProcessor;
     }

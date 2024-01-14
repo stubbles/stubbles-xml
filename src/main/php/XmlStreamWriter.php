@@ -7,6 +7,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml;
+
+use DOMDocument;
+use LogicException;
+
 /**
  * Interface to create XML documents
  *
@@ -26,41 +30,16 @@ abstract class XmlStreamWriter
      * @var int
      */
     const FEATURE_AS_DOM = 2;
-    /**
-     * XML version
-     *
-     * @var  string
-     */
-    private $xmlVersion;
-    /**
-     * encoding used by the writer
-     *
-     * @var  string
-     */
-    private $encoding;
-    /**
-     * depth, i.e. amount of opened tags
-     *
-     * @var  int
-     */
-    private $depth        = 0;
+    /** depth, i.e. amount of opened tags */
+    private int $depth        = 0;
 
-    /**
-     * Create a new writer
-     *
-     * @param  string  $xmlVersion
-     * @param  string  $encoding
-     */
-    public function __construct(string $xmlVersion = '1.0', string $encoding = 'UTF-8')
-    {
-        $this->xmlVersion = $xmlVersion;
-        $this->encoding   = $encoding;
-    }
+    public function __construct(
+        private string $xmlVersion = '1.0',
+        private string $encoding = 'UTF-8'
+    ) { }
 
     /**
      * returns the xml version used by the writer
-     *
-     * @return  string
      */
     public function version(): string
     {
@@ -69,8 +48,6 @@ abstract class XmlStreamWriter
 
     /**
      * returns the encoding used by the writer
-     *
-     * @return  string
      */
     public function encoding(): string
     {
@@ -79,9 +56,6 @@ abstract class XmlStreamWriter
 
     /**
      * Checks, whether the implementation has a desired feature
-     *
-     * @param   int  $feature
-     * @return  bool
      */
     public function hasFeature(int $feature): bool
     {
@@ -93,12 +67,10 @@ abstract class XmlStreamWriter
      *
      * @return  int[]
      */
-    protected abstract function features(): array;
+    abstract protected function features(): array;
 
     /**
      * Clears all previously written elements so that the document starts fresh.
-     *
-     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function clear(): self
     {
@@ -108,9 +80,6 @@ abstract class XmlStreamWriter
 
     /**
      * Write an opening tag
-     *
-     * @param   string  $elementName
-     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function writeStartElement(string $elementName): self
     {
@@ -121,72 +90,55 @@ abstract class XmlStreamWriter
 
     /**
      * really writes an opening tag
-     *
-     * @param  string  $elementName
      */
-    protected abstract function doWriteStartElement(string $elementName): void;
+    abstract protected function doWriteStartElement(string $elementName): void;
 
 
     /**
      * Write a text node
-     *
-     * @param   string  $data
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeText(string $data): self;
+    abstract public function writeText(string $data): self;
 
     /**
      * Write a cdata section
-     *
-     * @param   string  $cdata
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeCData(string $cdata): self;
+    abstract public function writeCData(string $cdata): self;
 
     /**
      * Write a comment
-     *
-     * @param   string  $comment
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeComment(string $comment): self;
+    abstract public function writeComment(string $comment): self;
 
     /**
      * Write a processing instruction
-     *
-     * @param   string  $target
-     * @param   string  $data
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeProcessingInstruction(string $target, string $data = ''): self;
+    abstract public function writeProcessingInstruction(
+        string $target,
+        string $data = ''
+    ): self;
 
     /**
      * Write an xml fragment
-     *
-     * @param   string  $fragment
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeXmlFragment(string $fragment): self;
+    abstract public function writeXmlFragment(string $fragment): self;
 
     /**
      * Write an attribute
-     *
-     * @param   string  $attributeName
-     * @param   string  $attributeValue
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeAttribute(string $attributeName, string $attributeValue): self;
+    abstract public function writeAttribute(
+        string $attributeName,
+        string $attributeValue
+    ): self;
 
     /**
      * Write an end element
      *
-     * @return  \stubbles\xml\XmlStreamWriter
-     * @throws  \LogicException  in case no element is open
+     * @throws  LogicException  in case no element is open
      */
     public function writeEndElement(): self
     {
         if ($this->isFinished()) {
-            throw new \LogicException('Can not write end elements, no element open.');
+            throw new LogicException('Can not write end elements, no element open.');
         }
 
         $this->doWriteEndElement();
@@ -197,17 +149,14 @@ abstract class XmlStreamWriter
     /**
      *  really writes an end element
      */
-    protected abstract function doWriteEndElement(): void;
+    abstract protected function doWriteEndElement(): void;
 
     /**
      * Write a full element
      *
-     * @param   string                $elementName
      * @param   array<string,string>  $attributes
-     * @param   string                $cdata
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function writeElement(
+    abstract public function writeElement(
             string $elementName,
             array $attributes = [],
             string $cdata     = null
@@ -215,16 +164,11 @@ abstract class XmlStreamWriter
 
     /**
      * Import another stream
-     *
-     * @param   \stubbles\xml\XmlStreamWriter  $writer
-     * @return  \stubbles\xml\XmlStreamWriter
      */
-    public abstract function importStreamWriter(XmlStreamWriter $writer): self;
+    abstract public function importStreamWriter(XmlStreamWriter $writer): self;
 
     /**
      * checks whether the document is finished meaning no open tags are left
-     *
-     * @return  bool
      */
     public function isFinished(): bool
     {
@@ -233,15 +177,11 @@ abstract class XmlStreamWriter
 
     /**
      * Return the XML as a string
-     *
-     * @return  string
      */
-    public abstract function asXml(): string;
+    abstract public function asXml(): string;
 
     /**
      * Return the XML as a DOM
-     *
-     * @return  \DOMDocument
      */
-    public abstract function asDom(): \DOMDocument;
+    abstract public function asDom(): DOMDocument;
 }

@@ -16,46 +16,22 @@ use stubbles\xml\serializer\XmlSerializer;
  */
 class Attribute implements XmlSerializerDelegate
 {
-    /**
-     * name of attribute
-     *
-     * @var  string
-     */
-    protected $attributeName;
-    /**
-     * switch whether to skip serialisation if value is empty
-     *
-     * @var  bool
-     */
-    protected $skipEmpty;
+    public function  __construct(private string $attributeName, private bool $skipEmpty) { }
 
-    /**
-     * constructor
-     *
-     * @param  string  $attributeName  name of attribute
-     * @param  bool    $skipEmpty      switch whether to skip serialisation if value is empty
-     */
-    public function  __construct(string $attributeName, bool $skipEmpty)
-    {
-        $this->attributeName = $attributeName;
-        $this->skipEmpty     = $skipEmpty;
-    }
-
-    /**
-     * serializes given value
-     *
-     * @param  mixed                                   $value
-     * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
-     */
-    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter): void
-    {
+    public function serialize(
+        mixed $value,
+        XmlSerializer $xmlSerializer,
+        XmlStreamWriter $xmlWriter
+    ): void {
         if (gettype($value) === 'boolean') {
-            $xmlWriter->writeAttribute($this->attributeName, ((true === $value) ? ('true') : ('false')));
+            $xmlWriter->writeAttribute(
+                $this->attributeName,
+                $value ? 'true' : 'false'
+            );
             return;
         }
 
-        if ('' === (string) $value && true === $this->skipEmpty) {
+        if ('' === (string) $value && $this->skipEmpty) {
             return;
         }
 

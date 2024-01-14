@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use ArrayIterator;
+
 /**
  * Simple example class to test the xml serializer with object and iterator serialization.
  *
@@ -17,16 +20,15 @@ class ContainerWithIterator
     /**
      * array property
      *
-     * @type  ArrayIterator
      * @XmlTag(tagName=false, elementTagName='item')
      */
-    public $bar;
+    public ArrayIterator $bar;
 
     /**
      * constructor
      */
     public function __construct()
     {
-        $this->bar = new \ArrayIterator(array('one', 'two', 'three'));
+        $this->bar = new ArrayIterator(array('one', 'two', 'three'));
     }
 }

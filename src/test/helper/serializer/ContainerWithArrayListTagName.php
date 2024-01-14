@@ -17,8 +17,7 @@ class ContainerWithArrayListTagName
     /**
      * array property
      *
-     * @type  array
      * @XmlTag(tagName='list', elementTagName='item')
      */
-    public $bar = array('one', 'two', 'three');
+    public array $bar = array('one', 'two', 'three');
 }

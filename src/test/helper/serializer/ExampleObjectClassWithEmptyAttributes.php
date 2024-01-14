@@ -17,35 +17,31 @@ class ExampleObjectClassWithEmptyAttributes
     /**
      * Empty property
      *
-     * @type mixed
      * @XmlAttribute(attributeName='emptyProp')
      */
-    public $emptyProp;
+    public mixed $emptyProp = null;
     /**
      * Empty property
      *
-     * @type mixed
      * @XmlAttribute(attributeName='emptyProp2', skipEmpty=false)
      */
-    public $emptyProp2;
+    public mixed $emptyProp2 = null;
 
     /**
      * Empty return value
      *
-     * @return mixed
      * @XmlAttribute(attributeName='emptyMethod')
      */
-    public function getEmpty() {
+    public function getEmpty(): mixed {
         return null;
     }
 
     /**
      * Empty return value
      *
-     * @return mixed
      * @XmlAttribute(attributeName='emptyMethod2', skipEmpty=false)
      */
-    public function getEmpty2() {
+    public function getEmpty2(): mixed {
         return null;
     }
 }

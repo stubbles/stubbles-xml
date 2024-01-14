@@ -14,22 +14,16 @@ class XslExampleCallback
 {
     /**
      * the argument given to hello()
-     *
-     * @var  string
      */
-    private $helloArg                  = null;
+    private ?string $helloArg = null;
     /**
      * check whether method was called
-     *
-     * @type  bool
      */
-    private static $calledYouCanDoThis = false;
+    private static bool $calledYouCanDoThis = false;
 
     /**
      * example method
      *
-     * @param   string  $world
-     * @return  string
      * @XslMethod
      */
     public function hello(string $world): string
@@ -40,18 +34,14 @@ class XslExampleCallback
 
     /**
      * returns last argument for hello()
-     *
-     * @return  string
      */
-    public function getHelloArg()
+    public function getHelloArg(): ?string
     {
         return $this->helloArg;
     }
 
     /**
      * example method
-     *
-     * @return  string
      */
     public function youCanNotCallMe(): string
     {
@@ -61,7 +51,6 @@ class XslExampleCallback
     /**
      * example method
      *
-     * @return  string
      * @XslMethod
      */
     protected function doNotCallMe(): string
@@ -72,7 +61,6 @@ class XslExampleCallback
     /**
      * example method
      *
-     * @return  string
      * @XslMethod
      */
     private function doNotCallMeToo(): string
@@ -83,7 +71,6 @@ class XslExampleCallback
     /**
      * example method
      *
-     * @return  string
      * @XslMethod
      */
     public static function youCanDoThis(): string
@@ -94,8 +81,6 @@ class XslExampleCallback
 
     /**
      * checks whether youCanCallMe() was called
-     *
-     * @return  bool
      */
     public static function calledYouCanDoThis(): bool
     {

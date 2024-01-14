@@ -17,39 +17,19 @@ use stubbles\xml\serializer\XmlSerializer;
 class Tag implements XmlSerializerDelegate
 {
     /**
-     * name of tag
-     *
-     * @var  string|null
-     */
-    protected $tagName;
-    /**
-     * recurring element tag name for lists
-     *
-     * @var  string|null
-     */
-    protected $elementTagName;
-
-    /**
-     * constructor
-     *
      * @param  string  $tagName         name of tag
      * @param  string  $elementTagName  recurring element tag name for lists
      */
-    public function  __construct(string $tagName = null, string $elementTagName = null)
-    {
-        $this->tagName        = $tagName;
-        $this->elementTagName = $elementTagName;
-    }
+    public function  __construct(
+        private ?string $tagName = null,
+        private ?string $elementTagName = null
+    ) { }
 
-    /**
-     * serializes given value
-     *
-     * @param  mixed                                   $value
-     * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param  \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
-     */
-    public function serialize($value, XmlSerializer $xmlSerializer, XmlStreamWriter $xmlWriter): void
-    {
+    public function serialize(
+        mixed $value,
+        XmlSerializer $xmlSerializer,
+        XmlStreamWriter $xmlWriter
+    ): void {
         $xmlSerializer->serialize($value, $xmlWriter, $this->tagName, $this->elementTagName);
     }
 }

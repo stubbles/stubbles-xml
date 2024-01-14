@@ -7,18 +7,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml;
+
+use Exception;
+
 /**
  * XML Exception
  */
-class XmlException extends \Exception
+class XmlException extends Exception
 {
-    /**
-     * constructor
-     *
-     * @param  string      $message  failure message
-     * @param  \Exception  $cause    optional  cause for this exception
-     */
-    public function __construct(string $message, \Exception $cause = null)
+    public function __construct(string $message, Exception $cause = null)
     {
         parent::__construct($message, 0, $cause);
     }

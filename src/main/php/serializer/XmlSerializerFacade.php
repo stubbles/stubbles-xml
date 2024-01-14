@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\serializer;
+
+use DOMDocument;
 use stubbles\xml\XmlStreamWriter;
 /**
  * Facade to simplify xml serializing.
@@ -16,53 +18,31 @@ use stubbles\xml\XmlStreamWriter;
 class XmlSerializerFacade
 {
     /**
-     * xml serializer to hide
-     *
-     * @var  \stubbles\xml\serializer\XmlSerializer
-     */
-    private $xmlSerializer;
-    /**
-     * xml stream writer to write serialization to
-     *
-     * @var  \stubbles\xml\XmlStreamWriter
-     */
-    private $xmlStreamWriter;
-
-    /**
      * constructor
      *
      * @param  \stubbles\xml\serializer\XmlSerializer  $xmlSerializer
      * @param  \stubbles\xml\XmlStreamWriter           $xmlStreamWriter
      */
-    public function __construct(XmlSerializer $xmlSerializer, XmlStreamWriter $xmlStreamWriter)
+    public function __construct(
+        private XmlSerializer $xmlSerializer,
+        private XmlStreamWriter $xmlStreamWriter
+    ) { }
+
+    /**
+     * serialize any data structure to XML
+     */
+    public function serializeToXml(mixed $data, ?string $tagName = null): string
     {
-        $this->xmlSerializer   = $xmlSerializer;
-        $this->xmlStreamWriter = $xmlStreamWriter;
+        return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
+            ->asXml();
     }
 
     /**
      * serialize any data structure to XML
-     *
-     * @param   mixed   $data     data to serialize
-     * @param   string  $tagName  name for root tag
-     * @return  string
      */
-    public function serializeToXml($data, string $tagName = null): string
+    public function serializeToDom(mixed $data, ?string $tagName = null): DOMDocument
     {
         return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
-               ->asXml();
-    }
-
-    /**
-     * serialize any data structure to XML
-     *
-     * @param   mixed   $data     data to serialize
-     * @param   string  $tagName  name for root tag
-     * @return  \DOMDocument
-     */
-    public function serializeToDom($data, string $tagName = null): \DOMDocument
-    {
-        return $this->xmlSerializer->serialize($data, $this->xmlStreamWriter, $tagName)
-               ->asDOM();
+            ->asDOM();
     }
 }

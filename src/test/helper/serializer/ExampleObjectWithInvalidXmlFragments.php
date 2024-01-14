@@ -17,22 +17,19 @@ class ExampleObjectWithInvalidXmlFragments
     /**
      * property containing no XML
      *
-     * @type string
      * @XmlFragment(tagName='noXml');
      */
-    public $noXml = 'bar';
+    public string $noXml = 'bar';
     /**
      * another property containing no data
      *
-     * @type string
      * @XmlFragment(tagName='noData');
      */
-    public $noData;
+    public ?string $noData = null;
 
     /**
      * method returnin no valid xml
      *
-     * @return  string
      * @XmlFragment(tagName=false);
      */
     public function noXml(): string

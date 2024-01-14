@@ -7,10 +7,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\xsl;
+
+use Exception;
+
 /**
  * Exception to be thrown when a xsl processor failed.
  */
-class XslProcessorException extends \Exception
+class XslProcessorException extends Exception
 {
     // intentionally empty
 }

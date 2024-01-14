@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
 use stubbles\xml\XmlStreamWriter;
+use Traversable;
 
 use function stubbles\reflect\annotationsOf;
 /**
@@ -16,37 +17,16 @@ use function stubbles\reflect\annotationsOf;
  */
 class XmlSerializer
 {
-    /**
-     * injector to create object serializer instances
-     *
-     * @var  \stubbles\ioc\Injector
-     */
-    protected $injector;
-
-    /**
-     * constructor
-     *
-     * @param  \stubbles\ioc\Injector  $injector
-     */
-    public function  __construct(Injector $injector)
-    {
-        $this->injector = $injector;
-    }
+    public function  __construct(protected Injector $injector) { }
 
     /**
      * serialize any data structure to xml
-     *
-     * @param   mixed                          $value           data to serialize
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized data into
-     * @param   string                         $tagName         name of the surrounding xml tag
-     * @param   string                         $elementTagName  recurring element tag name for lists
-     * @return  \stubbles\xml\XmlStreamWriter
      */
     public function serialize(
-            $value,
-            XmlStreamWriter $xmlWriter,
-            string $tagName = null,
-            string $elementTagName = null
+        mixed $value,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null,
+        ?string $elementTagName = null
     ): XmlStreamWriter {
         switch (gettype($value)) {
             case 'NULL':
@@ -68,8 +48,15 @@ class XmlSerializer
                 break;
 
             case 'object':
-                if ($value instanceof \Traversable && !annotationsOf($value)->contain('XmlNonTraversable')) {
-                    if (null === $tagName && $value instanceof \Traversable && annotationsOf($value)->contain('XmlTag')) {
+                if (
+                    $value instanceof Traversable
+                    && !annotationsOf($value)->contain('XmlNonTraversable')
+                ) {
+                    if (
+                        null === $tagName
+                        && $value instanceof Traversable
+                        && annotationsOf($value)->contain('XmlTag')
+                    ) {
                         $annotation = annotationsOf($value)->firstNamed('XmlTag');
                         $tagName = $annotation->getTagName();
                         $elementTagName = $annotation->getElementTagName();
@@ -91,124 +78,109 @@ class XmlSerializer
     /**
      * serializes null to xml
      *
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeNull(XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeNull(
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): XmlStreamWriter {
         return $xmlWriter->writeStartElement(null === $tagName ? 'null' : $tagName)
-                ->writeElement('null')
-                ->writeEndElement();
+            ->writeElement('null')
+            ->writeEndElement();
     }
 
     /**
      * serializes boolean value to xml
      *
-     * @param   bool                           $value
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeBool($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeBool(
+        bool $value,
+        XmlStreamWriter $xmlWriter,
+        string $tagName = null
+    ): XmlStreamWriter {
         return $this->serializeScalarValue(
-                $this->convertBoolToString($value),
-                $xmlWriter,
-                null === $tagName ? 'boolean' : $tagName
+            $this->convertBoolToString($value),
+            $xmlWriter,
+            $tagName ?? 'boolean'
         );
     }
 
     /**
      * converts a boolean value into a useable xml string
      *
-     * @param   bool  $value
-     * @return  string
      * @since   2.0.0
      */
     public function convertBoolToString(bool $value): string
     {
-        if (true === $value) {
-            return 'true';
-        }
-
-        return 'false';
+        return $value ? 'true' : 'false';
     }
 
     /**
      * serializes string to xml
      *
-     * @param   string                         $value
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeString($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeString(
+        string $value,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): XmlStreamWriter {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
 
     /**
      * serializes integer to xml
      *
-     * @param   int                            $value
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeInt($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeInt(
+        int $value,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): XmlStreamWriter {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
 
     /**
      * serializes float value to xml
      *
-     * @param   float                          $value
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
      */
-    public function serializeFloat($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeFloat(
+        float $value,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): XmlStreamWriter {
         return $this->serializeScalarValue($value, $xmlWriter, $tagName);
     }
 
     /**
      * serializes any scalar value to xml
      *
-     * @param   scalar                         $value
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized value into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
+     * @param   scalar  $value
      */
-    protected function serializeScalarValue($value, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
-        return $xmlWriter->writeStartElement(null === $tagName ? gettype($value) : $tagName)
-                ->writeText(strval($value))
-                ->writeEndElement();
+    protected function serializeScalarValue(
+        $value,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null
+    ): XmlStreamWriter {
+        return $xmlWriter->writeStartElement($tagName ?? gettype($value))
+            ->writeText(strval($value))
+            ->writeEndElement();
     }
 
     /**
      * serializes an array to xml
      *
-     * @param   iterable<mixed>                $array           array to serialize
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter       xml writer to write serialized array into
-     * @param   string                         $tagName         name of the surrounding xml tag
-     * @param   string                         $elementTagName  necurring element tag name for lists
-     * @return  \stubbles\xml\XmlStreamWriter
+     * @param   iterable<mixed>  $array  array to serialize
      * @since   1.6.0
      */
     public function serializeArray(
-            iterable $array,
-            XmlStreamWriter $xmlWriter,
-            string $tagName = null,
-            string $elementTagName = null
+        iterable $array,
+        XmlStreamWriter $xmlWriter,
+        ?string $tagName = null,
+        ?string $elementTagName = null
     ): XmlStreamWriter {
         if (null === $tagName) {
             $tagName = 'array';
@@ -236,14 +208,13 @@ class XmlSerializer
     /**
      * serializes an object to xml
      *
-     * @param   object                         $object     object to serialize
-     * @param   \stubbles\xml\XmlStreamWriter  $xmlWriter  xml writer to write serialized object into
-     * @param   string                         $tagName    name of the surrounding xml tag
-     * @return  \stubbles\xml\XmlStreamWriter
      * @since   1.6.0
       */
-    public function serializeObject(object $object, XmlStreamWriter $xmlWriter, string $tagName = null): XmlStreamWriter
-    {
+    public function serializeObject(
+        object $object,
+        XmlStreamWriter $xmlWriter,
+        string $tagName = null
+    ): XmlStreamWriter {
         $this->serializerFor($object)->serialize($object, $this, $xmlWriter, $tagName);
         return $xmlWriter;
     }
@@ -253,22 +224,21 @@ class XmlSerializer
      *
      * @template T of object
      * @param   T  $object
-     * @return  \stubbles\xml\serializer\ObjectXmlSerializer<T>
+     * @return  ObjectXmlSerializer<T>
      */
-    protected function serializerFor($object): ObjectXmlSerializer
+    protected function serializerFor(object $object): ObjectXmlSerializer
     {
         if (!annotationsOf($object)->contain('XmlSerializer')) {
             /** @var ObjectXmlSerializer<T> */
             return AnnotationBasedObjectXmlSerializer::fromObject($object);
         }
 
-        /** @var  ObjectXmlSerializer<T>  $serializer */
-        $serializer = $this->injector->getInstance(
-                annotationsOf($object)
-                        ->firstNamed('XmlSerializer')
-                        ->getValue()
-                        ->getName()
+        /** @var  ObjectXmlSerializer<T> */
+        return $this->injector->getInstance(
+            annotationsOf($object)
+                ->firstNamed('XmlSerializer')
+                ->getValue()
+                ->getName()
         );
-        return $serializer;
     }
 }

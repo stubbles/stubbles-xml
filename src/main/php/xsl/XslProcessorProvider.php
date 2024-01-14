@@ -18,23 +18,11 @@ use stubbles\ioc\Injector;
 class XslProcessorProvider implements InjectionProvider
 {
     /**
-     * injector instance to create instances of other classes
-     *
-     * @var  \stubbles\ioc\Injector
-     */
-    private $injector;
-    /**
-     * path to config files
-     *
-     * @var  string
-     */
-    private $configPath;
-    /**
      * list of callbacks
      *
      * @var  array<string,class-string>
      */
-    private $callbackList;
+    private array $callbackList;
 
     /**
      * constructor
@@ -43,11 +31,7 @@ class XslProcessorProvider implements InjectionProvider
      * @param  string                  $configPath
      * @Named{configPath}('stubbles.config.path')
      */
-    public function  __construct(Injector $injector, string $configPath)
-    {
-        $this->injector   = $injector;
-        $this->configPath = $configPath;
-    }
+    public function  __construct(private Injector $injector, private string $configPath) { }
 
     /**
      * returns the value to provide
@@ -58,8 +42,6 @@ class XslProcessorProvider implements InjectionProvider
      * instance will not have callbacks.
      *
      * Callbacks are read from xsl-callbacks.ini within the given config path.
-     *
-     * @param   string  $name
      */
     public function get(string $name = null): XslProcessor
     {

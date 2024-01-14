@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\rss;
+
+use InvalidArgumentException;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\ObjectXmlSerializer;
 use stubbles\xml\serializer\XmlSerializer;
@@ -21,11 +23,8 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
     /**
      * serializes given value
      *
-     * @param   RssFeedItem                             $rssFeedItem
-     * @param   \stubbles\xml\serializer\XmlSerializer  $xmlSerializer  serializer in case $value is not just a scalar value
-     * @param   \stubbles\xml\XmlStreamWriter           $xmlWriter      xml writer to write serialized object into
-     * @param   string                                  $tagName        name of the surrounding xml tag
-     * @throws  \InvalidArgumentException  in case $rssFeedItem is not an instance of stubbles\xml\rss\RssFeedItem
+     * @param   RssFeedItem  $rssFeedItem
+     * @throws  InvalidArgumentException  in case $rssFeedItem is not an instance of stubbles\xml\rss\RssFeedItem
      */
     public function serialize(
             object $rssFeedItem,
@@ -34,13 +33,18 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
             string $tagName = null
     ): void {
         if (!($rssFeedItem instanceof RssFeedItem)) {
-            throw new \InvalidArgumentException('Oject must be of type stubbles\xml\rss\RssFeedItem');
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Oject must be of type %s',
+                    RssFeedItem::class
+                )
+            );
         }
 
         $xmlWriter->writeStartElement(null !== $tagName ? $tagName : 'item')
-                ->writeElement('title', [], $rssFeedItem->title())
-                ->writeElement('link', [], $rssFeedItem->link())
-                ->writeElement('description', [], $rssFeedItem->description());
+            ->writeElement('title', [], $rssFeedItem->title())
+            ->writeElement('link', [], $rssFeedItem->link())
+            ->writeElement('description', [], $rssFeedItem->description());
         if ($rssFeedItem->hasAuthor()) {
             $xmlWriter->writeElement('author', [], $rssFeedItem->author());
         }
@@ -64,9 +68,9 @@ class RssFeedItemSerializer implements ObjectXmlSerializer
 
         if ($rssFeedItem->hasGuid()) {
             $xmlWriter->writeElement(
-                    'guid',
-                    ['isPermaLink' => $xmlSerializer->convertBoolToString($rssFeedItem->isGuidPermaLink())],
-                    $rssFeedItem->guid()
+                'guid',
+                ['isPermaLink' => $xmlSerializer->convertBoolToString($rssFeedItem->isGuidPermaLink())],
+                $rssFeedItem->guid()
             );
         }
 

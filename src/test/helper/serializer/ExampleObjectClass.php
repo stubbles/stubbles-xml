@@ -17,22 +17,19 @@ class ExampleObjectClass
     /**
      * Scalar property
      *
-     * @type int
      * @XmlTag(tagName='bar')
      */
-    public $bar = 42;
+    public mixed $bar = 42;
     /**
      * Another scalar property
      *
-     * @type string
      * @XmlAttribute(attributeName='bar')
      */
-    public $scalar = "test";
+    public string $scalar = "test";
     /**
      * Should not be exported to XML
      *
-     * @type string
      * @XmlIgnore
      */
-    public $ignoreMe = 'Ignore';
+    public string $ignoreMe = 'Ignore';
 }

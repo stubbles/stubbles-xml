@@ -16,8 +16,6 @@ class MissingDescriptionRssItemEntity extends MissingLinkAndDescriptionRssItemEn
 {
     /**
      * returns the link
-     *
-     * @return  string
      */
     public function getLink(): string
     {
