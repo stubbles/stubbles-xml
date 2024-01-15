@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.?.? (2020-??-??)
+## 9.0.0 (2024-01-15)
 
 ### BC breaks
 
@@ -10,6 +10,7 @@
 ### Other changes
 
 * provide more specific types where applicable
+* removed usage of deprecated features in dependencies
 
 ## 8.0.0 (2019-12-17)
 
