@@ -20,10 +20,10 @@ _stubbles/xml_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/xml": "^9.0"
+    composer require "stubbles/xml": "^10.0"
 
 
 Requirements
 ------------
 
-_stubbles/xml_ requires at least PHP 8.2.
+_stubbles/xml_ requires at least PHP 8.3.

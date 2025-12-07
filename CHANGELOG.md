@@ -1,5 +1,15 @@
 # Changelog
 
+## 11.0.0 (2025-12-07)
+
+### BC breaks
+
+* raised minimum required PHP version to 8.3
+
+### Other changes
+
+* ensured compatibility with PHP 8.5
+
 ## 9.0.0 (2024-01-15)
 
 ### BC breaks
