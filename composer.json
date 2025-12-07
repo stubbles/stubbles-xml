@@ -1,7 +1,6 @@
 {
     "name": "stubbles/xml",
     "type": "library",
-    "homepage": "http://stubbles.net/",
     "license": "BSD-3-Clause",
     "description": "Classes to work with XML",
     "require": {
