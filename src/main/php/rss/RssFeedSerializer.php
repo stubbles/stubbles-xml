@@ -52,7 +52,7 @@ class RssFeedSerializer implements ObjectXmlSerializer
             object $rssFeed,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
-            string $tagName = null
+            ?string $tagName = null
     ): void {
         if (!($rssFeed instanceof RssFeed)) {
             throw new InvalidArgumentException(

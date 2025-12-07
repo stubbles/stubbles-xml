@@ -172,7 +172,7 @@ class DomXmlStreamWriter extends XmlStreamWriter
     public function writeElement(
         string $elementName,
         array $attributes = [],
-        string $cdata     = null
+        ?string $cdata     = null
     ): XmlStreamWriter {
         return $this->append(
             function(\DOMNode $parent) use ($elementName, $attributes, $cdata)

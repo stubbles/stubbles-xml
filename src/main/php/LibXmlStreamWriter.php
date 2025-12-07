@@ -113,9 +113,9 @@ class LibXmlStreamWriter extends XmlStreamWriter
      */
     #[Override]
     public function writeElement(
-            string $elementName,
-            array $attributes = [],
-            string $cdata     = null
+        string $elementName,
+        array $attributes = [],
+        ?string $cdata     = null
     ): XmlStreamWriter {
         $this->writeStartElement($elementName);
         foreach ($attributes as $attName => $attValue) {

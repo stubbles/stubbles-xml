@@ -97,7 +97,7 @@ class XmlSerializer
     public function serializeBool(
         bool $value,
         XmlStreamWriter $xmlWriter,
-        string $tagName = null
+        ?string $tagName = null
     ): XmlStreamWriter {
         return $this->serializeScalarValue(
             $this->convertBoolToString($value),
@@ -213,7 +213,7 @@ class XmlSerializer
     public function serializeObject(
         object $object,
         XmlStreamWriter $xmlWriter,
-        string $tagName = null
+        ?string $tagName = null
     ): XmlStreamWriter {
         $this->serializerFor($object)->serialize($object, $this, $xmlWriter, $tagName);
         return $xmlWriter;

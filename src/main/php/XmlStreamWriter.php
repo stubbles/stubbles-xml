@@ -157,9 +157,9 @@ abstract class XmlStreamWriter
      * @param   array<string,string>  $attributes
      */
     abstract public function writeElement(
-            string $elementName,
-            array $attributes = [],
-            string $cdata     = null
+        string $elementName,
+        array $attributes = [],
+        ?string $cdata     = null
     ): self;
 
     /**

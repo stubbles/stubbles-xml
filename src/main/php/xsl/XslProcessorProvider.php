@@ -43,7 +43,7 @@ class XslProcessorProvider implements InjectionProvider
      *
      * Callbacks are read from xsl-callbacks.ini within the given config path.
      */
-    public function get(string $name = null): XslProcessor
+    public function get(?string $name = null): XslProcessor
     {
         if ($this->shouldHaveCallbacks($name)) {
             return new XslProcessor($this->createXslCallbacks());
@@ -55,7 +55,7 @@ class XslProcessorProvider implements InjectionProvider
     /**
      * checks whether the xsl processor instance to create should have callbacks
      */
-    protected function shouldHaveCallbacks(string $name = null): bool
+    protected function shouldHaveCallbacks(?string $name = null): bool
     {
         return 'stubbles.xml.xsl.callbacks.disabled' !== $name;
     }

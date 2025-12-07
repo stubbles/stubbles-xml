@@ -106,7 +106,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
             object $object,
             XmlSerializer $xmlSerializer,
             XmlStreamWriter $xmlWriter,
-            string $tagName = null
+            ?string $tagName = null
     ): void {
         $xmlWriter->writeStartElement(null !== $tagName ? $tagName : $this->classTagName);
         foreach ($this->properties as $propertyName => $xmlSerializerDelegate) {

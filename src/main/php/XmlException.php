@@ -15,7 +15,7 @@ use Exception;
  */
 class XmlException extends Exception
 {
-    public function __construct(string $message, Exception $cause = null)
+    public function __construct(string $message, ?Exception $cause = null)
     {
         parent::__construct($message, 0, $cause);
     }

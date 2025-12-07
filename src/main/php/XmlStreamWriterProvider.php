@@ -41,7 +41,7 @@ class XmlStreamWriterProvider implements InjectionProvider
      * @Named{encoding}('stubbles.xml.encoding')
      */
     public function __construct(
-            array $types = null,
+            ?array $types = null,
             private string $version = '1.0',
             private string $encoding = 'UTF-8'
     ) {
@@ -50,7 +50,7 @@ class XmlStreamWriterProvider implements InjectionProvider
         }
     }
 
-    public function get(string $name = null): XmlStreamWriter
+    public function get(?string $name = null): XmlStreamWriter
     {
         if (null != $name) {
             return $this->createStreamWriter($name);
