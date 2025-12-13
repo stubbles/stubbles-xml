@@ -309,16 +309,16 @@
         },
         {
             "name": "bovigo/callmap",
-            "version": "v9.0.0",
+            "version": "v9.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "4b64441217e2ab7da074efd1bbe618fda2e02335"
+                "reference": "5d4973654fea5f88c61ffdaac6031c8df57d5a1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/4b64441217e2ab7da074efd1bbe618fda2e02335",
-                "reference": "4b64441217e2ab7da074efd1bbe618fda2e02335",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/5d4973654fea5f88c61ffdaac6031c8df57d5a1d",
+                "reference": "5d4973654fea5f88c61ffdaac6031c8df57d5a1d",
                 "shasum": ""
             },
             "require": {
@@ -335,7 +335,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "9.0.x-dev"
+                    "dev-main": "9.1.x-dev"
                 }
             },
             "autoload": {
@@ -353,9 +353,9 @@
             "description": "Allows to stub and mock method calls by applying a callmap.",
             "support": {
                 "issues": "https://github.com/bovigo/callmap/issues",
-                "source": "https://github.com/bovigo/callmap/tree/v9.0.0"
+                "source": "https://github.com/bovigo/callmap/tree/v9.1.0"
             },
-            "time": "2025-11-29T16:51:23+00:00"
+            "time": "2025-12-07T19:59:23+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -2099,5 +2099,5 @@
         "ext-dom": "*",
         "ext-xmlwriter": "*"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
