@@ -9,24 +9,17 @@ declare(strict_types=1);
 namespace stubbles\helper\serializer;
 
 use ArrayIterator;
+use stubbles\xml\serializer\attributes\XmlTag;
 
 /**
  * Simple example class to test the xml serializer with object and iterator serialization.
- *
- * @XmlTag(tagName='container')
  */
+#[XmlTag('container')]
 class ContainerWithIterator
 {
-    /**
-     * array property
-     *
-     * @XmlTag(tagName=false, elementTagName='item')
-     */
+    #[XmlTag(tagName:false,elementTagName:'item')]
     public ArrayIterator $bar;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->bar = new ArrayIterator(array('one', 'two', 'three'));

@@ -17,11 +17,11 @@ use stubbles\xml\serializer\XmlSerializer;
 class Fragment implements XmlSerializerDelegate
 {
     /**
-     * @param  string  $tagName               name of tag
+     * @param  null|string|false  $tagName               name of tag
      * @param  bool    $transformNewLineToBr  switch whether to transform line breaks to <br/> or not
      */
     public function  __construct(
-        private ?string $tagName = null,
+        private null|string|false $tagName = null,
         private ?bool $transformNewLineToBr = false
     ) { }
 
@@ -30,7 +30,7 @@ class Fragment implements XmlSerializerDelegate
         XmlSerializer $xmlSerializer,
         XmlStreamWriter $xmlWriter
     ): void {
-        if (null != $this->tagName) {
+        if (is_string($this->tagName)) {
             $xmlWriter->writeStartElement($this->tagName);
             if (!empty($value)) {
                 if ($this->transformNewLineToBr) {

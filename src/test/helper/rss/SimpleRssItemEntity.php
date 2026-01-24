@@ -7,11 +7,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\rss;
+
+use stubbles\xml\rss\attributes\RssFeedItem;
+
 /**
  * Helper class for the test.
- *
- * @RssFeedItem
  */
+#[RssFeedItem()]
 class SimpleRssItemEntity extends MissingDescriptionRssItemEntity
 {
     /**

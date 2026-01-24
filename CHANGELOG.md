@@ -1,5 +1,16 @@
 # Changelog
 
+## 10.1.0 (2026-??-??)
+
+* Added attributes to replace all annotation based features. Annotations are now deprecated, and support for annotations will be removed with release 11.0.0.
+  * `stubbles\xml\serializer\attributes\XmlSerializer` (replaces `@XmlSerializer`)
+  * `stubbles\xml\serializer\attributes\XmlTag` (replaces `@XmlTag`)
+  * `stubbles\xml\serializer\attributes\XmlAttribute` (replaces `@XmlAttribute`)
+  * `stubbles\xml\serializer\attributes\XmlFragment` (replaces `@XmlFragment`)
+  * `stubbles\xml\serializer\attributes\XmlIgnore` (replaces `@XmlIgnore`)
+  * `stubbles\xml\serializer\attributes\XmlNonTraversable` (replaces `@XmlNonTraversable`)
+  * `stubbles\xml\rss\attributes\RssFeedItem` (replaces `@RssFeedItem`)
+
 ## 10.0.0 (2025-12-07)
 
 ### BC breaks

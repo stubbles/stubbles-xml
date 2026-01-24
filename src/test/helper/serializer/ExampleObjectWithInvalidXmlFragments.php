@@ -7,31 +7,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlFragment;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer with invalid xml fragments.
- *
- * @XmlTag(tagName='test')
  */
+#[XmlTag('test')]
 class ExampleObjectWithInvalidXmlFragments
 {
     /**
      * property containing no XML
-     *
-     * @XmlFragment(tagName='noXml');
      */
+    #[XmlFragment('noXml')]
     public string $noXml = 'bar';
     /**
      * another property containing no data
-     *
-     * @XmlFragment(tagName='noData');
      */
+    #[XmlFragment('noData')]
     public ?string $noData = null;
 
     /**
      * method returnin no valid xml
-     *
-     * @XmlFragment(tagName=false);
      */
+    #[XmlFragment(tagName:false)]
     public function noXml(): string
     {
         return '';

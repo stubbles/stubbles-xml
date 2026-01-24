@@ -7,23 +7,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\rss;
+
+use stubbles\xml\rss\attributes\RssFeedItem;
+
 /**
  * Helper class for the test.
- *
- * @RssFeedItem(titleMethod='getHeadline',
- *              linkMethod='getUrl',
- *              descriptionMethod='getTeaser',
- *              authorMethod='getCreator',
- *              categoriesMethod='getTags',
- *              getCommentsUrlMethod='getRemarks',
- *              enclosuresMethod='getImages',
- *              guidMethod='getId',
- *              isPermaLinkMethod='isPermanent',
- *              pubDateMethod='getDate',
- *              sourcesMethod='getOrigin',
- *              contentMethod='getText'
- * )
  */
+#[RssFeedItem(
+    titleMethod: 'getHeadline',
+    linkMethod: 'getUrl',
+    descriptionMethod: 'getTeaser',
+    authorMethod: 'getCreator',
+    categoriesMethod: 'getTags',
+    getCommentsUrlMethod: 'getRemarks',
+    enclosuresMethod: 'getImages',
+    guidMethod: 'getId',
+    isPermaLinkMethod: 'isPermanent',
+    pubDateMethod: 'getDate',
+    sourcesMethod: 'getOrigin',
+    contentMethod: 'getText',
+)]
 class RssItemWithDifferentMethods
 {
     /**

@@ -7,11 +7,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer with serialization of methods.
- *
- * @XmlTag(tagName='class')
  */
+#[XmlTag('class')]
 class ExampleObjectClassWithMethods
 {
     /**
@@ -40,18 +43,16 @@ class ExampleObjectClassWithMethods
 
     /**
      * Return a value
-     *
-     * @XmlAttribute(attributeName='method')
      */
+    #[XmlAttribute('method')]
     public function getValue(): string {
         return "returned";
     }
 
     /**
      * return a boolean value
-     *
-     * @XmlAttribute(attributeName='isFoo')
      */
+    #[XmlAttribute('isFoo')]
     public function isFoo(): bool
     {
         return true;
@@ -59,9 +60,8 @@ class ExampleObjectClassWithMethods
 
     /**
      * return a boolean value
-     *
-     * @XmlAttribute(attributeName='isBar')
      */
+    #[XmlAttribute('isBar')]
     public function isBar(): bool
     {
         return false;

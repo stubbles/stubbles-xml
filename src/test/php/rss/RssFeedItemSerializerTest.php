@@ -15,6 +15,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use stubbles\date\Date;
+use stubbles\xml\serializer\attributes\XmlSerializer as XmlSerializerAttribute;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
@@ -23,7 +24,8 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
-use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\attributesOf;
+
 /**
  * Test for stubbles\xml\rss\RssFeedItemSerializer.
  */
@@ -47,10 +49,9 @@ class RssFeedItemSerializerTest extends TestCase
     public function isDefaultSerializerForRssFeedItem(): void
     {
         assertThat(
-            annotationsOf(RssFeedItem::class)
-                ->firstNamed('XmlSerializer')
-                ->getSerializerClass()
-                ->getName(),
+            attributesOf(RssFeedItem::class)
+                ->firstNamed(XmlSerializerAttribute::class)
+                ->getClassName(),
             equals(get_class($this->rssFeedItemSerializer))
         );
     }

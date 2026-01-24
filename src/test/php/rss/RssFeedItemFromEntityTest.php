@@ -24,7 +24,7 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
- * Test for stubbles\xml\rss\RssFeedItem::fromEntity().
+ * Test for stubbles\xml\rss\RssFeed->addEntity().
  */
 #[Group('xml')]
 #[Group('xml_rss')]
@@ -38,7 +38,7 @@ class RssFeedItemFromEntityTest extends TestCase
     }
 
     #[Test]
-    public function missingAnnotationThrowsXmlException(): void
+    public function missingAttributeThrowsXmlException(): void
     {
         expect(function() { $this->rssFeed->addEntity(new \stdClass()); })
             ->throws(XmlException::class);

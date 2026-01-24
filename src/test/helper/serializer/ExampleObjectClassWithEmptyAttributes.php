@@ -7,40 +7,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer with empty attribute values.
- *
- * @XmlTag(tagName='test')
  */
+#[XmlTag('test')]
 class ExampleObjectClassWithEmptyAttributes
 {
     /**
      * Empty property
-     *
-     * @XmlAttribute(attributeName='emptyProp')
      */
+    #[XmlAttribute('emptyProp')]
     public mixed $emptyProp = null;
     /**
      * Empty property
-     *
-     * @XmlAttribute(attributeName='emptyProp2', skipEmpty=false)
      */
+    #[XmlAttribute('emptyProp2', skipEmpty:false)]
     public mixed $emptyProp2 = null;
 
     /**
      * Empty return value
-     *
-     * @XmlAttribute(attributeName='emptyMethod')
      */
+    #[XmlAttribute('emptyMethod')]
     public function getEmpty(): mixed {
         return null;
     }
 
     /**
      * Empty return value
-     *
-     * @XmlAttribute(attributeName='emptyMethod2', skipEmpty=false)
      */
+    #[XmlAttribute('emptyMethod2', skipEmpty:false)]
     public function getEmpty2(): mixed {
         return null;
     }

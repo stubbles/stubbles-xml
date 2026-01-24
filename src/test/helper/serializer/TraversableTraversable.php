@@ -9,13 +9,14 @@ declare(strict_types=1);
 namespace stubbles\helper\serializer;
 
 use ArrayIterator;
+use stubbles\xml\serializer\attributes\XmlIgnore;
+use stubbles\xml\serializer\attributes\XmlTag;
 use Traversable;
 
 /**
  * Simple example class to test the xml serializer with object serialization.
- *
- * @XmlTag(tagName='foo', elementTagName='example')
  */
+#[XmlTag(tagName:'foo', elementTagName:'example')]
 class TraversableTraversable implements \IteratorAggregate
 {
     public function baz(): string
@@ -23,10 +24,7 @@ class TraversableTraversable implements \IteratorAggregate
         return 'dummy';
     }
 
-    /**
-     *
-     * @XmlIgnore
-     */
+    #[XmlIgnore]
     public function getIterator(): Traversable
     {
         return new ArrayIterator(['bar']);

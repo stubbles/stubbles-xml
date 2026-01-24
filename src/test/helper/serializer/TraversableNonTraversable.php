@@ -9,13 +9,14 @@ declare(strict_types=1);
 namespace stubbles\helper\serializer;
 
 use ArrayIterator;
+use stubbles\xml\serializer\attributes\XmlIgnore;
+use stubbles\xml\serializer\attributes\XmlNonTraversable;
 use Traversable;
 
 /**
  * Simple example class to test the xml serializer with object serialization.
- *
- * @XmlNonTraversable
  */
+#[XmlNonTraversable]
 class TraversableNonTraversable implements \IteratorAggregate
 {
     public function baz(): string
@@ -23,9 +24,7 @@ class TraversableNonTraversable implements \IteratorAggregate
         return 'dummy';
     }
 
-    /**
-     * @XmlIgnore
-     */
+    #[XmlIgnore]
     public function getIterator(): Traversable
     {
         return new ArrayIterator(['foo' => 'bar']);

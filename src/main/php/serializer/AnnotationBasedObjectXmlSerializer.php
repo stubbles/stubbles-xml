@@ -12,6 +12,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionObject;
 use stubbles\reflect\annotation\Annotations;
+use stubbles\reflect\Attributes;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\delegate\{
     Attribute,
@@ -19,8 +20,12 @@ use stubbles\xml\serializer\delegate\{
     Tag,
     XmlSerializerDelegate
 };
-
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlFragment;
+use stubbles\xml\serializer\attributes\XmlIgnore;
+use stubbles\xml\serializer\attributes\XmlTag;
 use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\attributesOf;
 use function stubbles\reflect\methodsOf;
 use function stubbles\reflect\propertiesOf;
 /**
@@ -65,8 +70,11 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
     {
         $this->properties = $this->extractProperties($objectClass);
         $this->methods    = $this->extractMethods($objectClass);
-        $annotations      = annotationsOf($objectClass);
-        if ($annotations->contain('XmlTag')) {
+        $attributes = attributesOf($objectClass);
+        $annotations = annotationsOf($objectClass);
+        if ($attributes->contain(XmlTag::class)) {
+            $this->classTagName = $attributes->firstNamed(XmlTag::class)->tagName();
+        } elseif ($annotations->contain('XmlTag')) {
             $this->classTagName = $annotations->firstNamed('XmlTag')->tagName();
         } else {
             $this->classTagName = $objectClass->getShortName();
@@ -140,11 +148,13 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
                 ->filter(function(\ReflectionProperty $property)
                         {
                             return !$property->isStatic()
+                                && !attributesOf($property)->contain(XmlIgnore::class)
                                 && !annotationsOf($property)->contain('XmlIgnore');
                         }
                 )->map(function(\ReflectionProperty $property)
                         {
                             return $this->createSerializerDelegate(
+                                    attributesOf($property),
                                     annotationsOf($property),
                                     $property->getName()
                             );
@@ -172,12 +182,14 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
                         return false;
                     }
 
-                    return !annotationsOf($method)->contain('XmlIgnore');
+                    return !annotationsOf($method)->contain('XmlIgnore')
+                        && !attributesOf($method)->contain(XmlIgnore::class);
                 }
             )->map(
                 function(ReflectionMethod $method): XmlSerializerDelegate
                 {
                     return $this->createSerializerDelegate(
+                        attributesOf($method),
                         annotationsOf($method),
                         $method->getName()
                     );
@@ -190,21 +202,28 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
      * extracts informations about annotated element
      */
     private function createSerializerDelegate(
-            Annotations $annotations,
-            string $defaultTagName
+        Attributes $attributes,
+        Annotations $annotations,
+        string $defaultTagName
     ): XmlSerializerDelegate {
-        if ($annotations->contain('XmlAttribute')) {
+        if ($attributes->contain(XmlAttribute::class)) {
+            return $attributes->firstNamed(XmlAttribute::class);
+        } elseif ($annotations->contain('XmlAttribute')) {
             $xmlAttribute = $annotations->firstNamed('XmlAttribute');
             return new Attribute(
                 $xmlAttribute->attributeName(),
                 $xmlAttribute->getValueByName('skipEmpty', true)
             );
+        } elseif ($attributes->contain(XmlFragment::class)) {
+            return $attributes->firstNamed(XmlFragment::class);
         } elseif ($annotations->contain('XmlFragment')) {
             $xmlFragment = $annotations->firstNamed('XmlFragment');
             return new Fragment(
                 false !== $xmlFragment->tagName() ? $xmlFragment->tagName() : null,
                 $xmlFragment->getValueByName('transformNewLineToBr', false)
             );
+        } elseif ($attributes->contain(XmlTag::class)) {
+            return $attributes->firstNamed(XmlTag::class);
         } elseif ($annotations->contain('XmlTag')) {
             $xmlTag = $annotations->firstNamed('XmlTag');
             return new Tag(

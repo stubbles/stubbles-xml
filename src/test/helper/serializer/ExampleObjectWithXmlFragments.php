@@ -7,31 +7,31 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlFragment;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer with xml fragments.
- *
- * @XmlTag(tagName='test')
  */
+#[XmlTag('test')]
 class ExampleObjectWithXmlFragments
 {
     /**
      * property containing XML
-     *
-     * @XmlFragment(tagName='xml');
      */
+    #[XmlFragment('xml')]
     public string $xml = '<foo>bar</foo>';
     /**
      * another property containing XML
-     *
-     * @XmlFragment(tagName=false);
      */
+    #[XmlFragment(tagName:false)]
     public string $xml2 = '<foo>bar</foo>';
 
     /**
      * method returning xml
-     *
-     * @XmlFragment(tagName='description', transformNewLineToBr=true);
      */
+    #[XmlFragment(tagName:'description', transformNewLineToBr:true)]
     public function getSomeXml(): string
     {
         return "foo\nb&ar\n\nbaz";

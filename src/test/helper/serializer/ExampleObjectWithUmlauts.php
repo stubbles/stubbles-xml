@@ -7,23 +7,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to the xml serializer with german umlaut properties.
- *
- * @XmlTag(tagName='test')
  */
+#[XmlTag('test')]
 class ExampleObjectWithUmlauts
 {
     /**
      * test property
-     *
-     * @XmlTag(tagName='foo')
      */
+    #[XmlTag('foo')]
     public string $foo = 'Hähnchen';
     /**
      * test attribute property
-     *
-     * @XmlAttribute(attributeName='bar')
      */
+    #[XmlAttribute('bar')]
     public string $ba = 'Hähnchen';
 }

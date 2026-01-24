@@ -8,10 +8,15 @@ declare(strict_types=1);
  */
 namespace stubbles\xml\serializer;
 use stubbles\ioc\Injector;
+use stubbles\xml\serializer\attributes\XmlNonTraversable;
+use stubbles\xml\serializer\attributes\XmlSerializer as XmlSerializerClass;
+use stubbles\xml\serializer\attributes\XmlTag;
 use stubbles\xml\XmlStreamWriter;
 use Traversable;
 
 use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\attributesOf;
+
 /**
  * Serializes arbitrary data except resources to xml.
  */
@@ -50,9 +55,18 @@ class XmlSerializer
             case 'object':
                 if (
                     $value instanceof Traversable
+                    && !attributesOf($value)->contain(XmlNonTraversable::class)
                     && !annotationsOf($value)->contain('XmlNonTraversable')
                 ) {
                     if (
+                        null === $tagName
+                        && $value instanceof Traversable
+                        && attributesOf($value)->contain(XmlTag::class)
+                    ) {
+                        $xmlTag = attributesOf($value)->firstNamed(XmlTag::class);
+                        $tagName = $xmlTag->tagName();
+                        $elementTagName = $xmlTag->elementTagName();
+                    } elseif (
                         null === $tagName
                         && $value instanceof Traversable
                         && annotationsOf($value)->contain('XmlTag')
@@ -228,9 +242,18 @@ class XmlSerializer
      */
     protected function serializerFor(object $object): ObjectXmlSerializer
     {
-        if (!annotationsOf($object)->contain('XmlSerializer')) {
+        $attributes = attributesOf($object);
+        $annotations = annotationsOf($object);
+        if (!$attributes->contain(XmlSerializerClass::class) && !$annotations->contain('XmlSerializer')) {
             /** @var ObjectXmlSerializer<T> */
             return AnnotationBasedObjectXmlSerializer::fromObject($object);
+        }
+
+        if ($attributes->contain(XmlSerializerClass::class)) {
+            return $this->injector->getInstance(
+                $attributes->firstNamed(XmlSerializerClass::class)
+                    ->getClassName()
+            );
         }
 
         /** @var  ObjectXmlSerializer<T> */

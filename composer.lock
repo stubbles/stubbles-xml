@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9eaaa7576a6c66b7d362681bfd2e02ef",
+    "content-hash": "311ed78f09e856127d7ca54aa369d7ec",
     "packages": [
         {
             "name": "stubbles/date",
@@ -110,16 +110,16 @@
         },
         {
             "name": "stubbles/reflect",
-            "version": "v11.0.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-reflect.git",
-                "reference": "0b82297310d864e1ac09f00066fb21e206fb9721"
+                "reference": "b599b2356bffbf354d71d3d6c342dda59bb72abb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-reflect/zipball/0b82297310d864e1ac09f00066fb21e206fb9721",
-                "reference": "0b82297310d864e1ac09f00066fb21e206fb9721",
+                "url": "https://api.github.com/repos/stubbles/stubbles-reflect/zipball/b599b2356bffbf354d71d3d6c342dda59bb72abb",
+                "reference": "b599b2356bffbf354d71d3d6c342dda59bb72abb",
                 "shasum": ""
             },
             "require": {
@@ -132,10 +132,11 @@
                 "mikey179/vfsstream": "^1.6.12",
                 "phpunit/phpunit": "^12.4"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.0.x-dev"
+                    "dev-main": "11.1.x-dev"
                 }
             },
             "autoload": {
@@ -153,9 +154,9 @@
             "description": "Reflection helper functions and annotations.",
             "support": {
                 "issues": "https://github.com/stubbles/stubbles-reflect/issues",
-                "source": "https://github.com/stubbles/stubbles-reflect/tree/v11.0.0"
+                "source": "https://github.com/stubbles/stubbles-reflect/tree/main"
             },
-            "time": "2025-11-29T21:40:09+00:00"
+            "time": "2026-01-10T16:19:16+00:00"
         },
         {
             "name": "stubbles/sequence",
@@ -2099,5 +2100,5 @@
         "ext-dom": "*",
         "ext-xmlwriter": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

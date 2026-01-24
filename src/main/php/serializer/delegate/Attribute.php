@@ -16,7 +16,7 @@ use stubbles\xml\serializer\XmlSerializer;
  */
 class Attribute implements XmlSerializerDelegate
 {
-    public function  __construct(private string $attributeName, private bool $skipEmpty) { }
+    public function  __construct(private string $attributeName, private bool $skipEmpty = true) { }
 
     public function serialize(
         mixed $value,

@@ -7,17 +7,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer with object and array serialization.
- *
- * @XmlTag(tagName='container')
  */
+#[XmlTag('container')]
 class ContainerWithArrayListTagName
 {
     /**
      * array property
-     *
-     * @XmlTag(tagName='list', elementTagName='item')
      */
+    #[XmlTag(tagName:'list', elementTagName:'item')]
     public array $bar = array('one', 'two', 'three');
 }

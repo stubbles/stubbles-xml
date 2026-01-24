@@ -7,11 +7,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlSerializer;
+
 /**
  * Simple example class to test the xml serializer with an annotated serializer class.
- *
- * @XmlSerializer(stubbles\helper\serializer\ExampleObjectSerializer.class)
  */
+#[XmlSerializer(ExampleObjectSerializer::class)]
 class ExampleObjectClassWithSerializer
 {
     /**

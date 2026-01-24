@@ -13,6 +13,7 @@ use bovigo\callmap\NewInstance;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use stubbles\xml\serializer\attributes\XmlSerializer as XmlSerializerAttribute;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 
@@ -20,7 +21,8 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\callmap\verify;
-use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\attributesOf;
+
 /**
  * Test for stubbles\xml\rss\RssFeedSerializer.
  */
@@ -45,10 +47,9 @@ class RssFeedSerializerTest extends TestCase
     public function isDefaultSerializerForRssFeedItem(): void
     {
         assertThat(
-            annotationsOf(RssFeed::class)
-                ->firstNamed('XmlSerializer')
-                ->getSerializerClass()
-                ->getName(),
+            attributesOf(RssFeed::class)
+                ->firstNamed(XmlSerializerAttribute::class)
+                ->getClassName(),
             equals(get_class($this->rssFeedSerializer))
         );
     }

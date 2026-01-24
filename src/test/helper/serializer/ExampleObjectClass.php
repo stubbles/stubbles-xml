@@ -7,29 +7,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\helper\serializer;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
+use stubbles\xml\serializer\attributes\XmlIgnore;
+use stubbles\xml\serializer\attributes\XmlTag;
+
 /**
  * Simple example class to test the xml serializer.
- *
- * @XmlTag(tagName='foo')
  */
+#[XmlTag('foo')]
 class ExampleObjectClass
 {
     /**
      * Scalar property
-     *
-     * @XmlTag(tagName='bar')
      */
+    #[XmlTag('bar')]
     public mixed $bar = 42;
     /**
      * Another scalar property
-     *
-     * @XmlAttribute(attributeName='bar')
      */
+    #[XmlAttribute('bar')]
     public string $scalar = "test";
     /**
      * Should not be exported to XML
-     *
-     * @XmlIgnore
      */
+    #[XmlIgnore]
     public string $ignoreMe = 'Ignore';
 }

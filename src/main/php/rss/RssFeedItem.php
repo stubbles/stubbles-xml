@@ -8,19 +8,23 @@ declare(strict_types=1);
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
+use stubbles\xml\serializer\attributes\XmlSerializer;
 use stubbles\xml\XmlException;
 
 use function stubbles\reflect\annotationsOf;
+
 /**
  * Class for a rss 2.0 feed item.
  *
  * @see  http://rssboard.org/rss-specification
- * @XmlSerializer(stubbles\xml\rss\RssFeedItemSerializer.class)
  */
+#[XmlSerializer(RssFeedItemSerializer::class)]
 class RssFeedItem
 {
     /**
      * map of methods to retrieve rss feed item data
+     *
+     * @deprecated will be removed with 11.0.0
      */
     private const METHODS = [
         'byAuthor'              => 'getAuthor',
@@ -90,6 +94,7 @@ class RssFeedItem
      *
      * @param   array<string,mixed>  $overrides
      * @throws  XmlException
+     * @deprecated will be removed with 11.0.0
      */
     public static function fromEntity(object $entity, array $overrides = []): self
     {
@@ -147,6 +152,7 @@ class RssFeedItem
      * helper method to retrieve a required attribute
      *
      * @throws  XmlException
+     * @deprecated will be removed with 11.0.0
      */
     private static function getRequiredAttribute(
         object $entity,

@@ -8,11 +8,12 @@ declare(strict_types=1);
  */
 namespace stubbles\helper\rss;
 
+use stubbles\xml\rss\attributes\RssFeedItem;
+
 /**
  * Helper class for the test.
- *
- * @RssFeedItem
  */
+#[RssFeedItem()]
 class MissingAllRssItemEntity
 {
     // intentionally empty
