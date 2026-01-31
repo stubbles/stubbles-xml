@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\serializer\delegate;
+
+use stubbles\xml\serializer\attributes\XmlAttribute;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 /**
@@ -17,6 +19,14 @@ use stubbles\xml\serializer\XmlSerializer;
 class Attribute implements XmlSerializerDelegate
 {
     public function  __construct(private string $attributeName, private bool $skipEmpty = true) { }
+
+    /**
+     * @since 10.1
+     */
+    public static function createFromAttribute(XmlAttribute $attribute): self
+    {
+        return new self($attribute->name(), $attribute->skipEmpty());
+    }
 
     public function serialize(
         mixed $value,

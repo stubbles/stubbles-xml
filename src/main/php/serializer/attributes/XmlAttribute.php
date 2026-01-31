@@ -9,13 +9,22 @@ declare(strict_types=1);
 namespace stubbles\xml\serializer\attributes;
 
 use Attribute;
-use stubbles\xml\serializer\delegate\Attribute as DelegateAttribute;
 
 /**
  * @since 10.1
  */
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD)]
-class XmlAttribute extends DelegateAttribute
+class XmlAttribute
 {
-    
+    public function  __construct(private string $attributeName, private bool $skipEmpty = true) { }
+
+    public function name(): string
+    {
+        return $this->attributeName;
+    }
+
+    public function skipEmpty(): bool
+    {
+        return $this->skipEmpty;
+    }
 }

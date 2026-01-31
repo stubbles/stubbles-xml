@@ -17,6 +17,9 @@ use stubbles\xml\serializer\attributes\XmlAttribute;
 use stubbles\xml\serializer\attributes\XmlFragment;
 use stubbles\xml\serializer\attributes\XmlIgnore;
 use stubbles\xml\serializer\attributes\XmlTag;
+use stubbles\xml\serializer\delegate\Attribute;
+use stubbles\xml\serializer\delegate\Fragment;
+use stubbles\xml\serializer\delegate\Tag;
 use stubbles\xml\serializer\delegate\XmlSerializerDelegate;
 use stubbles\xml\XmlStreamWriter;
 
@@ -181,13 +184,13 @@ class AttributeBasedObjectXmlSerializer implements ObjectXmlSerializer
         string $defaultTagName
     ): XmlSerializerDelegate {
         if ($attributes->contain(XmlAttribute::class)) {
-            return $attributes->firstNamed(XmlAttribute::class);
+            return Attribute::createFromAttribute($attributes->firstNamed(XmlAttribute::class));
         } elseif ($attributes->contain(XmlFragment::class)) {
-            return $attributes->firstNamed(XmlFragment::class);
+            return Fragment::createFromAttribute($attributes->firstNamed(XmlFragment::class));
         } elseif ($attributes->contain(XmlTag::class)) {
-            return $attributes->firstNamed(XmlTag::class);
+            return Tag::createFromAttribute($attributes->firstNamed(XmlTag::class));
         }
 
-        return new XmlTag($defaultTagName);
+        return new Tag($defaultTagName);
     }
 }

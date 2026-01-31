@@ -33,6 +33,7 @@ use function stubbles\reflect\propertiesOf;
  * 
  * @implements ObjectXmlSerializer<object>
  * @template T of object
+ * @deprecated will be replaced by AttributeBasedObjectXmlSerializer with 11.0.0
  */
 class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
 {
@@ -207,7 +208,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
         string $defaultTagName
     ): XmlSerializerDelegate {
         if ($attributes->contain(XmlAttribute::class)) {
-            return $attributes->firstNamed(XmlAttribute::class);
+            return Attribute::createFromAttribute($attributes->firstNamed(XmlAttribute::class));
         } elseif ($annotations->contain('XmlAttribute')) {
             $xmlAttribute = $annotations->firstNamed('XmlAttribute');
             return new Attribute(
@@ -215,7 +216,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
                 $xmlAttribute->getValueByName('skipEmpty', true)
             );
         } elseif ($attributes->contain(XmlFragment::class)) {
-            return $attributes->firstNamed(XmlFragment::class);
+            return Fragment::createFromAttribute($attributes->firstNamed(XmlFragment::class));
         } elseif ($annotations->contain('XmlFragment')) {
             $xmlFragment = $annotations->firstNamed('XmlFragment');
             return new Fragment(
@@ -223,7 +224,7 @@ class AnnotationBasedObjectXmlSerializer implements ObjectXmlSerializer
                 $xmlFragment->getValueByName('transformNewLineToBr', false)
             );
         } elseif ($attributes->contain(XmlTag::class)) {
-            return $attributes->firstNamed(XmlTag::class);
+            return Tag::createFromAttribute($attributes->firstNamed(XmlTag::class));
         } elseif ($annotations->contain('XmlTag')) {
             $xmlTag = $annotations->firstNamed('XmlTag');
             return new Tag(

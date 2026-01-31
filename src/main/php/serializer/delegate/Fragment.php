@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\xml\serializer\delegate;
+
+use stubbles\xml\serializer\attributes\XmlFragment;
 use stubbles\xml\XmlStreamWriter;
 use stubbles\xml\serializer\XmlSerializer;
 /**
@@ -17,13 +19,21 @@ use stubbles\xml\serializer\XmlSerializer;
 class Fragment implements XmlSerializerDelegate
 {
     /**
-     * @param  null|string|false  $tagName               name of tag
-     * @param  bool    $transformNewLineToBr  switch whether to transform line breaks to <br/> or not
+     * @param null|string|false $tagName name of tag
+     * @param bool $transformNewLineToBr switch whether to transform line breaks to <br/> or not
      */
     public function  __construct(
         private null|string|false $tagName = null,
         private ?bool $transformNewLineToBr = false
     ) { }
+
+    /**
+     * @since 10.1
+     */
+    public static function createFromAttribute(XmlFragment $attribute): self
+    {
+        return new self($attribute->tagName(), $attribute->transformNewLineToBr());
+    }
 
     public function serialize(
         mixed $value,
