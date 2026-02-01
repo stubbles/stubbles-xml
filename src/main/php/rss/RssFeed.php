@@ -10,7 +10,6 @@ namespace stubbles\xml\rss;
 
 use InvalidArgumentException;
 use stubbles\date\Date;
-use stubbles\xml\rss\attributes\RssFeedItem as RssFeedItemAttribute;
 use stubbles\xml\serializer\attributes\XmlSerializer;
 
 use function stubbles\reflect\attributesOf;
@@ -179,11 +178,6 @@ class RssFeed
      */
     public function addEntity(object $entity, array $overrides = []): RssFeedItem
     {
-        $attributes = attributesOf($entity);
-        if ($attributes->contain(RssFeedItemAttribute::class)) {
-            return $this->items[] = $attributes->firstNamed(RssFeedItemAttribute::class)->extract($entity, $overrides);
-        }
-
         return $this->items[] = RssFeedItem::fromEntity($entity, $overrides);
     }
 

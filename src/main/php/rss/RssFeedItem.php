@@ -8,10 +8,12 @@ declare(strict_types=1);
  */
 namespace stubbles\xml\rss;
 use stubbles\date\Date;
+use stubbles\xml\rss\attributes\RssFeedItem as RssFeedItemAttribute;
 use stubbles\xml\serializer\attributes\XmlSerializer;
 use stubbles\xml\XmlException;
 
 use function stubbles\reflect\annotationsOf;
+use function stubbles\reflect\attributesOf;
 
 /**
  * Class for a rss 2.0 feed item.
@@ -26,7 +28,7 @@ class RssFeedItem
      *
      * @deprecated will be removed with 11.0.0
      */
-    private const METHODS = [
+    private const ANNOTATION_METHODS = [
         'byAuthor'              => 'getAuthor',
         'inCategories'          => 'getCategories',
         'addCommentsAt'         => 'getCommentsUrl',
@@ -36,6 +38,17 @@ class RssFeedItem
         'publishedOn'           => 'getPubDate',
         'inspiredBySources'     => 'getSources',
         'withContent'           => 'getContent'
+    ];
+    private const array METHODS = [
+        'byAuthor'              => 'authorMethod',
+        'inCategories'          => 'categoriesMethod',
+        'addCommentsAt'         => 'getCommentsUrlMethod',
+        'deliveringEnclosures'  => 'enclosuresMethod',
+        'withGuid'              => 'guidMethod',
+        'andGuidIsNotPermaLink' => 'isPermaLinkMethod',
+        'publishedOn'           => 'pubDateMethod',
+        'inspiredBySources'     => 'sourcesMethod',
+        'withContent'           => 'contentMethod'
     ];
     /** email address of the author of the item */
     private ?string $author = null;
@@ -94,14 +107,40 @@ class RssFeedItem
      *
      * @param   array<string,mixed>  $overrides
      * @throws  XmlException
-     * @deprecated will be removed with 11.0.0
      */
     public static function fromEntity(object $entity, array $overrides = []): self
     {
+        $attributes = attributesOf($entity);
+        if ($attributes->contain(RssFeedItemAttribute::class)) {
+            $attribute = $attributes->firstNamed(RssFeedItemAttribute::class);
+            $rssFeedItem = new self(
+                $overrides['title'] ?? self::getRequiredAttribute($entity, 'title', $attribute->titleMethod),
+                $overrides['link'] ?? self::getRequiredAttribute($entity, 'link', $attribute->linkMethod),
+                $overrides['description'] ?? self::getRequiredAttribute($entity, 'description', $attribute->descriptionMethod),
+            );
+            foreach (self::METHODS as $itemMethod => $property) {
+                if (isset($overrides[$itemMethod])) {
+                    $rssFeedItem->$itemMethod($overrides[$itemMethod]);
+                    continue;
+                }
+
+                $entityMethod = $attribute->$property;
+                if (method_exists($entity, $entityMethod)) {
+                    $rssFeedItem->$itemMethod($entity->$entityMethod());
+                }
+            }
+
+            return $rssFeedItem;
+        }
+
         $annotations = annotationsOf($entity);
         if (!$annotations->contain('RssFeedItem')) {
             throw new XmlException(
-                'Class ' . get_class($entity) . ' is not annotated with @RssFeedItem.'
+                sprintf(
+                    'Class %s is neither attributed with #[%s] nor annotated with @RssFeedItem.',
+                    get_class($entity),
+                    RssFeedItemAttribute::class
+                )
             );
         }
 
@@ -127,7 +166,7 @@ class RssFeedItem
             )
         );
 
-        foreach (self::METHODS as $itemMethod => $defaultMethod) {
+        foreach (self::ANNOTATION_METHODS as $itemMethod => $defaultMethod) {
             if (isset($overrides[$itemMethod])) {
                 $self->$itemMethod($overrides[$itemMethod]);
                 continue;
@@ -152,7 +191,6 @@ class RssFeedItem
      * helper method to retrieve a required attribute
      *
      * @throws  XmlException
-     * @deprecated will be removed with 11.0.0
      */
     private static function getRequiredAttribute(
         object $entity,
