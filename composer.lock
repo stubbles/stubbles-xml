@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0153b7ab31500f63098dabb5200970fd",
+    "content-hash": "47fe7a9b82a15a3079983ad7d6e8b235",
     "packages": [
         {
             "name": "stubbles/date",
@@ -256,6 +256,46 @@
                 "source": "https://github.com/stubbles/stubbles-values/tree/v12.0.0"
             },
             "time": "2025-11-29T18:50:38+00:00"
+        },
+        {
+            "name": "stubbles/xml-attributes",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stubbles/stubbles-xml-attributes.git",
+                "reference": "07da453156f86ba8c869ad61bd1b5021bfae710b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stubbles/stubbles-xml-attributes/zipball/07da453156f86ba8c869ad61bd1b5021bfae710b",
+                "reference": "07da453156f86ba8c869ad61bd1b5021bfae710b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "10.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stubbles\\xml\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Attributes for XML serialization with stubbles/xml.",
+            "support": {
+                "issues": "https://github.com/stubbles/stubbles-xml-attributes/issues",
+                "source": "https://github.com/stubbles/stubbles-xml-attributes/tree/main"
+            },
+            "time": "2026-02-03T15:04:20+00:00"
         }
     ],
     "packages-dev": [
@@ -2100,5 +2140,5 @@
         "ext-dom": "*",
         "ext-xmlwriter": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

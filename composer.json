@@ -9,7 +9,8 @@
         "ext-libxml": "*",
         "stubbles/ioc": "^12.0",
         "stubbles/reflect": "^11.1",
-        "stubbles/date": "^10.0"
+        "stubbles/date": "^10.0",
+        "stubbles/xml-attributes": "^10.1"
     },
     "require-dev": {
         "ext-xsl": "*",
