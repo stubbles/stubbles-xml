@@ -2,7 +2,7 @@
 
 ## 10.1.0 (2026-??-??)
 
-* Added attributes in separate package stubbles/xml-attributes to replace all annotation based features. Annotations are now deprecated, and support for annotations will be removed with release 11.0.0.
+* Added attributes in separate package [stubbles/xml-attributes](https://packagist.org/packages/stubbles/xml-attributes) to replace all annotation based features. Annotations are now deprecated, and support for annotations will be removed with release 11.0.0.
   * `stubbles\xml\serializer\attributes\XmlSerializer` (replaces `@XmlSerializer`)
   * `stubbles\xml\serializer\attributes\XmlTag` (replaces `@XmlTag`)
   * `stubbles\xml\serializer\attributes\XmlAttribute` (replaces `@XmlAttribute`)

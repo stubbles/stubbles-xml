@@ -10,7 +10,7 @@
         "stubbles/ioc": "^12.0",
         "stubbles/reflect": "^11.1",
         "stubbles/date": "^10.0",
-        "stubbles/xml-attributes": "^10.1"
+        "stubbles/xml-attributes": "^1.0"
     },
     "require-dev": {
         "ext-xsl": "*",

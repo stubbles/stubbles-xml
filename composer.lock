@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47fe7a9b82a15a3079983ad7d6e8b235",
+    "content-hash": "20d6865d9329855aedf64d02cb12c2e3",
     "packages": [
         {
             "name": "stubbles/date",
@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-xml-attributes.git",
-                "reference": "07da453156f86ba8c869ad61bd1b5021bfae710b"
+                "reference": "d201b5372735ad450b419b7f3b7f35e0a0973814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-xml-attributes/zipball/07da453156f86ba8c869ad61bd1b5021bfae710b",
-                "reference": "07da453156f86ba8c869ad61bd1b5021bfae710b",
+                "url": "https://api.github.com/repos/stubbles/stubbles-xml-attributes/zipball/d201b5372735ad450b419b7f3b7f35e0a0973814",
+                "reference": "d201b5372735ad450b419b7f3b7f35e0a0973814",
                 "shasum": ""
             },
             "require": {
@@ -278,7 +278,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "10.1.x-dev"
+                    "dev-main": "1.0.x-dev"
                 }
             },
             "autoload": {
@@ -295,7 +295,7 @@
                 "issues": "https://github.com/stubbles/stubbles-xml-attributes/issues",
                 "source": "https://github.com/stubbles/stubbles-xml-attributes/tree/main"
             },
-            "time": "2026-02-03T15:04:20+00:00"
+            "time": "2026-02-08T14:25:22+00:00"
         }
     ],
     "packages-dev": [
